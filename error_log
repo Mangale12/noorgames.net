@@ -1020,3 +1020,12 @@ Stack trace:
 [21-Apr-2022 11:18:20 America/New_York] PHP Warning:  Illegal string offset 'histories' in /home/noorgame/account/storage/framework/views/d57671fb181dfee5e46bb8c466ea9a2b346da380.php on line 112
 [21-Apr-2022 11:18:20 America/New_York] PHP Warning:  Invalid argument supplied for foreach() in /home/noorgame/account/storage/framework/views/d57671fb181dfee5e46bb8c466ea9a2b346da380.php on line 112
 [21-Apr-2022 11:51:41 America/New_York] PHP Fatal error:  Cannot use App\Mail\UserNoticMail as UserNoticMail because the name is already in use in /home/noorgame/account/app/Http/Controllers/FormController.php on line 11
+[22-Aug-2022 11:43:23 America/New_York] PHP Fatal error:  Maximum execution time of 60 seconds exceeded in /home/noorgame/public_html/vendor/laravel/framework/src/Illuminate/Database/Connection.php on line 375
+[22-Aug-2022 11:45:16 America/New_York] PHP Fatal error:  Maximum execution time of 60 seconds exceeded in /home/noorgame/public_html/vendor/laravel/framework/src/Illuminate/Database/Connection.php on line 368
+[22-Aug-2022 11:47:05 America/New_York] PHP Fatal error:  Maximum execution time of 60 seconds exceeded in /home/noorgame/public_html/vendor/laravel/framework/src/Illuminate/Support/Str.php on line 232
+[22-Aug-2022 11:47:29 America/New_York] PHP Fatal error:  Maximum execution time of 60 seconds exceeded in /home/noorgame/public_html/vendor/nesbot/carbon/src/Carbon/Traits/Date.php on line 2195
+[22-Aug-2022 11:48:26 America/New_York] PHP Fatal error:  Maximum execution time of 60 seconds exceeded in /home/noorgame/public_html/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Model.php on line 1463
+[22-Aug-2022 11:50:34 America/New_York] PHP Fatal error:  Maximum execution time of 60 seconds exceeded in /home/noorgame/public_html/vendor/laravel/framework/src/Illuminate/Database/Connection.php on line 682
+[22-Aug-2022 11:50:36 America/New_York] PHP Fatal error:  Maximum execution time of 60 seconds exceeded in /home/noorgame/public_html/vendor/laravel/framework/src/Illuminate/Database/Connection.php on line 375
+[22-Aug-2022 11:52:50 America/New_York] PHP Fatal error:  Maximum execution time of 60 seconds exceeded in /home/noorgame/public_html/vendor/nesbot/carbon/src/Carbon/Traits/Creator.php on line 596
+[22-Aug-2022 11:57:12 America/New_York] PHP Fatal error:  Maximum execution time of 60 seconds exceeded in /home/noorgame/public_html/vendor/laravel/framework/src/Illuminate/Database/Connection.php on line 375
