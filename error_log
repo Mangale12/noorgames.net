@@ -1029,3 +1029,4 @@ Stack trace:
 [22-Aug-2022 11:50:36 America/New_York] PHP Fatal error:  Maximum execution time of 60 seconds exceeded in /home/noorgame/public_html/vendor/laravel/framework/src/Illuminate/Database/Connection.php on line 375
 [22-Aug-2022 11:52:50 America/New_York] PHP Fatal error:  Maximum execution time of 60 seconds exceeded in /home/noorgame/public_html/vendor/nesbot/carbon/src/Carbon/Traits/Creator.php on line 596
 [22-Aug-2022 11:57:12 America/New_York] PHP Fatal error:  Maximum execution time of 60 seconds exceeded in /home/noorgame/public_html/vendor/laravel/framework/src/Illuminate/Database/Connection.php on line 375
+[22-Aug-2022 14:53:35 America/New_York] PHP Fatal error:  Maximum execution time of 60 seconds exceeded in /home/noorgame/public_html/vendor/laravel/framework/src/Illuminate/Collections/Arr.php on line 741
