@@ -1031,3 +1031,5 @@ Stack trace:
 [22-Aug-2022 11:57:12 America/New_York] PHP Fatal error:  Maximum execution time of 60 seconds exceeded in /home/noorgame/public_html/vendor/laravel/framework/src/Illuminate/Database/Connection.php on line 375
 [22-Aug-2022 14:53:35 America/New_York] PHP Fatal error:  Maximum execution time of 60 seconds exceeded in /home/noorgame/public_html/vendor/laravel/framework/src/Illuminate/Collections/Arr.php on line 741
 [22-Aug-2022 14:59:42 America/New_York] PHP Fatal error:  Maximum execution time of 60 seconds exceeded in /home/noorgame/public_html/vendor/nesbot/carbon/src/Carbon/Traits/Date.php on line 2174
+[13-Sep-2022 14:54:24 America/New_York] PHP Warning:  require(/home/noorgame/public_html/vendor/autoload.php): failed to open stream: No such file or directory in /home/noorgame/public_html/index.php on line 34
+[13-Sep-2022 14:54:24 America/New_York] PHP Fatal error:  require(): Failed opening required '/home/noorgame/public_html/vendor/autoload.php' (include_path='.:/opt/alt/php74/usr/share/pear') in /home/noorgame/public_html/index.php on line 34
