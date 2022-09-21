@@ -1038,3 +1038,4 @@ Stack trace:
 [20-Sep-2022 07:06:08 America/New_York] PHP Fatal error:  Maximum execution time of 60 seconds exceeded in /home/noorgame/public_html/vendor/nesbot/carbon/src/Carbon/Traits/Date.php on line 819
 [20-Sep-2022 07:07:35 America/New_York] PHP Fatal error:  Maximum execution time of 60 seconds exceeded in /home/noorgame/public_html/vendor/laravel/framework/src/Illuminate/Database/Connection.php on line 682
 [20-Sep-2022 07:13:13 America/New_York] PHP Fatal error:  Maximum execution time of 60 seconds exceeded in /home/noorgame/public_html/vendor/nesbot/carbon/src/Carbon/Traits/Date.php on line 2195
+[20-Sep-2022 23:41:17 America/New_York] PHP Fatal error:  Maximum execution time of 60 seconds exceeded in /home/noorgame/public_html/vendor/laravel/framework/src/Illuminate/Database/Connection.php on line 682
