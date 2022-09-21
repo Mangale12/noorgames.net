@@ -1039,3 +1039,4 @@ Stack trace:
 [20-Sep-2022 07:07:35 America/New_York] PHP Fatal error:  Maximum execution time of 60 seconds exceeded in /home/noorgame/public_html/vendor/laravel/framework/src/Illuminate/Database/Connection.php on line 682
 [20-Sep-2022 07:13:13 America/New_York] PHP Fatal error:  Maximum execution time of 60 seconds exceeded in /home/noorgame/public_html/vendor/nesbot/carbon/src/Carbon/Traits/Date.php on line 2195
 [20-Sep-2022 23:41:17 America/New_York] PHP Fatal error:  Maximum execution time of 60 seconds exceeded in /home/noorgame/public_html/vendor/laravel/framework/src/Illuminate/Database/Connection.php on line 682
+[21-Sep-2022 00:19:45 America/New_York] PHP Fatal error:  Allowed memory size of 536870912 bytes exhausted (tried to allocate 131269848 bytes) in /home/noorgame/public_html/vendor/laravel/framework/src/Illuminate/View/Concerns/ManagesLayouts.php on line 102
