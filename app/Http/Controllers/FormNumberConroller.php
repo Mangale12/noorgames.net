@@ -79,33 +79,33 @@ class FormNumberConroller extends Controller
             return redirect()->back()->withInput()->with('error', $sql);
         }
       
-        $sendtexttouser ='Welcome'.' ' . $request->name . ' ' .', to Noor Games family.We have received your details. Someone from collab team will reach back to you based on your eligibility.
-           Note: Don not  bother asking to Sasha when will they reach out.';
-        $str = $request->phone_number;
-        $usernumber = preg_replace('/[^0-9]/','',$str);
-        $usernumberint = (int) filter_var($usernumber, FILTER_SANITIZE_NUMBER_INT);
-//  dd($usernumberint);
-        $settings = GeneralSetting::first();
-        $key = (string) $settings['api_key'];
-        $secret = (string) $settings['api_secret'];
-        $basic  = new \Vonage\Client\Credentials\Basic($key, $secret);
-        $client = new \Vonage\Client($basic);
-        $message = $client->message()->send([
-        'to' => '1'.$usernumber,
-        'from' => '18337222376',
-        'text' => $sendtexttouser
-        ]);
+//         $sendtexttouser ='Welcome'.' ' . $request->name . ' ' .', to Noor Games family.We have received your details. Someone from collab team will reach back to you based on your eligibility.
+//           Note: Don not  bother asking to Sasha when will they reach out.';
+//         $str = $request->phone_number;
+//         $usernumber = preg_replace('/[^0-9]/','',$str);
+//         $usernumberint = (int) filter_var($usernumber, FILTER_SANITIZE_NUMBER_INT);
+// //  dd($usernumberint);
+//         $settings = GeneralSetting::first();
+//         $key = (string) $settings['api_key'];
+//         $secret = (string) $settings['api_secret'];
+//         $basic  = new \Vonage\Client\Credentials\Basic($key, $secret);
+//         $client = new \Vonage\Client($basic);
+//         $message = $client->message()->send([
+//         'to' => '1'.$usernumber,
+//         'from' => '18337222376',
+//         'text' => $sendtexttouser
+//         ]);
        
         
-          $sendtexttoadmin =' Collab team      '.' '  . $request->name . ' is added to the family with ' . 'Phone ' . $request->phone_number . ' ' . 'Take your time to reach out to him.';
-        // dd($sendtexttoadmin, $sendtexttouser);
-        $basic  = new \Vonage\Client\Credentials\Basic($key, $secret);
-        $client = new \Vonage\Client($basic);
-        $message = $client->message()->send([
-        'to' => '19292684435',
-        'from' => '18337222376',
-        'text' => $sendtexttoadmin
-        ]);
+//           $sendtexttoadmin =' Collab team      '.' '  . $request->name . ' is added to the family with ' . 'Phone ' . $request->phone_number . ' ' . 'Take your time to reach out to him.';
+//         // dd($sendtexttoadmin, $sendtexttouser);
+//         $basic  = new \Vonage\Client\Credentials\Basic($key, $secret);
+//         $client = new \Vonage\Client($basic);
+//         $message = $client->message()->send([
+//         'to' => '19292684435',
+//         'from' => '18337222376',
+//         'text' => $sendtexttoadmin
+//         ]);
         
         
         return redirect()->route('formsuccess')->with('success', 'Thank You.');
