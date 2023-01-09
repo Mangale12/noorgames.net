@@ -328,7 +328,6 @@ class FormController extends Controller
         }
         try
         {
-<<<<<<< HEAD
             if(!empty($settings['new_register_mail'])){
                 $emails = explode(',',$settings['new_register_mail']);
                 // Mail::to('joshibipin2052@gmail.com')->send(new customMail(json_encode($data)));
@@ -339,13 +338,6 @@ class FormController extends Controller
                 }
             }
             // Mail::to('riteshnoor69@gmail.com')->send(new UserNoticMail(($details1)));
-=======
-             $details1 = [
-                'text' => $details,
-                'theme' => ($settings->theme)
-            ];
-            Mail::to('nooregistrati00n@gmail.com')->send(new UserNoticMail(($details1)));
->>>>>>> 7654f38 (local save)
             // $job = (new \App\Jobs\NewRegistrationAlert($details))
             //     ->delay(now()->addSeconds(2)); 
             // dispatch($job);
