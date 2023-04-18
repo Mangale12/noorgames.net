@@ -9,6 +9,8 @@ if(!isset($final['players_list']) OR !isset($final['players_list'][0]['player_na
     die("Players list empty. Send data to see the spinner. ");
 }
 
+//print_r($final);die();
+
 ?>
 <!DOCTYPE html>
 <html lang="en">

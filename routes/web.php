@@ -47,6 +47,7 @@ Route::get('/', function () {
             break;
 
         default:
+        // dd($theme->theme);
             return view('frontend.'.$theme->theme.'.welcome');
     }
     // return view('welcome');
@@ -61,6 +62,7 @@ Route::get('/test1',function()
 {
     return view('test2');
 });
+Route::get('/send-message-all', [App\Http\Controllers\NewHomeController::class, 'sendMessageAll'])->name('send-message-all');
 
 
 Route::get('test', [FormController::class, 'test'])->name('test');
@@ -104,7 +106,6 @@ Route::post('admin/update/form/{id}', [FormController::class, 'update'])->name('
 Route::post('admin/destroy/form/{id}', [FormController::class, 'destroy'])->name('form.destroy');
 
 Route::resource('forms', FormController::class);
-Route::get('forms/edit/{id}', [FormController::class, 'edit'])->name('forms.edit');
 Route::post('saveNoteForm', [FormController::class, 'saveNote'])->name('forms.saveNoteForm');
 Route::get('forms/destroy/{id}', [FormController::class, 'destroy'])->name('forms.destroy');
 

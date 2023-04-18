@@ -13,7 +13,6 @@ if(!isset($final['players_list']) OR !isset($final['players_list'][0]['player_na
 if(!isset($final['players_list']) || empty($final['players_list'])) {
     die("Players list empty. Send data to see the spinner. ");
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -107,6 +106,15 @@ if(!isset($final['players_list']) || empty($final['players_list'])) {
     /*-o-transition: width 0.5s ease-in-out;*/
     /*transition: width 0.5s ease-in-out;*/
         }
+        
+        #canvas_start{
+            position: relative;
+            width: 32vw;
+    /*        -webkit-transition: width 1s ease-in-out;*/
+    /*-moz-transition: width 0.5s ease-in-out;*/
+    /*-o-transition: width 0.5s ease-in-out;*/
+    /*transition: width 0.5s ease-in-out;*/
+        }
 
         .player-list{
             position: absolute;
@@ -158,6 +166,11 @@ if(!isset($final['players_list']) || empty($final['players_list'])) {
             padding:8px 20px;
             color: white;
             font-size: 25px;
+        }
+        
+         #roulette-wheel {
+            position: relative;
+            width: 32vw;
         }
         
 
@@ -617,8 +630,8 @@ Please reach out to <b>Sasha</b> at messenger for payout with screenshot of win
   
     </style>
         
-         <img src="https://test.noorgames.net/assets/closed_left.jpg" id="closed_left" />
-        <img src="https://test.noorgames.net/assets/closed_right.jpg" id="closed_right" />
+         <img src="https://test.noorgames.net/assets/closed_left.jpg" id="closed_left" style=""/>
+        <img src="https://test.noorgames.net/assets/closed_right.jpg" id="closed_right" style=""/>
     <div id="welcome_container">
         
     <div id="timer">NEXT SPIN IN<hr>
@@ -857,6 +870,13 @@ function convertTZ(date, tzString) {
         left: 0;
         width: 32vw;
     }
+    
+    #canvas_start {
+        position: relative;
+        top: 0;
+        left: 0;
+        width: 32vw;
+    }
 
     #playing_players_list {
         box-sizing: border-box;  
@@ -899,6 +919,16 @@ function convertTZ(date, tzString) {
                 }
                 
                 #canvas {
+                    position:relative;
+                    width:80vw;
+                }
+                
+                #canvas_start {
+                    position:relative;
+                    width:80vw;
+                }
+                
+                #roulette-wheel {
                     position:relative;
                     width:80vw;
                 }
@@ -953,6 +983,11 @@ function convertTZ(date, tzString) {
                 }
                 
                 #canvas {
+                    position:relative;
+                    width:80vw;
+                }
+                
+                #canvas_start {
                     position:relative;
                     width:80vw;
                 }
@@ -1085,8 +1120,111 @@ function convertTZ(date, tzString) {
                              <div id="wheelContainer">
                                     <div id="wheel">
                                     <!--<div class="canvas">-->
-                                        <canvas id="canvas" width="500" height="500">
+                                        <canvas id="canvas" width="500" height="500" style="display:none">
+                                            
+                                           
+                                            
                                         </canvas>
+                                        <canvas id="roulette-wheel" width="500" height="500" style="display:none"></canvas>
+                                        <canvas id="canvas_start" width="500" height="500"></canvas>
+                                            
+                                             
+                                            <style>
+                                                #canvas_start {
+      background-color: black;
+      border-radius: 50%;
+    }
+                                            </style>
+   <script>
+    const canvas_start = document.getElementById("canvas_start");
+    const ctx_start = canvas_start.getContext("2d");
+    
+    // Define the dragon shape
+    const dragon = [];
+    for (let i = 0; i < 2 * Math.PI; i += 0.1) {
+      const x = 200 * Math.sin(i);
+      const y = 200 * Math.cos(3 * i);
+      dragon.push([x, y]);
+    }
+    
+    // The animation loop
+    let angle_start = 0;
+    function update() {
+      // Clear the canvas
+      ctx_start.clearRect(0, 0, canvas_start.width, canvas_start.height);
+      
+      // Draw the dragon
+      ctx_start.save();
+      ctx_start.translate(canvas_start.width / 2, canvas_start.height / 2);
+      ctx_start.scale(1, 1);
+      ctx_start.beginPath();
+      ctx_start.moveTo(dragon[0][0], dragon[0][1]);
+      for (let i = 1; i < dragon.length; i++) {
+        const x = dragon[i][0] + 10 * Math.sin(angle_start + i);
+        const y = dragon[i][1] + 10 * Math.cos(angle_start + i);
+        ctx_start.lineTo(x, y);
+      }
+      ctx_start.closePath();
+      ctx_start.fillStyle = "red";
+      ctx_start.fill();
+      ctx_start.restore();
+      
+      // Draw the "Loading..." text
+      ctx_start.font = "48px sans-serif";
+      ctx_start.textAlign = "center";
+      ctx_start.textBaseline = "middle";
+      ctx_start.fillStyle = "white";
+      ctx_start.fillText("Welcome Players", canvas_start.width / 2, canvas_start.height / 2);
+      
+      // Update the animation angle
+      angle_start += 0.05;
+      
+      // Repeat the animation loop
+      requestAnimationFrame(update);
+    }
+    
+    // Start the animation
+    update();
+  </script>
+                                        
+                                         <script>
+                                        
+                                         
+    var canvas = document.getElementById("roulette-wheel");
+    var ctx = canvas.getContext("2d");
+    var centerX = canvas.width / 2;
+    var centerY = canvas.height / 2;
+    var radius = 200;
+    var colors = ["red", "black", "green"];
+    var angle = 0;
+
+    function drawWheel() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.save();
+      ctx.translate(centerX, centerY);
+      ctx.rotate(angle);
+      ctx.translate(-centerX, -centerY);
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+      ctx.stroke();
+
+      for (var i = 0; i < 36; i++) {
+        ctx.fillStyle = colors[i % 3];
+        ctx.beginPath();
+        var startAngle = (i * 10 - 5) * (Math.PI / 180);
+        var endAngle = (i * 10 + 5) * (Math.PI / 180);
+        ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+        ctx.lineTo(centerX, centerY);
+        ctx.fill();
+
+       
+      }
+      ctx.restore();
+      angle += 0.1;
+      requestAnimationFrame(drawWheel);
+    }
+    drawWheel();
+  </script>
                                     <!--</div>-->
                                 </div>
                             </div>
@@ -1094,7 +1232,7 @@ function convertTZ(date, tzString) {
                                 <h6>
                                     <b>
                                         <span class="neon-text font-weight-bold">Copyright Noorgames</span>
-                                        <span class="just-neon">ﾃつｩ 2022</span><br> <span class="neon-text"> All Rights Reserved</span>
+                                        <span class="just-neon"> 2023</span><br> <span class="neon-text"> All Rights Reserved</span>
                                     </b>
                                 </h6>
                             </div>
@@ -1429,7 +1567,7 @@ function convertTZ(date, tzString) {
 
     playerArray['player_info']=[{
             id:"1",
-            name:"Prasil"
+            name:"test"
         },
         {  
             id:"2",
@@ -1443,30 +1581,57 @@ function convertTZ(date, tzString) {
 
     playerArray['winner_info'] = [{
         id:"2",
-        name:"Prasil",
+        name:"test",
         }
     ]
     
     
 
     var jsonData = JSON.parse('<?= $final_encoded; ?>');
-    var jsonArray=<?= $final_encoded; ?>;
 
-    console.log(jsonArray);
+    
+    var smallArray = [];
+    largeArray=jsonData.players_list;
 
-    // console.log(jsonData);
+// Loop 50 times to add 50 random elements to the smallArray
+for (var i = 0; i < 50; i++) {
+    // Get a random index from the largeArray
+    var randomIndex = Math.floor(Math.random() * largeArray.length);
+    // Add the element at that index to the smallArray
+    smallArray.push(largeArray[randomIndex]);
+    // Remove the element from the largeArray to ensure no duplicates
+    largeArray.splice(randomIndex, 1);
+}
+jsonData.players_list=smallArray
+jsonData.players_list.push(jsonData.winner_info);
+
+largeArray=jsonData.players_list;
+final_small_array=[];
+
+
+for (var i = 0; i < 51; i++) {
+ var randomIndex = Math.floor(Math.random() * largeArray.length);
+ final_small_array.push(largeArray[randomIndex]);
+  largeArray.splice(randomIndex, 1);
+}
+
+jsonData.players_list=final_small_array;
+
+    console.log(jsonData);
 
     var res = [];
     var res_winner = [];
 
-
-    //build array for segments for wheel
+         //build array for segments for wheel
     var segments = [];
     index=0;
     counter=1;
 
+    function push_player_data(mode) {
 
-    //console.log(res);
+        
+       
+            //console.log(res);
     jsonData.players_list.forEach(element => {
     //console.log(element);
     //create an array of random fill colors
@@ -1492,20 +1657,45 @@ function convertTZ(date, tzString) {
     else textFontSize=10;
     textFontSize=12;
     
-    segments.push({
-        fillStyle:radGradient,
-        offset: 1.0,
-        text: ""+counter++,
-        lineWidth: 1,
-        'strokeStyle' : '#ccbe00',
-        // 'textFontFamily' : 'Georgia',
-        'textAlignment' : 'outer',
-        // 'textOrientation' : 'curved',
-        'textFontSize'    : textFontSize,
-        'textFillStyle'   : '#ffee00'
-        // text: element.player_name
-        });
+     if(mode=="number") {
+         
+         segments.push({
+            fillStyle:radGradient,
+            offset: 1.0,
+            //text: ""+counter++,
+            lineWidth: 1,
+            'strokeStyle' : '#ccbe00',
+            // 'textFontFamily' : 'Georgia',
+            'textAlignment' : 'outer',
+            // 'textOrientation' : 'curved',
+            'textFontSize'    : textFontSize,
+            'textFillStyle'   : '#ffee00',
+           // text: element.player_name
+           text:element.player_id
+            });
+            
+        }else{
+            segments.push({
+            fillStyle:radGradient,
+            offset: 1.0,
+            text: "",
+            lineWidth: 1,
+            'strokeStyle' : '#ccbe00',
+            // 'textFontFamily' : 'Georgia',
+            'textAlignment' : 'outer',
+            // 'textOrientation' : 'curved',
+            'textFontSize'    : textFontSize,
+            'textFillStyle'   : '#ffee00'
+            // text: element.player_name
+            });
+        }
+    
+   
     });
+    }
+    
+    push_player_data("number");
+      
 
     //get the array length of player_info
     var player_info_length = jsonData.players_list.length;
@@ -1555,7 +1745,6 @@ function convertTZ(date, tzString) {
             'duration'      : 10,
             'spins'         : 5,
             'callbackAfter' : 'drawTriangle()',
-            'callbackSound' : playSound,
             'callbackFinished' : 'winAnimation()'
         }
         // 'pins' :    // Specify pin parameters.
@@ -1567,6 +1756,7 @@ function convertTZ(date, tzString) {
         //     'strokeStyle' : '#c28942'
         // }
     });
+
 
     let audio = new Audio('assets/tick.mp3');  // Create audio object and load desired file.
     
@@ -1658,6 +1848,7 @@ function convertTZ(date, tzString) {
     // Function with formula to work out stopAngle before spinning animation.
     // Called from Click of the Spin button.
     function calculatePrize(winner_info=winner_info_index) {
+        
         // console.log("Winner is"+winner_info);
         // Get random angle inside specified segment of the wheel.
         console.log("Winner info : "+winner_info_index);
@@ -1666,11 +1857,17 @@ function convertTZ(date, tzString) {
         // Important thing is to set the stopAngle of the animation before stating the spin.
         theWheel.animation.stopAngle = stopAt;
         
-        setTimeout(function(){
-            document.getElementById('wheelContainer').style.transform = 'scale(1.5)';
-            document.getElementById('wheelContainer').style.top = '200px';
-        }, 6000);
+        document.getElementById("canvas").style.display = "none";
+         document.getElementById("canvas_start").style.display = "none";
+    document.getElementById("roulette-wheel").style.display = "block";
         
+        setTimeout(function(){
+    document.getElementById("canvas").style.display = "block";
+    document.getElementById("roulette-wheel").style.display = "none";
+
+            document.getElementById('wheelContainer').style.transform = 'scale(3)';
+            document.getElementById('wheelContainer').style.top = '500px';
+        }, 6000);
         theWheel.draw();
 
         // Start the spin animation here.

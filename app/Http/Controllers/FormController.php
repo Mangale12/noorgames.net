@@ -252,9 +252,8 @@ class FormController extends Controller
      }
     public function store(Request $request, Form $form)
     {
-        
+        // dd($form);   
         $settings = GeneralSetting::first();
-        
         $request->validate([
             'full_name' => 'required|min:3|max:20',
             'facebook_name' => 'required|min:7|unique:forms,facebook_name'.$form->id,
@@ -263,7 +262,6 @@ class FormController extends Controller
             'mail' => 'required',
             
             'email' => 'required|regex:/(.+)@(.+)\.(.+)/i|min:6|unique:forms,email'.$form->id,
-            'account' => 'required',
          
         ]);
 

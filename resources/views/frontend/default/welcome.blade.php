@@ -67,10 +67,10 @@
 
 <body>
     <div class="page-wrapper font-robo">
-    <video autoplay muted loop id="myVideo">
+    {{-- <video autoplay muted loop id="myVideo">
     <source src="{{url('images/fin.mp4')}}" type="video/mp4">
     Your browser does not support HTML5 video.
-    </video>
+    </video> --}}
     <div class="page-wrapper font-robo">
         <div class="wrapper wrapper--w680">
             <div class="card card-1 py-5">
@@ -379,6 +379,7 @@
                         toastr.error('Error','Enter your Game Id');
                         return;
                     }
+                    form.submit();
                     // if($('input[name="full_name"]')){
                     //     toastr.error('Error','Enter Full Name');
                     //     return;
@@ -389,25 +390,7 @@
                             'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
                         }
                     });
-                    $.ajax({
-                            type: "POST",
-                            url: '/checkCaptcha',
-                            data: {
-                                "captcha": $('.captcha-input').val(),
-                            },
-                            dataType: 'json',
-                            success: function (data) {
-                                if(data == 'true'){
-                                    form.submit();
-                                }else{
-                                    toastr.error('Error','Captcha Incorrect');
-                                }
-                                
-                            },
-                            error: function (data) {
-                                toastr.error('Error','Something went wrong. Please Try again.');
-                            }
-                        });
+                    
                 });
             } );
     

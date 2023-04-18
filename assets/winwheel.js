@@ -53,7 +53,7 @@ function Winwheel(options, drawWheel)
         'fillStyle'         : 'silver',     // The segment background colour.
         'strokeStyle'       : 'black',      // Segment line colour. Again segment lines only drawn if this is specified.
         'lineWidth'         : 1,            // Width of lines around segments.
-        'clearTheCanvas'    : false,         // When set to true the canvas will be cleared before the wheel is drawn.
+        'clearTheCanvas'    : true,         // When set to true the canvas will be cleared before the wheel is drawn.
         'imageOverlay'      : false,        // If set to true in image drawing mode the outline of the segments will be displayed over the image. Does nothing in code drawMode.
         'drawText'          : true,         // By default the text of the segments is rendered in code drawMode and not in image drawMode.
         'pointerAngle'      : 0,            // Location of the pointer that indicates the prize when wheel has stopped. Default is 0 so the (corrected) 12 o'clock position.
@@ -1933,10 +1933,10 @@ Winwheel.prototype.getRandomForSegment = function(segmentNumber)
         if (typeof this.segments[segmentNumber] !== 'undefined') {
             let startAngle = this.segments[segmentNumber].startAngle;
             let endAngle = this.segments[segmentNumber].endAngle;
-            let range = (endAngle - startAngle) - 1; //2
+            let range = (endAngle - startAngle) - 1;
 
-            if (range >= 0) {
-                stopAngle = (startAngle - 0.2);
+            if (range > 0) {
+                stopAngle = (startAngle + 1 + Math.floor((Math.random() * range)));
             } else {
                console.log('Segment size is too small to safely get random angle inside it');
             }
@@ -1949,7 +1949,6 @@ Winwheel.prototype.getRandomForSegment = function(segmentNumber)
 
     return stopAngle;
 }
-
 
 // ====================================================================================================================
 // Class for the wheel pins.
@@ -1998,8 +1997,8 @@ function Animation(options)
         'direction'         : 'clockwise',     // clockwise or anti-clockwise.
         'propertyName'      : null,            // The name of the winning wheel property to be affected by the animation.
         'propertyValue'     : null,            // The value the property is to be set to at the end of the animation.
-        'duration'          : 200,              // Duration of the animation.
-        'yoyo'              : true,           // If the animation is to reverse back again i.e. yo-yo.
+        'duration'          : 10,              // Duration of the animation.
+        'yoyo'              : false,           // If the animation is to reverse back again i.e. yo-yo.
         'repeat'            : null,            // The number of times the animation is to repeat, -1 will cause it to repeat forever.
         'easing'            : null,            // The easing to use for the animation, default is the best for spin to stop. Use Linear.easeNone for no easing.
         'stopAngle'         : null,            // Used for spinning, the angle at which the wheel is to stop.
