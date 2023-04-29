@@ -25,6 +25,7 @@ class GeneralSetting extends Model
         'between_limit_text',
         'below_limit_text',
         'theme',
+        'site_name',
         'new_register_mail',
         'registration_email',
         'registration_sms',

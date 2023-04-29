@@ -1,9 +1,12 @@
 
 $(document).ready(function() {
     var balanceLimit = 400;
-    var redimLimit = 30;
-    var bonusLimit = 300;
-    var tipsLimit = 300;
+    var redimLimit = 500;
+    var redimLimitless = 5;
+    var bonusLimit = 500;
+    var bonusLimitless = 5;
+    var tipsLimit = 500;
+    var tipsLimitless = 5;
 
     if ($('.datatable').length > 0) {
         $('.datatable').DataTable({
@@ -853,7 +856,6 @@ $(document).ready(function() {
             });
         })
     }
-    $
     function checkboxtoggle(){
         $('.checkbox-toggle').click(function () {
             var clicks = $(this).data('clicks');
@@ -1022,6 +1024,11 @@ $(document).ready(function() {
                     toastr.error('Please enter a value less than '+bonusLimit);
                     return;
                 }
+                if ($(this).val() < bonusLimitless) {
+                    $(this).removeAttr('disabled');
+                    toastr.error('Please enter a value greater than '+bonusLimitless);
+                    return;
+                }
                 var gameTitle = $(this).parent().find(".refer-from").attr("data-title");
                 var gameId = $(this).parent().find('.refer-from').val();
 
@@ -1049,18 +1056,21 @@ $(document).ready(function() {
                         }
                     });
                     var type = "POST";
-                    var ajaxurl = '/table-referBalance?date='+dateCustom;
+                    // var ajaxurl = '';
                     var interval = null;
                     $.ajax({
                         type: type,
-                        url: ajaxurl,
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        url: "{{url('/table-referBalance')}}",
                         data: {
                             "gameId": gameId,
                             "userId": userId,
                             "amount": amount,
                         },
-                        dataType: 'json',
                         beforeSend: function() {
+                        alert(amount);
                             i = 0;
                             $(".load-btn").addClass("disabled");
                             interval = setInterval(function() {
@@ -1069,6 +1079,7 @@ $(document).ready(function() {
                             }, 300);
                         },
                         success: function(data) {
+                            alert(data);
                             $('.referInput').removeAttr('disabled');
                             clearInterval(interval);
 
@@ -1539,6 +1550,7 @@ $(document).ready(function() {
             var userCashAppBtn = $(".user-" + $(this).attr('data-user'));
             var userCashAppCollapse = userCashAppBtn.attr('data-target');
             var userId = $(this).attr('data-userId');
+            alert('help');
             // console.log(userId);
             // var loadBtn = $('.load-btn-'+userId);
             // console.log(loadBtn);
@@ -1604,13 +1616,14 @@ $(document).ready(function() {
                             'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
                         }
                     });
-                    var type = "POST";
-                    var ajaxurl = '/table-loadBalance?date='+dateCustom;
+                    var type = "GET";
+                    var ajaxurl = '/table-loadBalance';
                     var interval = null;
                     $.ajax({
                         type: type,
                         url: ajaxurl,
                         data: {
+                            "date":dateCustom,
                             "gameId": gameId,
                             "userId": userId,
                             "amount": amount,
@@ -1671,6 +1684,7 @@ $(document).ready(function() {
         
                         },
                         error: function(data) {
+                            alert(data);
                             $(this).removeAttr('disabled');
                             clearInterval(interval);
                             $(".load-btn").removeClass("disabled");
@@ -1832,6 +1846,11 @@ $(document).ready(function() {
                 if ($(this).val() > redimLimit) {
                     $(this).removeAttr('disabled');
                     toastr.error('Please enter a value less than '+redimLimit);
+                    return;
+                }
+                if ($(this).val() < redimLimitless) {
+                    $(this).removeAttr('disabled');
+                    toastr.error('Please enter a value greater than '+redimLimitless);
                     return;
                 }
                 var gameTitle = $(".redeem-from").attr("data-title");
@@ -2066,6 +2085,11 @@ $(document).ready(function() {
                 if ($(this).val() > tipsLimit) {
                     $(this).removeAttr('disabled');
                     toastr.error('Please enter a value less than '+tipsLimit);
+                    return;
+                }
+                if ($(this).val() > tipsLimitless) {
+                    $(this).removeAttr('disabled');
+                    toastr.error('Please enter a value greater than '+tipsLimitless);
                     return;
                 }
                 var gameTitle = $(".tip-from").attr("data-title");

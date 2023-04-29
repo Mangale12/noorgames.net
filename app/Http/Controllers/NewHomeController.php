@@ -1711,6 +1711,7 @@ public function tableop()
     
     public function tableUpdate(Request $request)
     {
+        if($reque)
         // $name = FacadesRequest::input('name');
         $created_at = isset($_GET['date'])?$_GET['date']:Carbon::now();
         $url = $request->fullUrl();
@@ -1808,7 +1809,7 @@ public function tableop()
             $gameId = $request->gameId;
             $userId = $request->userId;
             $amount = $request->amount;
-
+            return $amount;
             $account = Account::findOrFail($gameId);
             $user = Form::findOrFail($userId);
         }
@@ -1840,6 +1841,9 @@ public function tableop()
         // $userBalance = $user->balance;
         return Response::json(Account::get()
             ->toArray());
+    }
+    public function try(Request $request){
+        return "hello data";
     }
 
     public function loadCashBalance(Request $request)
@@ -4494,6 +4498,10 @@ public function tableop()
         // dd($request->all());
         try
         {
+            $above_limit_text = $request->only('above_limit_text_1','above_limit_text_2','above_limit_text_3','above_limit_text_4');
+            $between_limit_text = $request->only('between_limit_text_1','between_limit_text_2','between_limit_text_3','between_limit_text_4');
+            $below_limit_text = $request->only('below_limit_text_1','below_limit_text_2','below_limit_text_3','below_limit_text_4');
+            
             $settings = GeneralSetting::where('id',1)->update([
                 'bonus_report_emails' => ($request->bonus_report_emails[0] != null)?$request->bonus_report_emails[0]:null,
                 'new_register_mail' => ($request->new_register_mail[0] != null)?$request->new_register_mail[0]:null,
@@ -4501,14 +4509,15 @@ public function tableop()
                 'limit_amount' => $request->limit_amount,
                 'spinner_message_monthly' => $request->spinner_message_monthly,
                 'spinner_message' => $request->spinner_message,
-                'above_limit_text' => $request->above_limit_text,
-                'between_limit_text' => $request->between_limit_text,
-                'below_limit_text' => $request->below_limit_text,
+                'above_limit_text' => json_encode($above_limit_text),
+                'between_limit_text' => $between_limit_text,
+                'below_limit_text' => $below_limit_text,
                 'captcha' => $request->captcha,
                 'captcha_type' => $request->captcha_type,
                 'api_key' => $request->api_key,
                 'api_secret' => $request->api_secret,
                 'theme' => $request->theme,
+                'site_name'=>$request->site_name,
                 'registration_email' => $request->registration_email,
                 'registration_sms' => $request->registration_sms,
                 'mail_text' => $request->mail_text,

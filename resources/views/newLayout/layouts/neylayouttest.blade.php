@@ -50,173 +50,6 @@
         .swal2-container {
             z-index: 9999 !important;
         }
-
-        /* start side nav bar */
-        .nav-side-menu {
-  overflow: auto;
-  font-family: verdana;
-  font-size: 12px;
-  font-weight: 200;
-  /* background-color: #2e353d; */
-  /* position: fixed; */
-  top: 0px;
-  width: 230px;
-  height: 100%;
-  color: black!important;
-}
-.nav-side-menu .brand {
-  background-color: #23282e;
-  line-height: 50px;
-  display: block;
-  text-align: center;
-  font-size: 14px;
-}
-.nav-side-menu .toggle-btn {
-  display: none;
-}
-.nav-side-menu ul,
-.nav-side-menu li {
-  list-style: none;
-  padding: 0px;
-  margin: 0px;
-  line-height: 35px;
-  cursor: pointer;
-  color: black !important;
-  /*    
-    .collapsed{
-       .arrow:before{
-                 font-family: FontAwesome;
-                 content: "\f053";
-                 display: inline-block;
-                 padding-left:10px;
-                 padding-right: 10px;
-                 vertical-align: middle;
-                 float:right;
-            }
-     }
-*/
-}
-.nav-side-menu ul :not(collapsed) .arrow:before,
-.nav-side-menu li :not(collapsed) .arrow:before {
-  font-family: FontAwesome;
-  content: "\f078";
-  display: inline-block;
-  padding-left: 10px;
-  padding-right: 10px;
-  vertical-align: middle;
-  float: right;
-}
-.nav-side-menu ul .active,
-.nav-side-menu li .active {
-  border-left: 3px solid #d19b3d;
-  background-color: #ede9df;
-}
-.nav-side-menu ul .sub-menu li.active,
-.nav-side-menu li .sub-menu li.active {
-  color: #d19b3d;
-}
-.nav-side-menu ul .sub-menu li.active a,
-.nav-side-menu li .sub-menu li.active a {
-  color: #d19b3d;
-}
-.nav-side-menu ul .sub-menu li,
-.nav-side-menu li .sub-menu li {
-  /* background-color: #181c20; */
-  border: none;
-  line-height: 28px;
-  border-bottom: 1px solid #23282e;
-  margin-left: 0px;
-}
-.nav-side-menu ul .sub-menu li:hover,
-.nav-side-menu li .sub-menu li:hover {
-  background-color: #ede9df;
-}
-.nav-side-menu ul .sub-menu li:before,
-.nav-side-menu li .sub-menu li:before {
-  /* font-family: FontAwesome;
-  content: "\f105"; */
-  display: inline-block;
-  padding-left: 10px;
-  padding-right: 10px;
-  vertical-align: middle;
-}
-.sub-menu{
-    padding-left: 45px !important;
-}
-.nav-side-menu li {
-  padding-left: 0px;
-  /* border-left: 3px solid #2e353d;
-  border-bottom: 1px solid #23282e; */
-  color: black;
-  margin: 23px 0;
-}
-.nav-side-menu li a {
-  text-decoration: none;
-  color: black;
-}
-.nav-side-menu li a i {
-  padding-left: 10px;
-  width: 20px;
-  padding-right: 20px;
-}
-.nav-side-menu li:hover {
-  border-left: 3px solid #d19b3d;
-  background-color: #ede9df;
-  -webkit-transition: all 1s ease;
-  -moz-transition: all 1s ease;
-  -o-transition: all 1s ease;
-  -ms-transition: all 1s ease;
-  transition: all 1s ease;
-}
-@media (max-width: 767px) {
-  .nav-side-menu {
-    position: relative;
-    width: 100%;
-    margin-bottom: 10px;
-  }
-  .nav-side-menu .toggle-btn {
-    display: block;
-    cursor: pointer;
-    position: absolute;
-    right: 10px;
-    top: 10px;
-    z-index: 10 !important;
-    padding: 3px;
-    background-color: #ffffff;
-    color: #000;
-    width: 40px;
-    text-align: center;
-  }
-  .brand {
-    text-align: left !important;
-    font-size: 22px;
-
-    padding-left: 20px;
-    line-height: 50px !important;
-  }
-}
-@media (min-width: 767px) {
-  .nav-side-menu .menu-list .menu-content {
-    display: block;
-  }
-}
-body {
-  margin: 0px;
-  padding: 0px;
-}
-.nav-link{
-    display: flex;
-}
-.sub-menu .nav-item{
-    border: none!important;
-}
-.user-panel .image img{
-    border-radius: 50%;
-    width: 61px;
-    height: auto;
-}
-
-/* end side nav bar  */
     </style>
 
 
@@ -234,372 +67,46 @@ body {
     @endphp
     <div class="min-height-300  position-absolute w-100 back-image-game"></div>
     {{-- <div class="min-height-300  position-absolute w-100" style="background-color:#ffb342;"></div> --}}
-    <aside class="sidenav bg-white navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-4 d-block opac"
+    <aside
+        class="sidenav bg-white navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-4 d-block opac"
         aria-labelledby="sidenav-mainfilterlabel" aria-hidden="true">
-        <a href="#" data-target="#user-details" class="nav-link collapsed" data-toggle="collapse">
-        <div class="user-panel mt-2 pb-3 px-1 d-flex">
-            <div class="image">
-              <img src="{{asset('public/img/casinoringyellow.gif')}}" class="img-circle elevation-2" alt="User Image">
-            </div>
-            <div class="info mx-2 mt-1 d-block">
-               <span class="ms-1 font-weight-bold">Noor Game </br> {{ auth()->user()->name }}</span>
-            </div>
-          </div>
-        </a>
-        <ul id="user-details" class="collapse list-unstyled">
-            {{-- <li class="nav-item mt-3">
-                <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Account pages</h6>
-            </li> --}}
-            <li class="nav-item">
-                <a class="nav-link {{ request()->segment(1) == 'profile' ? 'active' : '' }}"
-                    href="{{ route('profile') }}">
-                    <div
-                        class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="ni ni-single-02 text-dark text-sm opacity-10"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Profile</span>
-                </a>
-            </li>
-           
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('logout') }}">
-                    <div
-                        class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="fa fa-power-off text-dark text-sm opacity-10"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Logout</span>
-                </a>
-                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                    @csrf
-                </form>
-            </li>
-        </ul>
-        {{-- <div class="sidenav-header">
+        <div class="sidenav-header">
             <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
                 aria-hidden="true" id="iconSidenav"></i>
             <a class="navbar-brand m-0" href="# " target="_blank">
 
                 <span class="ms-1 font-weight-bold">Noor Game </br> {{ auth()->user()->name }}</span>
             </a>
-        </div> --}}
+        </div>
         <div class="count-div p-3 text-center">
             <p class="date-div"></p>
             <p class="date-countdown"></p>
         </div>
         <hr class="horizontal dark mt-0">
-        
         <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
-            <div class=" nav-side-menu">
-                <div class="brand">Brand Logo</div>
-                <i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>
-              
-                    <div class="menu-list">
-              
-                        <ul id="menu-content" class="menu-content collapse out">
-                            <li class="nav-item">
-                                <a class="nav-link {{ request()->segment(1) == 'dashboard' && request()->segment(2) != 'colab' ? 'active' : '' }}"
-                                    href="{{ route('dashboard') }}">
-                                    <div
-                                        class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                                        <i class="ni ni-tv-2 text-primary text-sm opacity-10"></i>
-                                    </div>
-                                    <span class="nav-link-text ms-1">Dashboard </span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link {{ request()->segment(1) == 'table' ? 'active' : '' }}"
-                                    href="{{ route('table') }}">
-                                    <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                                        {{-- <i class="ni ni-calendar-grid-58 text-warning text-sm opacity-10"></i> --}}
-                                        <i class="fa fa-table text-warning text-sm opacity-10"  aria-hidden="true"></i>
-
-                                    </div>
-                                    <span class="nav-link-text ms-1">Tables</span>
-                                </a>
-                            </li>
-                           
-                            <li  data-toggle="collapse" data-target="#products" class="collapsed  nav-item">
-                              <a href="#" class="nav-link {{Route::is('todays-history','monthlyHistory','all-history','redeemHistory') ? 'active' : ' '}}" > 
-                            <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                                <i class="fa fa-history text-warning text-sm opacity-10"></i>
-                                
-                            </div>
-                            <span class="nav-link-text ms-1">History</span> <span class="arrow"></span></a>
-                            </li>
-                            <ul class="sub-menu collapse" id="products">
-                                @if (Auth::user()->role != 'data-expert')
-                                <li class="nav-item">
-                                    <a class="nav-link {{ request()->segment(1) == 'todays-history' ? 'active' : '' }}"
-                                        href="{{ route('todays-history') }}">
-                                        <div
-                                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                                            <i class="fa fa-history text-warning text-sm opacity-10"></i>
-                                        </div>
-                                        <span class="nav-link-text ms-1">Todays History</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link {{ request()->segment(1) == 'monthly-history' ? 'active' : '' }}"
-                                        href="{{ route('monthlyHistory') }}">
-                                        <div
-                                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                                            <i class="fa fa-history text-warning text-sm opacity-10"></i>
-                                        </div>
-                                        <span class="nav-link-text ms-1">Monthly History</span>
-                                    </a>
-                                </li>
-                                @endif
-                                <li class="nav-item">
-                                    <a class="nav-link {{ request()->segment(1) == 'all-history' ? 'active' : '' }}"
-                                        href="{{ route('all-history') }}">
-                                        <div
-                                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                                            <i class="fa fa-history text-warning text-sm opacity-10"></i>
-                                        </div>
-                                        <span class="nav-link-text ms-1">All History</span>
-                                    </a>
-                                </li>
-                                @if (Auth::user()->role == 'cashier' || Auth::user()->role == 'admin')
-                                <li class="nav-item">
-                                    <a class="nav-link {{ request()->segment(1) == 'redeem-history' ? 'active' : '' }}"
-                                        href="{{ route('redeemHistory') }}">
-                                        <div
-                                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                                            <i class="fa fa-history text-warning text-sm opacity-10"></i>
-                                        </div>
-                                        <span class="nav-link-text ms-1">Redeems</span>
-                                    </a>
-                                </li>
-                                @endif
-                                {{-- <li><a href="#">General</a></li>
-                                <li><a href="#">Buttons</a></li>
-                                <li><a href="#">Tabs & Accordions</a></li>
-                                <li><a href="#">Typography</a></li>
-                                <li><a href="#">FontAwesome</a></li>
-                                <li><a href="#">Slider</a></li>
-                                <li><a href="#">Panels</a></li>
-                                <li><a href="#">Widgets</a></li>
-                                <li><a href="#">Bootstrap Model</a></li> --}}
-                            </ul>
-                         
-            
-            
-                            {{-- <li data-toggle="collapse" data-target="#service" class="collapsed">
-                              <a href="#"><i class="fa fa-globe fa-lg"></i> Players <span class="arrow"></span></a>
-                            </li>   --}}
-                            @if (Auth::user()->role == 'admin')       
-                            <li  data-toggle="collapse" data-target="#service" class="collapsed  nav-item">
-                                <a href="#" class="nav-link {{Route::is('gamers','inactive-players','unsubMails') ? 'active' : ''}}"> 
-                                <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                                  <i class="fa fa-gamepad text-warning text-sm opacity-10"></i>
-                              </div>
-                              <span class="nav-link-text ms-1">Players</span> <span class="arrow"></span></a>
-                            </li>
-                            <ul class="sub-menu collapse" id="service">
-                                <li class="nav-item">
-                                    <a class="nav-link {{ request()->segment(1) == 'gamers' ? 'active' : '' }}"
-                                        href="{{ route('gamers') }}">
-                                        <div
-                                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                                            <i class="fa fa-gamepad text-warning text-sm opacity-10"></i>
-                                        </div>
-                                        <span class="nav-link-text ms-1">All Players</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link {{ request()->segment(1) == 'inactive-players' ? 'active' : '' }}"
-                                        href="{{ route('inactive-players', ['id' => 7]) }}">
-                                        <div
-                                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                                            <i class="fa fa-gamepad text-muted text-sm opacity-10" aria-hidden="true"></i>
-                                        </div>
-                                        <span class="nav-link-text ms-1">Inactive Players</span>
-                                    </a>
-                                </li>
-                              {{-- <li>New Service 2</li>
-                              <li>New Service 3</li> --}}
-                            </ul>
-            
-                            <li class="nav-item">
-                                <a class="nav-link {{ request()->segment(1) == 'unsubmails' ? 'active' : '' }}"
-                                    href="{{ route('unsubMails') }}">
-                                    <div
-                                        class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                                        <i class="fa fa-history text-warning text-sm opacity-10"></i>
-                                    </div>
-                                    <span class="nav-link-text ms-1">Unsuscribe Mails</span>
-                                </a>
-                            </li>
-                            {{-- <li data-toggle="collapse" data-target="#new" class="collapsed">
-                              <a href="#"><i class="fa fa-car fa-lg"></i> New <span class="arrow"></span></a>
-                            </li> --}}
-                            <li  data-toggle="collapse" data-target="#new" class="collapsed  nav-item">
-                                <a href="#" class="nav-link {{Route::is('dashboard.colab','loginLogs') ? 'active' : ''}}"> <div
-                                  class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                                  <i class="fa fa-circle-thin text-warning text-sm opacity-10"></i>
-                              </div>
-                              <span class="nav-link-text ms-1">Colab</span> <span class="arrow"></span></a>
-                            </li>
-                            <ul class="sub-menu collapse" id="new">
-                                <li class="nav-item">
-                                    <a class="nav-link {{ request()->segment(2) == 'colab' ? 'active' : '' }}"
-                                        href="{{ route('dashboard.colab') }}">
-                                        <div
-                                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                                            <i class="fa fa-circle-thin text-warning text-sm opacity-10"></i>
-
-                                        </div>
-                                        <span class="nav-link-text ms-1">Colab</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link {{ request()->segment(1) == 'login-logs' ? 'active' : '' }}"
-                                        href="{{ route('loginLogs') }}">
-                                        <div
-                                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                                            <i class="fa fa-sign-in text-warning text-sm opacity-10"></i>
-                                        </div>
-                                        <span class="nav-link-text ms-1">Login Logs</span>
-                                    </a>
-                                </li>
-                              {{-- <li>New New 3</li> --}}
-                            </ul>
-                            <li  data-toggle="collapse" data-target="#settings" class="collapsed  nav-item">
-                                <a href="#" class="nav-link {{ Route::is('games','activity.status.index','settings') ? 'active' : '' }}"> <div
-                                  class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                                  <i class="fa fa-cogs text-warning text-sm opacity-10"></i>
-                              </div>
-                              <span class="nav-link-text ms-1">Settings</span> <span class="arrow"></span></a>
-                            </li>
-                            <ul class="sub-menu collapse" id="settings">
-                                <li class="nav-item">
-                                    <a class="nav-link {{ request()->segment(1) == 'games' ? 'active' : '' }}"
-                                        href="{{ route('games') }}">
-                                        <div
-                                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                                            <i class="fa fa-chess-rook text-warning text-sm opacity-10"></i>
-                                        </div>
-                                        <span class="nav-link-text ms-1">Games</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link {{ request()->segment(1) == 'activity-status' ? 'active' : '' }}"
-                                        href="{{ route('activity.status.index') }}">
-                                        <div
-                                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                                            <i class="fa fa-tasks text-warning text-sm opacity-10"></i>
-                                        </div>
-                                        <span class="nav-link-text ms-1">Activity Status</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link {{ request()->segment(2) == 'settings' ? 'active' : '' }}"
-                                        href="{{ route('settings') }}">
-                                        <div
-                                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                                            <i class="fa fa-cog text-warning text-sm opacity-10"></i>
-                                        </div>
-                                        <span class="nav-link-text ms-1">Settings</span>
-                                    </a>
-                                </li>
-                              {{-- <li>New New 3</li> --}}
-                            </ul>
-                            <li  data-toggle="collapse" data-target="#spiner" class="collapsed  nav-item">
-                                <a href="#" class="nav-link {{ Route::is('spinner','spinner-winner','gamerGames') ? 'active' : '' }}"> <div
-                                  class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                                  <i class="fa fa-circle-o text-warning text-sm opacity-10"></i>
-                              </div>
-                              <span class="nav-link-text ms-1">Spiner</span> <span class="arrow"></span></a>
-                            </li>
-                            <ul class="sub-menu collapse" id="spiner">
-                                <li class="nav-item">
-                                    <a class="nav-link {{ request()->segment(2) == 'spinner' ? 'active' : '' }}"
-                                        href="{{ route('spinner') }}">
-                                        <div
-                                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                                            <i class="fa fa-circle-o text-warning text-sm opacity-10"></i>
-                                        </div>
-                                        <span class="nav-link-text ms-1">Admin Spinner</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link {{ request()->segment(2) == 'spinner-winner' ? 'active' : '' }}"
-                                        href="{{ route('spinner-winner') }}">
-                                        <div
-                                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                                            <i class="fa fa-circle-o text-warning text-sm opacity-10"></i>
-                                        </div>
-                                        <span class="nav-link-text ms-1">Spinner Winner</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link {{ request()->segment(1) == 'gamers-games' ? 'active' : '' }}"
-                                        href="{{ route('gamerGames', ['id' => 'all']) }}">
-                                        <div
-                                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                                            <i class="fa fa-trophy text-warning text-sm opacity-10"></i>
-                                        </div>
-                                        <span class="nav-link-text ms-1">Gamers & Players</span>
-                                    </a>
-                                </li>
-                              {{-- <li>New New 3</li> --}}
-                            </ul>
-                            @endif
-                            <li  data-toggle="collapse" data-target="#extra" class="collapsed  nav-item">
-                                <a href="#" class="nav-link {{Route::is('logs','clear.go')}}"> <div
-                                  class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                                  <i class="fa fa-external-link-square text-warning text-sm opacity-10"></i>
-                              </div>
-                              <span class="nav-link-text ms-1">Extra</span> <span class="arrow"></span></a>
-                            </li>
-                            <ul class="sub-menu collapse" id="extra">
-                                @if (Auth::user()->role == 'admin')       
-                                <li class="nav-item">
-                                    <a class="nav-link {{ request()->segment(1) == 'logs' ? 'active' : '' }}"
-                                        href="{{ route('logs') }}">
-                                        <div
-                                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                                            <i class="fa fa-eye text-warning text-sm opacity-10"></i>
-                                        </div>
-                                        <span class="nav-link-text ms-1">Log Viewer</span>
-                                    </a>
-                                </li>
-                                @endif
-
-                                <li class="nav-item">
-                                    <a class="nav-link {{ request()->segment(1) == 'clear' ? 'active' : '' }}"
-                                        href="{{ route('clear.go') }}">
-                                        <div
-                                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                                            <i class="fa fa-graduation-cap text-dark text-sm opacity-10"></i>
-                                        </div>
-                                        <span class="nav-link-text ms-1">Clear</span>
-                                    </a>
-                                </li>
-                                
-                              
-                            </ul>
-            
-            
-                             {{-- <li>
-                              <a href="#">
-                              <i class="fa fa-user fa-lg"></i> Profile
-                              </a>
-                              </li>
-            
-                             <li>
-                              <a href="#">
-                              <i class="fa fa-users fa-lg"></i> Users
-                              </a>
-                            </li> --}}
-                        </ul>
-                 </div>
-            </div>
             <ul class="navbar-nav">
-                
-                
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->segment(1) == 'dashboard' && request()->segment(2) != 'colab' ? 'active' : '' }}"
+                        href="{{ route('dashboard') }}">
+                        <div
+                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="ni ni-tv-2 text-primary text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Dashboard </span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->segment(1) == 'table' ? 'active' : '' }}"
+                        href="{{ route('table') }}">
+                        <div
+                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="ni ni-calendar-grid-58 text-warning text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Tables</span>
+                    </a>
+                </li>
                 @if (Auth::user()->role != 'data-expert')
-                {{-- <li class="nav-item">
+                <li class="nav-item">
                     <a class="nav-link {{ request()->segment(1) == 'todays-history' ? 'active' : '' }}"
                         href="{{ route('todays-history') }}">
                         <div
@@ -608,8 +115,8 @@ body {
                         </div>
                         <span class="nav-link-text ms-1">Todays History</span>
                     </a>
-                </li> --}}
-                {{-- <li class="nav-item">
+                </li>
+                <li class="nav-item">
                     <a class="nav-link {{ request()->segment(1) == 'redeem-history' ? 'active' : '' }}"
                         href="{{ route('redeemHistory') }}">
                         <div
@@ -618,8 +125,8 @@ body {
                         </div>
                         <span class="nav-link-text ms-1">Redeems</span>
                     </a>
-                </li> --}}
-                {{-- <li class="nav-item">
+                </li>
+                <li class="nav-item">
                     <a class="nav-link {{ request()->segment(1) == 'monthly-history' ? 'active' : '' }}"
                         href="{{ route('monthlyHistory') }}">
                         <div
@@ -628,9 +135,9 @@ body {
                         </div>
                         <span class="nav-link-text ms-1">Monthly History</span>
                     </a>
-                </li> --}}
+                </li>
 
-                {{-- <li class="nav-item">
+                <li class="nav-item">
                     <a class="nav-link {{ request()->segment(1) == 'games' ? 'active' : '' }}"
                         href="{{ route('games') }}">
                         <div
@@ -639,8 +146,8 @@ body {
                         </div>
                         <span class="nav-link-text ms-1">Games</span>
                     </a>
-                </li> --}}
-                {{-- <li class="nav-item">
+                </li>
+                <li class="nav-item">
                     <a class="nav-link {{ request()->segment(1) == 'gamers' ? 'active' : '' }}"
                         href="{{ route('gamers') }}">
                         <div
@@ -649,8 +156,8 @@ body {
                         </div>
                         <span class="nav-link-text ms-1">Players</span>
                     </a>
-                </li> --}}
-                {{-- <li class="nav-item">
+                </li>
+                <li class="nav-item">
                     <a class="nav-link {{ request()->segment(1) == 'inactive-players' ? 'active' : '' }}"
                         href="{{ route('inactive-players', ['id' => 7]) }}">
                         <div
@@ -659,8 +166,8 @@ body {
                         </div>
                         <span class="nav-link-text ms-1">Inactive Players</span>
                     </a>
-                </li> --}}
-                {{-- <li class="nav-item">
+                </li>
+                <li class="nav-item">
                     <a class="nav-link {{ request()->segment(1) == 'gamers-games' ? 'active' : '' }}"
                         href="{{ route('gamerGames', ['id' => 'all']) }}">
                         <div
@@ -669,9 +176,9 @@ body {
                         </div>
                         <span class="nav-link-text ms-1">Gamers & Players</span>
                     </a>
-                </li> --}}
+                </li>
                 @if (Auth::user()->role == 'admin')
-                    {{-- <li class="nav-item">
+                    <li class="nav-item">
                         <a class="nav-link {{ request()->segment(1) == 'unsubmails' ? 'active' : '' }}"
                             href="{{ route('unsubMails') }}">
                             <div
@@ -680,8 +187,8 @@ body {
                             </div>
                             <span class="nav-link-text ms-1">Unsub Mails</span>
                         </a>
-                    </li> --}}
-                    {{-- <li class="nav-item">
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link {{ request()->segment(1) == 'activity-status' ? 'active' : '' }}"
                             href="{{ route('activity.status.index') }}">
                             <div
@@ -690,8 +197,8 @@ body {
                             </div>
                             <span class="nav-link-text ms-1">Activity Status</span>
                         </a>
-                    </li> --}}
-                    {{-- <li class="nav-item">
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link {{ request()->segment(2) == 'colab' ? 'active' : '' }}"
                             href="{{ route('dashboard.colab') }}">
                             <div
@@ -700,9 +207,9 @@ body {
                             </div>
                             <span class="nav-link-text ms-1">Colab</span>
                         </a>
-                    </li> --}}
+                    </li>
 
-                    {{-- <li class="nav-item">
+                    <li class="nav-item">
                         <a class="nav-link {{ request()->segment(1) == 'all-history' ? 'active' : '' }}"
                             href="{{ route('all-history') }}">
                             <div
@@ -711,8 +218,8 @@ body {
                             </div>
                             <span class="nav-link-text ms-1">All History</span>
                         </a>
-                    </li> --}}
-                    {{-- <li class="nav-item">
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link {{ request()->segment(1) == 'login-logs' ? 'active' : '' }}"
                             href="{{ route('loginLogs') }}">
                             <div
@@ -721,7 +228,7 @@ body {
                             </div>
                             <span class="nav-link-text ms-1">Login Logs</span>
                         </a>
-                    </li> --}}
+                    </li>
                     <!--<li class="nav-item">-->
                     <!--  <a class="nav-link {{ request()->segment(1) == 'game-data' ? 'active' : '' }}" href="{{ route('gameData') }}">-->
                     <!--    <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">-->
@@ -730,7 +237,7 @@ body {
                     <!--    <span class="nav-link-text ms-1">Game Data</span>-->
                     <!--  </a>-->
                     <!--</li>-->
-                    {{-- <li class="nav-item">
+                    <li class="nav-item">
                         <a class="nav-link {{ request()->segment(1) == 'clear' ? 'active' : '' }}"
                             href="{{ route('clear.go') }}">
                             <div
@@ -739,8 +246,8 @@ body {
                             </div>
                             <span class="nav-link-text ms-1">Clear</span>
                         </a>
-                    </li> --}}
-                    {{-- <li class="nav-item">
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link {{ request()->segment(2) == 'settings' ? 'active' : '' }}"
                             href="{{ route('settings') }}">
                             <div
@@ -749,9 +256,9 @@ body {
                             </div>
                             <span class="nav-link-text ms-1">Settings</span>
                         </a>
-                    </li> --}}
+                    </li>
                 @endif
-                {{-- <li class="nav-item">
+                <li class="nav-item">
                     <a class="nav-link {{ request()->segment(2) == 'spinner' ? 'active' : '' }}"
                         href="{{ route('spinner') }}">
                         <div
@@ -760,9 +267,9 @@ body {
                         </div>
                         <span class="nav-link-text ms-1">Spinner</span>
                     </a>
-                </li> --}}
+                </li>
                 @if (Auth::user()->role == 'admin')
-                    {{-- <li class="nav-item">
+                    <li class="nav-item">
                         <a class="nav-link {{ request()->segment(2) == 'spinner-winner' ? 'active' : '' }}"
                             href="{{ route('spinner-winner') }}">
                             <div
@@ -771,8 +278,8 @@ body {
                             </div>
                             <span class="nav-link-text ms-1">Spinner Winner</span>
                         </a>
-                    </li> --}}
-                    {{-- <li class="nav-item">
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link {{ request()->segment(1) == 'logs' ? 'active' : '' }}"
                             href="{{ route('logs') }}">
                             <div
@@ -781,9 +288,9 @@ body {
                             </div>
                             <span class="nav-link-text ms-1">Log Viewer</span>
                         </a>
-                    </li> --}}
+                    </li>
                 @endif
-                {{-- <li class="nav-item mt-3">
+                <li class="nav-item mt-3">
                     <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Account pages</h6>
                 </li>
                 <li class="nav-item">
@@ -795,9 +302,8 @@ body {
                         </div>
                         <span class="nav-link-text ms-1">Profile</span>
                     </a>
-                </li> --}}
+                </li>
                 @endif
-                {{--
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('logout') }}">
                         <div
@@ -809,7 +315,7 @@ body {
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                         @csrf
                     </form>
-                </li> --}}
+                </li>
 
             </ul>
         </div>
@@ -825,21 +331,17 @@ body {
 
             .count-div {
                 background: #ffd9a2;
-                height: 8rem;
-            }
-            .count-div-bottum{
-                height: auto;
             }
         </style>
-        <div class="count-div p-2 text-center count-div-bottum ">
-            <p>Logged in Since : <br> {{ session()->get('log_in_time') ? session()->get('log_in_time') : '' }}</p>
-            {{-- <a class="nav-link d-flex justify-content-center" href="{{ route('logout') }}"
+        <div class="count-div p-3 text-center di">
+            <p>Logged in Since : {{ session()->get('log_in_time') ? session()->get('log_in_time') : '' }}</p>
+            <a class="nav-link d-flex justify-content-center" href="{{ route('logout') }}"
                 onclick="event.preventDefault();document.getElementById('logout-form').submit();">
                 <div class="border-radius-md d-flex">
                     <i class="fa fa-power-off text-dark text-sm opacity-10"></i>
                 </div>
                 <span class="nav-link-text ms-1">Logout</span>
-            </a> --}}
+            </a>
             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                 @csrf
             </form>

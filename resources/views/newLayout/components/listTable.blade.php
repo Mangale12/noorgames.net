@@ -1,3 +1,4 @@
+
 <table class="table align-items-center mb-0">
     <thead class="sticky" >
         <tr >
@@ -425,16 +426,18 @@
                         </div>
                     </div>
                 </div>
+                <form action="">
                 <span class="user-{{($num['game_id'])}} resetThis" data-balance="{{($num['balance']) ?? 0}}" data-type="load">$ {{($num['balance'] ?? 0)}}</span>
                 <div class="card card-body">
                     <input required type="hidden" class="form-control load-from loadFrom{{$num['form']['id']}}" name="load-from" value="{{$activeGame['id']}}" data-title="{{str_replace(' ','-',$activeGame['title'])}}">
                     @if(request()->ajax())
-                    <input required type="text" class="form-control loadInput loadInput{{$num['form']['id']}}" onkeydown="loadNewBalance(event,$(this));" name="amount" data-user="{{$num['game_id']}}" data-userId="{{$num['form']['id']}}" value="" data-balance="0" placeholder="{{$language_texts['amount']}}">
+                    <input required type="text" max="3" class="form-control loadInput loadInput{{$num['form']['id']}}" onkeydown="loadNewBalance(event,$(this));" name="amount" data-user="{{$num['game_id']}}" data-userId="{{$num['form']['id']}}" value="44" data-balance="0" placeholder="{{$language_texts['amount']}}">
                     @else
-                    <input required type="text" class="form-control loadInput loadInput{{$num['form']['id']}}" name="amount" data-user="{{$num['game_id']}}" data-userId="{{$num['form']['id']}}" value="" data-balance="0" placeholder="{{$language_texts['amount']}}">
+                    <input required type="text" class="form-control loadInput loadInput{{$num['form']['id']}}" name="amount" data-user="{{$num['game_id']}}" data-userId="{{$num['form']['id']}}" value="eee" max="3" data-balance="0" placeholder="{{$language_texts['amount']}}">
                     @endif
                     <button type="button" class="btn btn-success text-center hidden load-btn" data-user="{{$num['game_id']}}" data-userId="{{$num['form']['id']}}">Load</button>
                 </div>
+            </form>
             </td>
             <td style="width:170px;text-align:center">
                 <span class="user-refer-{{($num['game_id'])}} resetThis" data-balance="{{($num['refer'] ?? 0)}}" data-type="refer">$ {{$num['refer'] ?? 0}}</span>
@@ -443,7 +446,7 @@
                     @if(request()->ajax())
                     <input required type="text" class="form-control referInput referInput{{$num['form']['id']}}" onkeydown="loadNewRefer(event, $(this));" name="amount" data-user="{{$num['game_id']}}" data-userId="{{$num['form']['id']}}" value="" placeholder="{{$language_texts['amount']}}">
                     @else
-                    <input required type="text" class="form-control referInput referInput{{$num['form']['id']}}" name="amount" data-user="{{$num['game_id']}}" data-userId="{{$num['form']['id']}}" value="" placeholder="{{$language_texts['amount']}}">
+                    <input required type="text" class="form-control referInput referInput{{$num['form']['id']}}" name="amount" data-user="{{$num['game_id']}}" data-userId="{{$num['form']['id']}}" value="333" placeholder="{{$language_texts['amount']}}">
                     @endif
                     <button type="button" class="btn btn-success text-center refer-btn hidden" data-user="{{$num['game_id']}}" data-userId="{{$num['form']['id']}}">Load</button>
                 </div>
@@ -567,12 +570,13 @@
                 } else {
                     $.ajaxSetup({
                         headers: {
-                            'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
-                        }
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
                     });
                     var type = "POST";
-                    var ajaxurl = '/table-loadBalance';
+                    var ajaxurl = '{{route('tableUpdate')}}';
                     var interval = null;
+                    alert(amount);
                     $.ajax({
                         type: type,
                         url: ajaxurl,
@@ -582,6 +586,9 @@
                             "amount": amount,
                             "cashAppId": cashAppId,
                         },
+                        headers: {
+                            'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+                        }
                         dataType: 'json',
                         beforeSend: function() {
                             i = 0;
@@ -624,6 +631,7 @@
 
                         },
                         error: function(data) {
+                            alert(data);
                             clearInterval(interval);
                             $(".load-btn").removeClass("disabled");
                             $(".load-btn").html("Load");
@@ -638,8 +646,7 @@
   function loadNewRefer(e, thys){
             var userCashAppBtn = $(".user-refer-" + $(thys).attr('data-user'));
             var userCashAppCollapse = userCashAppBtn.attr('data-target');
-
-
+            alert('hello');
             if (e.which == 9) {
                 $(userCashAppCollapse).collapse('hide');
 
@@ -651,9 +658,10 @@
                 
             }
             if (e.which === 13) {
-
+                
                 if (($(thys).val()) == '' || $(thys).val() < 0) {
-                    toastr.error('Please enter a valid amount.');
+                    alert('check');
+                    toastr.error('Please enter a valid amount.dd');
                     return;
                 }
                 var gameTitle = $(thys).parent().find(".refer-from").attr("data-title");
@@ -685,6 +693,7 @@
                     var ajaxurl = '/table-referBalance';
                     var interval = null;
                     $.ajax({
+                       
                         type: type,
                         url: ajaxurl,
                         data: {

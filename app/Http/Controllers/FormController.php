@@ -253,6 +253,7 @@ class FormController extends Controller
     public function store(Request $request, Form $form)
     {
         // dd($form);   
+        // dd($request->account);
         $settings = GeneralSetting::first();
         $request->validate([
             'full_name' => 'required|min:3|max:20',
@@ -260,9 +261,8 @@ class FormController extends Controller
             'game_id' => 'required|min:7|unique:forms,game_id'.$form->id,
             'number' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:10|unique:forms,number'.$form->id,
             'mail' => 'required',
-            
             'email' => 'required|regex:/(.+)@(.+)\.(.+)/i|min:6|unique:forms,email'.$form->id,
-         
+            'account'=>'required',
         ]);
 
         $interval = Carbon::today();

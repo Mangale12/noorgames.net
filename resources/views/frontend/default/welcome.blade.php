@@ -2,7 +2,6 @@
 <html lang="en">
 
 <head>
- 
     <!-- Required meta tags-->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
@@ -31,7 +30,8 @@
 
     <!-- Main CSS-->
      <script src="{{ asset('js/app.js') }}" defer></script>
-
+     <link rel="stylesheet" href="{{asset('css/animate.css')}}">
+     <link rel="stylesheet" href="{{asset('css/stylesheet.css')}}">
     <link href="{{ asset('css/main.css') }}" rel="stylesheet" media="all">
       <link href="{{ asset('css/my.css') }}" rel="stylesheet" media="all">
     <style>
@@ -66,14 +66,16 @@
 </head>
 
 <body>
-    <div class="page-wrapper font-robo">
+    <div class="wrapper wow">
     {{-- <video autoplay muted loop id="myVideo">
     <source src="{{url('images/fin.mp4')}}" type="video/mp4">
     Your browser does not support HTML5 video.
     </video> --}}
+    <div id="clouds" >
+
     <div class="page-wrapper font-robo">
         <div class="wrapper wrapper--w680">
-            <div class="card card-1 py-5">
+            <div class="card card-1 py-5" style="top:75px;">
                 <!--<div class="card-heading">-->
                     
                 <!--</div>-->
@@ -272,7 +274,7 @@
                                  <div>
                                     <h4><b><span class="neon-text">Game Id</span></b></h4>
                                  </div>
-                                 <input class="input--style-1 transparent-input neon-text-danger game-id-text" type="text" value="{{old('game_id')}}" autocomplete="off" placeholder="SXXXX" name="game_id" maxlength="15" minlength="8" required>
+                                 <input class="input--style-1 transparent-input neon-text-danger game-id-text" type="text"  autocomplete="off" placeholder="SXXXX" name="game_id" maxlength="15" minlength="8" value="{{old('game_id')}}" required>
                               </div>
                            </div>
                         </div>
@@ -316,7 +318,7 @@
         </div>
     </div>
     
-    
+    </div>
 
     <!-- Jquery JS-->
     

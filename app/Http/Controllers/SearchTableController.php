@@ -20,7 +20,7 @@ use Response;
 class SearchTableController extends Controller
 {
     public function table(Request $request)
-    {
+    { 
         try
         {
             $forms = Form::orderBy('full_name', 'asc')->get()->toArray();

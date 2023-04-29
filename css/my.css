@@ -28,6 +28,7 @@ body{
         0 0 12px #006aff,
         0 0 14px #006aff,
         0 0 16px #006aff;
+    font-size: 0.9rem;
 }
 
 .neon-text-danger{
@@ -59,7 +60,7 @@ body{
 
 .main-header-text {
     font-family: 'neon_planetdisplay', Arial, sans-serif;
-    padding:20px;
+    padding:28px;
     background-color: #0000006b;
     animation: color-change 2s infinite;
     color: #fff;
