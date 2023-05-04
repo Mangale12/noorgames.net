@@ -44,6 +44,14 @@
                                 <a class="nav-link" id="general-setting-tab" data-toggle="tab" href="#general-setting" role="tab" aria-controls="contact"
                                   aria-selected="false">General Settings</a>
                               </li>
+                              <li class="nav-item">
+                                <a class="nav-link" id="email-setting-tab" data-toggle="tab" href="#email-setting" role="tab" aria-controls="contact"
+                                  aria-selected="false">Email Settings</a>
+                              </li>
+                              <li class="nav-item">
+                                <a class="nav-link" id="email-limit-tab" data-toggle="tab" href="#email-limit" role="tab" aria-controls="email-limit"
+                                  aria-selected="false">Email Limit</a>
+                              </li>
                         </ul>
                         
                         
@@ -190,6 +198,7 @@
                                                 $above_limit_text = json_decode($settings['above_limit_text'],true);
                                                 $between_limit_text = json_decode($settings['between_limit_text'],true);
                                                 $below_limit_text = json_decode($settings['below_limit_text'],true);
+                                                $email_setting = json_decode($settings['emails_settings'], true);
                                                 // print_r( $setting);
                                                 // die;
                                                 @endphp
@@ -382,7 +391,7 @@
                                 <div class="tab-pane fade" id="general-setting" role="tabpanel" aria-labelledby="general-setting-tab">
                                     <div class="card mt-5">
                                         <div class="card-header" style="padding-bottom:0">
-                                            <h5>Captcha Setting</h5>
+                                            <h5>General Setting</h5>
                                         </div>
                                         <div class="card-body">
                                             <div class="row">
@@ -411,6 +420,58 @@
                                                     <img style="max-width: 100%;" src="{{asset('images/'.$settings->theme.'/'.$active_theme->logo)}}"> 
                                                     @endif
                                                 </div>
+                                                <div class="col-lg-12 col-sm-12">
+                                                    <button type="submit" class="btn btn-primary mt-2">Confirm</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="tab-pane fade" id="email-setting" role="tabpanel" aria-labelledby="general-setting-tab">
+                                    <div class="card mt-5">
+                                        <div class="card-header" style="padding-bottom:0">
+                                            <h5>Emali Settings</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-lg-6 col-sm-12">
+                                                    <span>Subject</span>
+                                                    <input type="text" name="subject" class="form-control" id="site-name" value="{{$email_setting['subject']}}" required>
+                                                    
+                                                </div>
+                                                <div class="col-lg-6 col-sm-12">
+                                                    <span>Message</span>
+                                                    <textarea name="email_message" class="form-control" id="message" required>{{$email_setting['email_message']}}</textarea>
+                                                    
+                                                </div>
+                                                
+                                                <div class="col-lg-12 col-sm-12">
+                                                    <button type="submit" class="btn btn-primary mt-2">Confirm</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="tab-pane fade" id="email-limit" role="tabpanel" aria-labelledby="email-limit-tab">
+                                    <div class="card mt-5">
+                                        <div class="card-header" style="padding-bottom:0">
+                                            <h5>Emali Limit</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-lg-6 col-sm-12">
+                                                    <span>Enter Email Id</span>
+                                                    <input type="number" name="email_limit" class="form-control" id="emil-limit" required>
+                                                </div>
+                                                {{-- <div class="col-lg-6 col-sm-12">
+                                                    <span>Message</span>
+                                                    <textarea name="email_message" class="form-control" id="message" required>{{$email_setting['email_message']}}</textarea>
+                                                    
+                                                </div> --}}
+                                                
                                                 <div class="col-lg-12 col-sm-12">
                                                     <button type="submit" class="btn btn-primary mt-2">Confirm</button>
                                                 </div>
@@ -460,5 +521,8 @@
                                 var val = $(this).val();
                                 $('.sms_text-example-text').text(val);
                             });
+                            $('#email-limit').on('keyup', function(){
+                                alert('hello');
+                            })
                         </script>
                     @endsection

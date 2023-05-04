@@ -39,6 +39,7 @@ class GeneralSetting extends Model
         'inactive_mail_time',
         'inactive_mail_day',
         'inactive_mail_message',
+        'emails_settings',
 
     ];
 }

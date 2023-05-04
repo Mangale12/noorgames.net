@@ -40,6 +40,7 @@ use Exception;
 use Illuminate\Support\Facades\Request as FacadesRequest;
 use App\Mail\InactiveBulkMail as MailInactiveBulkMail;
 use PhpParser\Node\Expr;
+use App\Models\EmailCount;
 
 class NewHomeController extends Controller
 {
@@ -129,31 +130,42 @@ class NewHomeController extends Controller
     
     public function sendMessageAll(Request $request)
     {
+        // dd(Form::first());
+        $emils = GeneralSetting::first();
+       
         ini_set('max_execution_time', '0');
         // $message = $request->message;
         $form = Form::get()->toArray();
+        $emailCount = EmailCount::orderBy('form_id','DESC')->get();
+        
+        // dd($form[1]['id']);
+        // if()
         foreach ($form as $input) {
-            if($input['id']>2024 && $input['email'] != '' && $input['email'] != 'Requested'){
-                $form = [
-                    'name' => $input['full_name'],
-                    'subject' => 'Please Contact Sasha',
-                    'message' => "Hey it's Sasha.
-                    Due to some error on messenger we are switching it to telegram.
-                    Please download the 'telegram' app and send us a message at (929)268-4435.
-                    Note: you need to save the phone number on your contact before finding us on telegram.
-                    Ignore this message if you are already enrolled on telegram.",
-                ];
-                try {
-                    Mail::to($input['email'])->send(new CustomTextMail(json_encode($form)));
-                    Log::channel('spinnerBulk')->info("Custom mail sent successfully to " . $input['email'] . ' individual');
-                    // return redirect()->back()->withInput()->with('success', 'Mail Sent');
-                } catch (\Exception $e) {
-                    $bug = $e->getMessage();
-                    dd($e);
-                    Log::channel('spinnerBulk')->info($bug);
-                    // return redirect()->back()->withInput()->with('error', $bug);
+            if($emailCount[0]->form_id < $input['id']){
+                // dd('yes');
+                EmailCount::create([
+                    'form_id'=>$input['id'],
+                ]);
+           
+            // dd('complete');
+                if($input['id']>2024 && $input['email'] != '' && $input['email'] != 'Requested'){
+                    $form = [
+                        'name' => $input['full_name'],
+                        'subject' => json_decode($emils->emails_settings)->subject,
+                        'message' => json_decode($emils->emails_settings)->email_message,
+                    ];
+                    try {
+                        Mail::to($input['email'])->send(new CustomTextMail(json_encode($form)));
+                        Log::channel('spinnerBulk')->info("Custom mail sent successfully to " . $input['email'] . ' individual');
+                        // return redirect()->back()->withInput()->with('success', 'Mail Sent');
+                    } catch (\Exception $e) {
+                        $bug = $e->getMessage();
+                        dd($e);
+                        Log::channel('spinnerBulk')->info($bug);
+                        // return redirect()->back()->withInput()->with('error', $bug);
+                    }
+                    
                 }
-                
             }
         }
     }
@@ -4501,6 +4513,7 @@ public function tableop()
             $above_limit_text = $request->only('above_limit_text_1','above_limit_text_2','above_limit_text_3','above_limit_text_4');
             $between_limit_text = $request->only('between_limit_text_1','between_limit_text_2','between_limit_text_3','between_limit_text_4');
             $below_limit_text = $request->only('below_limit_text_1','below_limit_text_2','below_limit_text_3','below_limit_text_4');
+            $email_settings = $request->only('subject','email_message');
             
             $settings = GeneralSetting::where('id',1)->update([
                 'bonus_report_emails' => ($request->bonus_report_emails[0] != null)?$request->bonus_report_emails[0]:null,
@@ -4529,7 +4542,8 @@ public function tableop()
                 'inactive_mail_type' => $request->inactive_mail_type,
                 'inactive_mail_time' => $request->inactive_mail_time,   
                 'inactive_mail_day' => $request->inactive_mail_day,     
-                'inactive_mail_message' => $request->inactive_mail_message,                
+                'inactive_mail_message' => $request->inactive_mail_message, 
+                'emails_settings'=> json_encode($email_settings),               
                 
             ]);
             $settings = GeneralSetting::first();

@@ -25,16 +25,20 @@
        </tr>
        <tr>
            <td style="color: black;font-size: 15px;padding: 0 50px 0 50px;text-align:center;">
-               Hello, {{$name}} ,<br>
-               <?php echo  $message ?><br><br>
+               {{$message['between_limit_text_1']}}, {{$name}} ,<br>
+               {{-- <?php echo  $message ?><br><br> --}}
+               {{-- <?php echo   ?><br><br> --}}
+               <?php echo  $message['between_limit_text_2'] ?><br><br>
+               <?php echo  $message['between_limit_text_3'] ?><br><br>
+               <?php echo  $message['between_limit_text_4'] ?><br><br>
                @if($details1['text']['load-remaining'] > 0)
                   Only {{$details1['text']['load-remaining']}} left to be eligible for the spinner.
                @else
-                  <b>Please visit</b><br>
+                  <b>{{$message['between_limit_text_2']}}</b><br>
                     <a href="{{$token}}">
                         {{$token}}
                     </a>
-                    <br>to access your spinner link.
+                    <br>{{$message['between_limit_text_3']}}
                   <br><br>Or<br><br>
                   <a target="_blank" href="{{$token}}" style="color: #fbfcff;text-decoration: none;background: #59ed29;padding: 5px 5px 5px 5px;border-radius: 5px;text-align: center;">
                      Click Here

@@ -46,7 +46,7 @@ class SendMailToBetween extends Command
        
         $settings = GeneralSetting::first()->toArray();
         $limit_amount = $settings['limit_amount'];
-        $message = $settings['between_limit_text'];        
+        $message = json_decode($settings['between_limit_text'],true);//$settings['between_limit_text'];        
         $type = 'between-';
         
 
