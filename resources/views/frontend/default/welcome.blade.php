@@ -49,7 +49,7 @@
            .input-group.border-custom {
                border:0;
            }
-       .input-group.border-custom::after { 
+       .input-group.border-custom::after {
                  content:'';
                  height: 2px;
                 width: 106px;
@@ -57,11 +57,11 @@
         }
         #captcha_image {
                 border: 2px solid #d36d77;
-         
+
     animation: glowing 1300ms infinite;
         }
- 
-        
+
+
     </style>
 </head>
 
@@ -77,7 +77,7 @@
         <div class="wrapper wrapper--w680">
             <div class="card card-1 py-5" style="top:75px;">
                 <!--<div class="card-heading">-->
-                    
+
                 <!--</div>-->
                 <div>
                     <h2 class="font-weight-bold text-center main-header-text">
@@ -86,29 +86,29 @@
                 </div>
                 <div class="mt-5 mx-5 text-center">
                     <h3 style="line-height:2rem;">
-                        <span class="neon-text font-weight-bold blink">Complete the registration process and start getting your bonus and rewards</span>. 
+                        <span class="neon-text font-weight-bold blink">Complete the registration process and start getting your bonus and rewards</span>.
                     </h3>
                     <h4 class="mt-4">
-                        <span class="font-weight-bold neon-text neon-text-danger blink-danger">You are only a few steps away</span>. 
+                        <span class="font-weight-bold neon-text neon-text-danger blink-danger">You are only a few steps away</span>.
                     </h4>
-                    <h3 class="mt-4">    
+                    <h3 class="mt-4">
                         <span class="font-weight-bold neon-text blink">Be the owner of your luck</span>.
                     </h3>
-                   
-                </div> 
+
+                </div>
                 <div class = "text-center logo">
                       <img src="{{ URL::to('/images/dragonnn.gif') }}" width="220" height="250" class="w-auto">
                 </div>
 
                 <div class="card-body p-5">
                     <!--<h1 style="color:yellow; text-align:center" class="title">Welcome to Noor Games! :-D </br>Fill out the following form to get registered into our room. We will send you the <b>Monthly Match</b> based on the date you joined us as a loyal customer. </br> All the best!!!</h1>-->
-          
-                        
+
+
                         @if ($errors->any())
                         <div class="alert alert-danger neon-text-danger mt-3">
                             <ul>
                                 @foreach ($errors->all() as $error)
-                              
+
                                     <h3><li>{{ $error }}</li></h3>
                                 @endforeach
                             </ul>
@@ -127,7 +127,7 @@
                                     <input class="input--style-1 transparent-input neon-text-danger" type="text" value="{{old('full_name')}}" autocomplete="off" placeholder="Eve Adam" name="full_name" maxlength="20" required>
                                 </div>
                             </div>
-                            
+
                             <div class="col-md-4 col-sm-12 mt-4">
                                 <div class="input-group">
                                      <div>
@@ -135,74 +135,50 @@
                                     <input class="input--style-1 transparent-input neon-text-danger" type="tel" value="{{old('number')}}" autocomplete="off" placeholder="XXX XXX XXXX" name="number" maxlength="10" required>
                                 </div>
                             </div>
-                            
-                          
+
+                            <style>
+                                /* .account-choose .select-items{
+                                    position: absolute;
+                                    background-color: #000000e8;
+                                }
+                                .account-select{
+                                    font-size: 1.3rem!important;
+                                    color: #fff!important;
+                                    text-shadow: 0 0 2px #dc3545, 0 0 4px #dc3545, 0 0 6px #dc3545, 0 0 8px #dc3545, 0 0 10px #dc3545, 0 0 12px #dc3545, 0 0 14px #dc3545, 0 0 16px #dc3545!important;
+                                    border: 1px solid transparent!important;
+                                    border-color: transparent transparent rgba(0, 0, 0, 0.1) transparent!important;
+                                    cursor: pointer!important;
+                                    background: none!important;
+                                } */
+                                /* .account-select option{
+                                        color: #fff!important;
+                                    text-shadow: 0 0 2px #dc3545, 0 0 4px #dc3545, 0 0 6px #dc3545, 0 0 8px #dc3545, 0 0 10px #dc3545, 0 0 12px #dc3545, 0 0 14px #dc3545, 0 0 16px #dc3545!important;
+                                        border: 1px solid transparent!important;
+                                        border-color: transparent transparent rgba(0, 0, 0, 0.1) transparent!important;
+                                        cursor: pointer!important;
+                                    background: black!important;
+                                } */
+                            </style>
                             <div class="col-md-4 col-sm-12 mt-4 text-left">
                                 <div class="input-group">
                                      <div>
                                    <h4><b><span class="neon-text">State</span>*</b></h4>
-                                </div> 
-                                <div class="custom-select-neon my-2 w-100">
-                                    <select class="w-100" name="mail" id="state" required>
+                                </div>
+                                <div class="my-2 w-100 account-choose">
+                                    <select class="w-100 account-select" name="mail" id="state" required>
                                           <option value="AL" selected="selected">Alabama</option>
                                           <!--<option value="AL">Alabama</option>-->
-                                          <option value="AK">Alaska</option>
-                                          <option value="AZ">Arizona</option>
-                                          <option value="AR">Arkansas</option>
-                                          <option value="CA">California</option>
-                                          <option value="CO">Colorado</option>
-                                          <option value="CT">Connecticut</option>
-                                          <option value="DE">Delaware</option>
-                                          <option value="DC">District Of Columbia</option>
-                                          <option value="FL">Florida</option>
-                                          <option value="GA">Georgia</option>
-                                          <option value="HI">Hawaii</option>
-                                          <option value="ID">Idaho</option>
-                                          <option value="IL">Illinois</option>
-                                          <option value="IN">Indiana</option>
-                                          <option value="IA">Iowa</option>
-                                          <option value="KS">Kansas</option>
-                                          <option value="KY">Kentucky</option>
-                                          <option value="LA">Louisiana</option>
-                                          <option value="ME">Maine</option>
-                                          <option value="MD">Maryland</option>
-                                          <option value="MA">Massachusetts</option>
-                                          <option value="MI">Michigan</option>
-                                          <option value="MN">Minnesota</option>
-                                          <option value="MS">Mississippi</option>
-                                          <option value="MO">Missouri</option>
-                                          <option value="MT">Montana</option>
-                                          <option value="NE">Nebraska</option>
-                                          <option value="NV">Nevada</option>
-                                          <option value="NH">New Hampshire</option>
-                                          <option value="NJ">New Jersey</option>
-                                          <option value="NM">New Mexico</option>
-                                          <option value="NY">New York</option>
-                                          <option value="NC">North Carolina</option>
-                                          <option value="ND">North Dakota</option>
-                                          <option value="OH">Ohio</option>
-                                          <option value="OK">Oklahoma</option>
-                                          <option value="OR">Oregon</option>
-                                          <option value="PA">Pennsylvania</option>
-                                          <option value="RI">Rhode Island</option>
-                                          <option value="SC">South Carolina</option>
-                                          <option value="SD">South Dakota</option>
-                                          <option value="TN">Tennessee</option>
-                                          <option value="TX">Texas</option>
-                                          <option value="UT">Utah</option>
-                                          <option value="VT">Vermont</option>
-                                          <option value="VA">Virginia</option>
-                                          <option value="WA">Washington</option>
-                                          <option value="WV">West Virginia</option>
-                                          <option value="WI">Wisconsin</option>
-                                          <option value="WY">Wyoming</option>
+                                          <option value="AK" {{ old('type')=="AK" ? 'selected' : '' }}>Alaska</option>
+                                          <option value="AZ" {{ old('type')=='AZ' ? 'selected' : ""}}>Arizona</option>
+                                          <option value="AR" {{ old('type')=='AR' ? 'selected' : "" }}>Arkansas</option>
+
                                     </select>
                                     <!--<input class="input--style-1 transparent-input neon-text-danger" type="text" value="{{old('mail')}}" autocomplete="off" placeholder="Alaska" name="mail" maxlength="30" required>-->
                                     </div>
                                 </div>
                             </div>
-                            
-                            
+
+
                             <div class="col-md-6 col-sm-12 mt-4">
                                 <div class="input-group">
                                     <div class = "text-center">
@@ -211,17 +187,17 @@
                                     <input class="input--style-1 transparent-input neon-text-danger" type="text" value="{{old('r_id')}}" autocomplete="off" placeholder="S_XXxXX" name="r_id" maxlength="15" >
                                 </div>
                             </div>
-                    
-                            
+
+
                             <div class="col-md-6 col-sm-12 mt-4">
                                 <div class="input-group">
                                      <div>
                                    <h4><b><span class="neon-text">Email</span> *</b></h4>
-                                </div> 
+                                </div>
                                     <input required class="input--style-1 transparent-input neon-text-danger" type="email" value="{{old('email')}}" autocomplete="off" placeholder="name@xyz.com" name="email" >
                                 </div>
                             </div>
-                            
+
                              <div class="col-md-6 col-sm-12 mt-4">
                               <div class="input-group">
                                  <div class = "text-center">
@@ -238,10 +214,10 @@
                                 <style>
                                     .account-choose .select-items{
                                         position: absolute;
-                                        background-color: #000000e8;    
+                                        background-color: #000000e8;
                                     }
                                     .account-select{
-                                        font-size: 1.3rem!important;
+                                        font-size: 1.2rem!important;
                                         color: #fff!important;
                                         text-shadow: 0 0 2px #dc3545, 0 0 4px #dc3545, 0 0 6px #dc3545, 0 0 8px #dc3545, 0 0 10px #dc3545, 0 0 12px #dc3545, 0 0 14px #dc3545, 0 0 16px #dc3545!important;
                                         border: 1px solid transparent!important;
@@ -263,11 +239,11 @@
                                     <select class="w-100 account-select" name="account" required>
                                           <option value="" disabled selected="selected">Select Game</option>
                                         @foreach(\App\Models\Account::get() as $a => $b)
-                                          <option value="{{$b->id}}" data-title="{{$b->title}}">{{$b->name}}</option>
+                                          <option value="{{$b->id}}" {{old ('type') == $a ? 'selected' : ''}} data-title="{{$b->title}}">{{$b->name}}</option>
                                         @endforeach
                                     </select>
                                 </div>
-                                </div> 
+                                </div>
                             </div>
                            <div class="col-md-6 col-sm-12 mt-4">
                               <div class="input-group">
@@ -278,7 +254,7 @@
                               </div>
                            </div>
                         </div>
-                    
+
 
 
                         <div class="p-t-20 text-center">
@@ -288,7 +264,7 @@
                                     <h4><b><span class="neon-text">Enter characters as shown above</span></b></h4>
                                 </div><br><br>
                                 <input class="input--style-1 transparent-input neon-text-danger captcha-input" type="text" value="" autocomplete="off" placeholder="XXXX" name="captcha_token" maxlength="4" minlength="4" style="text-transform:uppercase;text-align:center">
-                                
+
                             </div><br><br>
                             <button type="submit" class="button px-4 submit-btn"><span class="neon-text">Submit</span></button><br>
                             <p class="alert alert-danger captcha-error hidden" style="background:red;margin-top:10px;" role="alert">Captcha Invalid</p>
@@ -296,11 +272,11 @@
                         <!--<img src="{{url('images/button.png')}}" type="submit" alt="submit" width="50" height="50">-->
                     </form>
                     </br>
-            
+
             <script>
                 document.getElementById("captcha_image").src="https://noorgames.net/captcha_image.php?"+Math.random();
                 var captchaImage = document.getElementById("captcha_image");
-                
+
                 var refreshButton = document.getElementById("refresh-captcha");
                 refreshButton.onclick = function(event) {
                     event.preventDefault();
@@ -317,11 +293,11 @@
             </div>
         </div>
     </div>
-    
+
     </div>
 
     <!-- Jquery JS-->
-    
+
     <script src="js/jquery.min.js"></script>
     <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
 
@@ -339,7 +315,7 @@
        <script src="https://kit.fontawesome.com/a26d9146a0.js" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script>
-    
+
          $(document).ready( function () {
                $('.captcha-input').on('keypress',function(e) {
                   if(!($('.captcha-error').hasClass('hidden'))){
@@ -351,12 +327,12 @@
                     $('.game-id-text').val(gameId+'_');
                     console.log(gameId);
                 });
-             
+
 
               $('.submit-btn').on('click',function(e) {
                     e.preventDefault();
                     var form = $('#regForm');
-                    
+
                     if($('input[name="full_name"]').val() == ''){
                         toastr.error('Error','Enter Full Name');
                         return;
@@ -386,16 +362,16 @@
                     //     toastr.error('Error','Enter Full Name');
                     //     return;
                     // }
-                    
+
                     $.ajaxSetup({
                         headers: {
                             'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
                         }
                     });
-                    
+
                 });
             } );
-    
+
         var x, i, j, l, ll, selElmnt, a, b, c;
         /* Look for any elements with the class "custom-select-neon": */
         x = document.getElementsByClassName("custom-select-neon");
@@ -409,7 +385,7 @@
           a.innerHTML = selElmnt.options[selElmnt.selectedIndex].innerHTML;
         //   console.log(a);
           x[i].appendChild(a);
-          
+
           console.log(x);
           /* For each element, create a new DIV that will contain the option list: */
           b = document.createElement("DIV");
@@ -458,7 +434,7 @@
             this.classList.toggle("select-arrow-active");
           });
         }
-        
+
         function closeAllSelect(elmnt) {
           /* A function that will close all select boxes in the document,
           except the current select box: */
@@ -480,7 +456,7 @@
             }
           }
         }
-        
+
         /* If the user clicks anywhere outside the select box,
         then close all select boxes: */
         document.addEventListener("click", closeAllSelect);

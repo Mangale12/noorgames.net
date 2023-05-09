@@ -1,7 +1,7 @@
 @extends('newLayout.layouts.newLayout')
 
 @section('title')
-     Dashboard 
+     Dashboard
 @endsection
 @section('content')
 <style>
@@ -95,9 +95,9 @@
               <div class="numbers">
                 <p class="text-sm mb-0 text-uppercase font-weight-bold">Total Balance</p>
                 <h5 class="font-weight-bolder">
-                  ${{$total['load']}}
+                  {{-- ${{$total['load']}} --}}
                 </h5>
-            
+
               </div>
             </div>
             <div class="col-4 text-end">
@@ -117,9 +117,9 @@
               <div class="numbers">
                 <p class="text-sm mb-0 text-uppercase font-weight-bold">Total Tip</p>
                 <h5 class="font-weight-bolder">
-                  ${{$total['tip']}}
+                  {{-- ${{$total['tip']}} --}}
                 </h5>
-             
+
               </div>
             </div>
             <div class="col-4 text-end">
@@ -139,9 +139,9 @@
               <div class="numbers">
                 <p class="text-sm mb-0 text-uppercase font-weight-bold">Total Redeem</p>
                 <h5 class="font-weight-bolder">
-                  +{{$total['redeem']}}
+                  {{-- +{{$total['redeem']}} --}}
                 </h5>
-               
+
               </div>
             </div>
             <div class="col-4 text-end">
@@ -161,9 +161,9 @@
               <div class="numbers">
                 <p class="text-sm mb-0 text-uppercase font-weight-bold">Total Profit</p>
                 <h5 class="font-weight-bolder">
-                  ${{$total['load'] - $total['redeem']}}
+                  {{-- ${{$total['load'] - $total['redeem']}} --}}
                 </h5>
-               
+
               </div>
             </div>
             <div class="col-4 text-end">
@@ -185,9 +185,9 @@
               <div class="numbers">
                 <p class="text-sm mb-0 text-uppercase font-weight-bold">Total Refer </p>
                 <h5 class="font-weight-bolder">
-                  ${{$total['refer']}}
+                  {{-- ${{$total['refer']}} --}}
                 </h5>
-            
+
               </div>
             </div>
             <div class="col-4 text-end">
@@ -199,7 +199,7 @@
         </div>
       </div>
     </div>
-  
+
     <!--<div class="col-xl-4 col-sm-4 mb-xl-0 mb-4">-->
     <!--  <div class="card">-->
     <!--    <div class="card-body p-3">-->
@@ -210,7 +210,7 @@
     <!--            <h5 class="font-weight-bolder">-->
     <!--              +{{$total['cashAppLoad']}}-->
     <!--            </h5>-->
-              
+
     <!--          </div>-->
     <!--        </div> --}}-->
     <!--        <div class="col-4 text-end">-->
@@ -233,7 +233,7 @@
                   <h5 class="font-weight-bolder">
                     +{{$formCount}}
                   </h5>
-                
+
                 </div>
               </div>
               <div class="col-4 text-end">
@@ -244,7 +244,7 @@
             </div>
           </div>
         </div>
-    </div>    
+    </div>
 </div>
 
 
@@ -265,7 +265,7 @@
         </div>
       </div>
     </div>
-   
+
      <div class="col-lg-5">
       <div class="card">
         <div class="card-header pb-0 p-3">
@@ -288,15 +288,15 @@
                         <div class="d-flex">
                         <button class="btn btn-link btn-icon-only btn-rounded btn-sm text-dark icon-move-right my-auto"><i class="ni ni-bold-right" aria-hidden="true"></i></button>
                         </div>
-                    </li>                      
+                    </li>
                   @endforeach
               @endif
           </ul>
         </div>
       </div>
     </div>
-   
-   
+
+
   </div>
   @endif
    <div class="row">
@@ -308,9 +308,9 @@
     <!--          <div class="numbers">-->
     <!--            <p class="text-sm mb-0 text-uppercase font-weight-bold">Total Balance</p>-->
     <!--            <h5 class="font-weight-bolder">-->
-    <!--              ${{$total['load']}}-->
+    {{-- <!--              ${{$total['load']}}--> --}}
     <!--            </h5>-->
-            
+
     <!--          </div>-->
     <!--        </div>-->
     <!--        <div class="col-4 text-end">-->
@@ -330,9 +330,9 @@
     <!--          <div class="numbers">-->
     <!--            <p class="text-sm mb-0 text-uppercase font-weight-bold">Total Tip</p>-->
     <!--            <h5 class="font-weight-bolder">-->
-    <!--              ${{$total['tip']}}-->
+    {{-- <!--              ${{$total['tip']}}--> --}}
     <!--            </h5>-->
-             
+
     <!--          </div>-->
     <!--        </div>-->
     <!--        <div class="col-4 text-end">-->
@@ -352,9 +352,9 @@
     <!--          <div class="numbers">-->
     <!--            <p class="text-sm mb-0 text-uppercase font-weight-bold">Total Redeem</p>-->
     <!--            <h5 class="font-weight-bolder">-->
-    <!--              +{{$total['redeem']}}-->
+    {{-- <!--              +{{$total['redeem']}}--> --}}
     <!--            </h5>-->
-               
+
     <!--          </div>-->
     <!--        </div>-->
     <!--        <div class="col-4 text-end">-->
@@ -369,8 +369,8 @@
 
 </div>
 <div class="row" style="padding-top:40px;">
- 
-  
+
+
 
 <a href ={{route('gamers')}}>
     <div class="col-xl-4 col-sm-4 mb-xl-0 mb-4">
@@ -383,7 +383,7 @@
                   <h5 class="font-weight-bolder">
                     +{{$formCount}}
                   </h5>
-                
+
                 </div>
               </div>
               <div class="col-4 text-end">
@@ -400,8 +400,8 @@
 
 
   <div class="row mt-4">
-    
-   
+
+
      <div class="col-lg-5">
       <div class="card">
         <div class="card-header pb-0 p-3">
@@ -425,15 +425,15 @@
                         <div class="d-flex">
                         <button class="btn btn-link btn-icon-only btn-rounded btn-sm text-dark icon-move-right my-auto"><i class="ni ni-bold-right" aria-hidden="true"></i></button>
                         </div></a>
-                    </li>                      
+                    </li>
                   @endforeach
               @endif
           </ul>
         </div>
       </div>
     </div>
-   
-   
+
+
   </div>
    <script>
     var ctx1 = document.getElementById("chart-line").getContext("2d");
