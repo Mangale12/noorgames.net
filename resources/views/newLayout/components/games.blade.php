@@ -35,10 +35,15 @@
                                                         <h6 class="mb-1 text-dark text-sm">{{$game['title']}}</h6>
                                                         <span class="text-xs game-span-item span-{{(str_replace(' ','-',$game['title']))}}-{{($game['id'])}} {{(isset($activeGame) && $activeGame['id'] == $game['id'])?'active-game-btn':''}}">$ {{($game['balance'])}}</span>
                                                     </div>
+                                                    {{-- {{dd()}} --}}
+                                                    @if (Auth::user()->role == 'admin')
+                                                        
                                                     <div class="d-flex flex-column">
                                                         <a href="#popup8" class="edit-game-table" data-id="{{$game['id']}}"><i class="fa fa-pencil"></i> </a>
                                                         {{-- <button  class="btn  btn-primary mb-0 undo-transaction" style="background-color:#1100ff;"  > <a href="#popup8" style="color:white;">Undo</a></button> --}}
                                                     </div>
+                                                    @endif
+
                                                 </div>
                                             </div>
                                         </div>

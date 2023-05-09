@@ -36,7 +36,9 @@
                             <a href="#popup4" class="dropdown-item user-history" data-type="load" data-userId="{{$num['form']['id']}}" data-game="{{$activeGame['id']}}">{{$language_texts['balance']}}</a>
                             <a href="#popup4" class="dropdown-item user-history" data-type="redeem" data-userId="{{$num['form']['id']}}" data-game="{{$activeGame['id']}}">{{$language_texts['redeem']}}</a>
                             <!--<a href="#popup6" class="dropdown-item user-gameids" data-userId="{{$num['form']['id']}}">View Game Ids</a>-->
-                            <a href="{{route('userDetails',['id' => $num['form']['id']])}}" class="dropdown-item user-gameids">View Details</a>
+                            @if (Auth::user()->role == 'admin' || Auth::user()->role == 'cashier')
+                           <a href="{{route('userDetails',['id' => $num['form']['id']])}}" class="dropdown-item user-gameids">View Details</a>
+                            @endif
 
                         </div>
                         <div id="popup5" class="overlay">

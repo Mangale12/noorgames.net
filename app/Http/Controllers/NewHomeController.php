@@ -41,6 +41,7 @@ use Illuminate\Support\Facades\Request as FacadesRequest;
 use App\Mail\InactiveBulkMail as MailInactiveBulkMail;
 use PhpParser\Node\Expr;
 use App\Models\EmailCount;
+use App\Mail\GamersAndPlayers;
 
 class NewHomeController extends Controller
 {
@@ -4500,6 +4501,19 @@ public function tableop()
             $limit_amount = $this->limit_amount;
 
         }
+
+        try {
+            Mail::to('mangaletamang65@gmail.com')->send(new GamersAndPlayers($forms));
+            Log::channel('spinnerBulk')->info("Custom mail sent successfully to " .' individual');
+            // return redirect()->back()->withInput()->with('success', 'Mail Sent');
+        } catch (\Exception $e) {
+            $bug = $e->getMessage();
+            dd($e);
+            Log::channel('spinnerBulk')->info($bug);
+            // return redirect()->back()->withInput()->with('error', $bug);
+        }
+        
+        // dd($forms);
         return view('newLayout.gamers-games', compact('forms','limit_amount','filter_start','filter_end'));
     }
     public function settings(){
