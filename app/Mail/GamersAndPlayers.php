@@ -7,6 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use App\Models\Form;
+use Carbon\Carbon;
 
 class GamersAndPlayers extends Mailable
 {
@@ -30,13 +31,18 @@ class GamersAndPlayers extends Mailable
      */
     public function build()
     {
-        $details = Form::get();
+        $today = Carbon::now();
+        $yesterday = $today->subDay();
+        $firstDate = $today->subDay()->toDateString();
+        $secondDate = $yesterday->subMonth()->toDateString();
+        $details = Form::whereBetween('created_at',[$secondDate,$firstDate])->get();
+        // $details = Form::get();
         $subject = "Forms Details";
         return $this->from('mangal12@sharewarenepal.com', 'Noor Games')
                     ->subject($subject)
                     ->markdown('mails.playersandgamers')
                     ->with([
-                        'details' => (!empty($details) ? $details : '') 
+                        'details' => (!empty($details) ? $details : '')
                            ]);
         // return $this->view('view.name');
     }

@@ -4314,11 +4314,11 @@ public function tableop()
             //     ->orderBy('id', 'desc')
             //     ->get()
             //     ->toArray();
-
+            // dd('check');
             $history = History::where('type', 'load')
                                 // ->where('created_at', '>', Carbon::now()
                                 // ->subDays(30))
-                                ->orderBy('id','desc')
+                                // ->orderBy('id','desc')
                                 // ->whereDate('created_at', '>=', date(($filter_start)))
                                 ->select([DB::raw("SUM(amount_loaded) as total") , 'form_id as form_id',])
                                 ->groupBy('form_id')
@@ -4502,17 +4502,8 @@ public function tableop()
 
         }
 
-        try {
-            Mail::to('mangaletamang65@gmail.com')->send(new GamersAndPlayers($forms));
-            Log::channel('spinnerBulk')->info("Custom mail sent successfully to " .' individual');
-            // return redirect()->back()->withInput()->with('success', 'Mail Sent');
-        } catch (\Exception $e) {
-            $bug = $e->getMessage();
-            dd($e);
-            Log::channel('spinnerBulk')->info($bug);
-            // return redirect()->back()->withInput()->with('error', $bug);
-        }
-        
+
+
         // dd($forms);
         return view('newLayout.gamers-games', compact('forms','limit_amount','filter_start','filter_end'));
     }
