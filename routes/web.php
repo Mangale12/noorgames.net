@@ -313,4 +313,6 @@ Route::get('admin/cashier-front',[AdminController::class,'showCashierFrontSettin
 // Route::get('cashier/cashapp',[CashierController::class,'showCashApp'])->name('cashier.showcashapp');
 // Route::post('updateBalance',[CashierController::class,'updateCashAppBalance'])->name('cashier.updatebalance');
 Route::post('admin/store-cashier-front',[AdminController::class,'storeCashierFront'])->name('cashier.store.frontsetting');
-
+Route::get('test', function () {
+    dd('test');
+});
