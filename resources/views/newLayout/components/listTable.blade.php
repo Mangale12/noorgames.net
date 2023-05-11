@@ -428,14 +428,16 @@
                         </div>
                     </div>
                 </div>
-                <form action="">
+                <form>
                 <span class="user-{{($num['game_id'])}} resetThis" data-balance="{{($num['balance']) ?? 0}}" data-type="load">$ {{($num['balance'] ?? 0)}}</span>
                 <div class="card card-body">
                     <input required type="hidden" class="form-control load-from loadFrom{{$num['form']['id']}}" name="load-from" value="{{$activeGame['id']}}" data-title="{{str_replace(' ','-',$activeGame['title'])}}">
                     @if(request()->ajax())
+                    {{dd('ajax')}}
                     <input required type="text" max="3" class="form-control loadInput loadInput{{$num['form']['id']}}" onkeydown="loadNewBalance(event,$(this));" name="amount" data-user="{{$num['game_id']}}" data-userId="{{$num['form']['id']}}" value="44" data-balance="0" placeholder="{{$language_texts['amount']}}">
                     @else
-                    <input required type="text" class="form-control loadInput loadInput{{$num['form']['id']}}" name="amount" data-user="{{$num['game_id']}}" data-userId="{{$num['form']['id']}}" value="eee" max="3" data-balance="0" placeholder="{{$language_texts['amount']}}">
+                    {{-- {{dd('n0')}} --}}
+                    <input required type="text" class="form-control loadInput loadInput{{$num['form']['id']}}" name="amount" data-user="{{$num['game_id']}}" data-userId="{{$num['form']['id']}}" value="" max="3" data-balance="0" placeholder="{{$language_texts['amount']}}">
                     @endif
                     <button type="button" class="btn btn-success text-center hidden load-btn" data-user="{{$num['game_id']}}" data-userId="{{$num['form']['id']}}">Load</button>
                 </div>
@@ -509,6 +511,8 @@
       $time = $setting->value;
    }
 @endphp
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js" integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 <script>
 
  var time = '{{$time}}';
@@ -575,7 +579,7 @@
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     }
                     });
-                    var type = "POST";
+                    var type = "GET";
                     var ajaxurl = '{{route('tableUpdate')}}';
                     var interval = null;
                     alert(amount);

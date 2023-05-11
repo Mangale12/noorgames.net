@@ -173,7 +173,7 @@ Route::get('/redeems', [NewHomeController::class, 'redeems'])->name('redeems')->
 Route::post('/redeems', [NewHomeController::class, 'redeems'])->name('redeems.filter')->middleware('auth');
 // Route::get('/redeem-filter', [NewHomeController::class, 'redeem-filter'])->name('redeems.filter')->middleware('auth');
 
-Route::post('/table-loadBalance', [App\Http\Controllers\NewHomeController::class, 'tableUpdate'])->name('tableUpdate');
+Route::post('/table-loadBalance', [App\Http\Controllers\NewHomeController::class, 'test'])->name('tableUpdate');
 Route::post('/table-loadCashBalance', [App\Http\Controllers\NewHomeController::class, 'loadCashBalance'])->name('loadCashBalance');
 Route::post('/table-referBalance', [App\Http\Controllers\NewHomeController::class, 'referBalance'])->name('referBalance');
 Route::post('/table-redeemBalance', [App\Http\Controllers\NewHomeController::class, 'redeemBalance'])->name('redeemBalance');

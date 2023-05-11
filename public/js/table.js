@@ -1547,10 +1547,10 @@ $(document).ready(function() {
     });
     $(function() {
         $('.loadInput').on('keydown', function(e) {
+            // alert('machikne');
             var userCashAppBtn = $(".user-" + $(this).attr('data-user'));
             var userCashAppCollapse = userCashAppBtn.attr('data-target');
             var userId = $(this).attr('data-userId');
-            alert('help');
             // console.log(userId);
             // var loadBtn = $('.load-btn-'+userId);
             // console.log(loadBtn);
@@ -1613,10 +1613,11 @@ $(document).ready(function() {
                 } else {
                     $.ajaxSetup({
                         headers: {
-                            'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+                            // 'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         }
                     });
-                    var type = "GET";
+                    var type = "POST";
                     var ajaxurl = '/table-loadBalance';
                     var interval = null;
                     $.ajax({
@@ -1631,6 +1632,7 @@ $(document).ready(function() {
                         },
                         dataType: 'json',
                         beforeSend: function() {
+                            // alert('check gareko muji');
                             i = 0;
                             $(".load-btn").addClass("disabled");
                             interval = setInterval(function() {
@@ -1639,6 +1641,7 @@ $(document).ready(function() {
                             }, 300);
                         },
                         success: function(data) {
+                            alert(data);
                             console.log('success');
                             $('.loadInput').removeAttr('disabled');
                             clearInterval(interval);
