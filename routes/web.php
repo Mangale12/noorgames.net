@@ -217,6 +217,7 @@ Route::post('/send-sms', [App\Http\Controllers\NewHomeController::class, 'sendSM
 Route::post('/updateForm', [App\Http\Controllers\NewHomeController::class, 'updateForm'])->name('updateForm');
 Route::get('/settings',[App\Http\Controllers\NewHomeController::class,'settings'])->name('settings')->middleware('admin');
 Route::post('/settings-update',[App\Http\Controllers\NewHomeController::class,'settingStore'])->name('settingStore')->middleware('admin');
+Route::post('/settings-email-id-counter-update',[App\Http\Controllers\NewHomeController::class,'settingStore'])->name('email_id_counter')->middleware('admin');
 Route::post('/gameids',[App\Http\Controllers\NewHomeController::class,'gameids'])->name('gameids')->middleware('admin');
 Route::get('/user-details/{id}',[App\Http\Controllers\NewHomeController::class,'userDetails'])->name('userDetails')->middleware('admin');
 Route::post('/updateGameId',[App\Http\Controllers\NewHomeController::class,'updateGameId'])->name('updateGameId')->middleware('admin');

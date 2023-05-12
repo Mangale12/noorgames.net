@@ -17,9 +17,43 @@ Settings [ {{date('Y-m-d H:i:s');}} ]
    }
 </style>
 <div class="container">
+   {{-- {{dd($settings)}} --}}
+   {{-- <div class="tab-pane fade" id="email-limit" role="tabpanel" aria-labelledby="email-limit-tab"> --}}
+      <form action="{{ route('email_id_counter') }}" method="POST">
+         @csrf
+         <div class="card mt-5">
+            <div class="card-header" style="padding-bottom:0">
+               <h5>Emali Limit</h5>
+            </div>
+            <div class="card-body">
+               <div class="row">
+                  <div class="col-lg-6 col-sm-12">
+                     <span>Enter Email Id</span>
+                     <input type="number" name="email_id_counter" class="form-control" id="emil-limit" value="{{$settings['email_id_counter']}}">
+                  </div>
+                  <div class="col-lg-6 col-sm-12">
+                     {{-- <span>Enter Email Id</span> --}}
+                     <input type="submit" name="email_limit" class="btn btn-primary mt-4" value="submit" >
+                  </div>
+                  {{-- 
+                  <div class="col-lg-6 col-sm-12">
+                     <span>Message</span>
+                     <textarea name="email_message" class="form-control" id="message" required>{{$email_setting['email_message']}}</textarea>
+                  </div>
+                  --}}
+                  
+               </div>
+            </div>
+         </div>
+      </form>
+      
+   {{-- </div> --}}
    <!-- Tabs navs -->
    <!-- Tabs content -->
+   
    <div class="row justify-content-center">
+      
+   </div>
       <div class="col-md-12">
          <form action="{{ route('settingStore') }}" method="POST" enctype="multipart/form-data">
             @csrf
@@ -437,29 +471,7 @@ Settings [ {{date('Y-m-d H:i:s');}} ]
                            </div>
                         </div>
                      </div>
-                     <div class="tab-pane fade" id="email-limit" role="tabpanel" aria-labelledby="email-limit-tab">
-                        <div class="card mt-5">
-                           <div class="card-header" style="padding-bottom:0">
-                              <h5>Emali Limit</h5>
-                           </div>
-                           <div class="card-body">
-                              <div class="row">
-                                 <div class="col-lg-6 col-sm-12">
-                                    <span>Enter Email Id</span>
-                                    {{-- <input type="email" name="email_limit" class="form-control" id="emil-limit" required> --}}
-                                 </div>
-                                 {{-- 
-                                 <div class="col-lg-6 col-sm-12">
-                                    <span>Message</span>
-                                    <textarea name="email_message" class="form-control" id="message" required>{{$email_setting['email_message']}}</textarea>
-                                 </div>
-                                 --}}
-                                 
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
+                     
                </div>
                <div class="float-end" >
                 <button type="submit" class="btn btn-primary mt-2">Confirm</button>
@@ -467,7 +479,9 @@ Settings [ {{date('Y-m-d H:i:s');}} ]
             </div>
             
          </form>
-      </div>
+         
+      
+   </div>
    </div>
 </div>
 @endsection

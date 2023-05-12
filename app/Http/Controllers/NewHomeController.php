@@ -40,6 +40,7 @@ use Exception;
 use Illuminate\Support\Facades\Request as FacadesRequest;
 use App\Mail\InactiveBulkMail as MailInactiveBulkMail;
 use PhpParser\Node\Expr;
+use Illuminate\Support\Facades\Route;
 
 class NewHomeController extends Controller
 {
@@ -128,12 +129,15 @@ class NewHomeController extends Controller
     }
     
     public function sendMessageAll(Request $request)
-    {
+    {   
+        $email_id_counter = GeneralSetting::first();
+        // dd($email_id_counter->email_id_counter);
         ini_set('max_execution_time', '0');
         // $message = $request->message;
         $form = Form::get()->toArray();
         foreach ($form as $input) {
-            if($input['id']>2128 && $input['email'] != '' && $input['email'] != 'Requested'){
+            // dd($input['id']);
+            if($input['id']>$email_id_counter->email_id_counter && $input['email'] != '' && $input['email'] != 'Requested'){
                 $form = [
                     'name' => $input['full_name'],
                     'subject' => 'Please Contact Sasha',
@@ -149,7 +153,7 @@ class NewHomeController extends Controller
                 ];
                 try {
                     Mail::to($input['email'])->send(new CustomTextMail(json_encode($form)));
-                    Log::channel('spinnerBulk')->info("Custom mail sent successfully to " . $input['email'] . ' individual');
+                    Log::channel('spinnerBulk')->info("Custom mail sent successfully to " . $input['email'] . ' individual'. "where id =  " .$input['id']);
                     // return redirect()->back()->withInput()->with('success', 'Mail Sent');
                 } catch (\Exception $e) {
                     $bug = $e->getMessage();
@@ -4498,47 +4502,54 @@ public function tableop()
         // dd($request->all());
         try
         {
-            $between_limit_text = $request->only('between_limit_text_1','between_limit_text_2','between_limit_text_3','between_limit_text_4');
-            $above_limit_text = $request->only('above_limit_text_1','above_limit_text_2','above_limit_text_3','above_limit_text_4');
-            $below_limit_text = $request->only('below_limit_text_1','below_limit_text_2','below_limit_text_3','below_limit_text_4');
-            $settings = GeneralSetting::where('id',1)->update([
-                'bonus_report_emails' => ($request->bonus_report_emails[0] != null)?$request->bonus_report_emails[0]:null,
-                'new_register_mail' => ($request->new_register_mail[0] != null)?$request->new_register_mail[0]:null,
-                'emails' => ($request->emails[0] != null)?$request->emails[0]:null,
-                'limit_amount' => $request->limit_amount,
-                'spinner_message_monthly' => $request->spinner_message_monthly,
-                'spinner_message' => $request->spinner_message,
-                'above_limit_text' => json_encode($above_limit_text),
-                'between_limit_text' => json_encode($between_limit_text),
-                'below_limit_text' => json_encode($below_limit_text),
-                'captcha' => $request->captcha,
-                'captcha_type' => $request->captcha_type,
-                'api_key' => $request->api_key,
-                'api_secret' => $request->api_secret,
-                'theme' => $request->theme,
-                'registration_email' => $request->registration_email,
-                'registration_sms' => $request->registration_sms,
-                'mail_text' => $request->mail_text,
-                'spinner_date' => $request->spinner_date,
-                'spinner_time' => $request->spinner_time,
-                'sms_text' => $request->sms_text,
-                'spinner_winner_day' => $request->spinner_winner_day,
-                'spinner_time_cron' => $request->spinner_time_cron,   
-                'inactive_mail_type' => $request->inactive_mail_type,
-                'inactive_mail_time' => $request->inactive_mail_time,   
-                'inactive_mail_day' => $request->inactive_mail_day,     
-                'inactive_mail_message' => $request->inactive_mail_message,                
-                
-            ]);
-            $settings = GeneralSetting::first();
-            // $path = asset('public/images/'.$settings->theme.'/logo.jpg');
-            if ($request->hasFile('file'))
-            {
-                $img = $request->file('file');
-                $name = time() . '.' . $img->extension();
-                $img->move(base_path() . '/images/'.$request->theme.'/', $name);
-                Theme::where('name',$request->theme)->first()->update(['logo' => $name]);
+            if(Route::is('settingStore')){
+                $between_limit_text = $request->only('between_limit_text_1','between_limit_text_2','between_limit_text_3','between_limit_text_4');
+                $above_limit_text = $request->only('above_limit_text_1','above_limit_text_2','above_limit_text_3','above_limit_text_4');
+                $below_limit_text = $request->only('below_limit_text_1','below_limit_text_2','below_limit_text_3','below_limit_text_4');
+                $settings = GeneralSetting::where('id',1)->update([
+                    'bonus_report_emails' => ($request->bonus_report_emails[0] != null)?$request->bonus_report_emails[0]:null,
+                    'new_register_mail' => ($request->new_register_mail[0] != null)?$request->new_register_mail[0]:null,
+                    'emails' => ($request->emails[0] != null)?$request->emails[0]:null,
+                    'limit_amount' => $request->limit_amount,
+                    'spinner_message_monthly' => $request->spinner_message_monthly,
+                    'spinner_message' => $request->spinner_message,
+                    'above_limit_text' => json_encode($above_limit_text),
+                    'between_limit_text' => json_encode($between_limit_text),
+                    'below_limit_text' => json_encode($below_limit_text),
+                    'captcha' => $request->captcha,
+                    'captcha_type' => $request->captcha_type,
+                    'api_key' => $request->api_key,
+                    'api_secret' => $request->api_secret,
+                    'theme' => $request->theme,
+                    'registration_email' => $request->registration_email,
+                    'registration_sms' => $request->registration_sms,
+                    'mail_text' => $request->mail_text,
+                    'spinner_date' => $request->spinner_date,
+                    'spinner_time' => $request->spinner_time,
+                    'sms_text' => $request->sms_text,
+                    'spinner_winner_day' => $request->spinner_winner_day,
+                    'spinner_time_cron' => $request->spinner_time_cron,   
+                    'inactive_mail_type' => $request->inactive_mail_type,
+                    'inactive_mail_time' => $request->inactive_mail_time,   
+                    'inactive_mail_day' => $request->inactive_mail_day,     
+                    'inactive_mail_message' => $request->inactive_mail_message,                
+                    
+                ]);
+                $settings = GeneralSetting::first();
+                // $path = asset('public/images/'.$settings->theme.'/logo.jpg');
+                if ($request->hasFile('file'))
+                {
+                    $img = $request->file('file');
+                    $name = time() . '.' . $img->extension();
+                    $img->move(base_path() . '/images/'.$request->theme.'/', $name);
+                    Theme::where('name',$request->theme)->first()->update(['logo' => $name]);
+                }
+            }elseif(Route::is('email_id_counter')){
+                GeneralSetting::first()->update([
+                    'email_id_counter'=>$request->email_id_counter,
+                ]);
             }
+            
 
             // dd($img);
             // $game->image = $name;

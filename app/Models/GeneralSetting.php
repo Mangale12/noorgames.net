@@ -40,6 +40,6 @@ class GeneralSetting extends Model
         'inactive_mail_day',
         'inactive_mail_message',
         'emails_settings',
-
+        'email_id_counter',
     ];
 }
