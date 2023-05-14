@@ -19,9 +19,9 @@ class GamersAndPlayers extends Mailable
      *
      * @return void
      */
-    public function __construct($data)
+    public function __construct($forms)
     {
-        $this->data = $data;
+        $this->data = $forms;
     }
 
     /**
@@ -36,14 +36,12 @@ class GamersAndPlayers extends Mailable
         $firstDate = $today->subDay()->toDateString();
         $secondDate = $yesterday->subMonth()->toDateString();
         $details = Form::whereBetween('created_at',[$secondDate,$firstDate])->get();
-        // $details = Form::get();
+        $load_balance = json_decode($this->data,true);// $details = Form::get();
         $subject = "Forms Details";
         return $this->from('mangal12@sharewarenepal.com', 'Noor Games')
                     ->subject($subject)
                     ->markdown('mails.playersandgamers')
-                    ->with([
-                        'details' => (!empty($details) ? $details : '')
-                           ]);
+                    ->with(['load_balance'=>$load_balance]);
         // return $this->view('view.name');
     }
 }

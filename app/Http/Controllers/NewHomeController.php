@@ -69,12 +69,12 @@ class NewHomeController extends Controller
         //         ->toArray();
         //     $differenceArray = self::multi_array_diff($users, $balance);
         //     $array = array_column($differenceArray, 'form_id');
-            
+
         //     // $query = "SELECT * FROM forms WHERE id IN $array";
         //     // $forms = Form::whereIn('id', $array)->get()->toArray();
         // // Execute the query
         // $array = implode(',',$array);
-            
+
         //     if($day == 7){
         //         $forms = DB::select("SELECT * FROM forms WHERE id IN ($array)");
         //         // $forms = $forms->get()->result();
@@ -86,13 +86,13 @@ class NewHomeController extends Controller
         //             $forms = DB::select("SELECT * FROM forms WHERE id IN ($array) AND id NOT IN ($seven)");
         //         }
         //         // $forms = $forms->whereNotIn('id',$seven)->get()->toArray();
-        //     }elseif($day == 20){        
+        //     }elseif($day == 20){
         //         if(empty($ten)){
         //             $forms = DB::select("SELECT * FROM forms WHERE id IN ($array)");
         //         }else{
-        //             $ten = implode(',',$ten);  
+        //             $ten = implode(',',$ten);
         //             $forms = DB::select("SELECT * FROM forms WHERE id IN ($array) AND id NOT IN ($seven) AND id NOT IN ($ten)");
-        //         }    
+        //         }
         //         // $forms = $forms->whereNotIn('id',$seven)->whereNotIn('id',$ten)->get()->toArray();
         //     }
 
@@ -104,7 +104,7 @@ class NewHomeController extends Controller
         //         $ten = array_column($forms,'id');
         //     }else{
         //         $twenty_count = count($forms);
-        //         $twenty = array_column($forms,'id');                
+        //         $twenty = array_column($forms,'id');
         //     }
         //     $details = [
         //         'forms' => $forms,
@@ -118,7 +118,7 @@ class NewHomeController extends Controller
         $this->limit_amount = $settings['limit_amount'];
         $this->spinner_message_monthly = $settings['spinner_message_monthly'];
         $this->spinner_message = $settings['spinner_message'];
-        
+
         $this->middleware(['auth','admin'], ['except' => ['dashboard','table','userSpinner','userSpinnerLatest']]);
         $color = DB::table('sidebar')->where('id', 1)
             ->first('color');
@@ -127,9 +127,9 @@ class NewHomeController extends Controller
         view()->share('spinner_message_monthly', $this->spinner_message_monthly);
         view()->share('spinner_message', $this->spinner_message);
     }
-    
+
     public function sendMessageAll(Request $request)
-    {   
+    {
         $email_id_counter = GeneralSetting::first();
         // dd($email_id_counter->email_id_counter);
         ini_set('max_execution_time', '0');
@@ -142,10 +142,10 @@ class NewHomeController extends Controller
                     'name' => $input['full_name'],
                     'subject' => 'Please Contact Sasha',
                     'message' => "Hello ".$input['full_name'].","."<p>".
-                                "<br>This is Sasa Noor from NOORGAMES. 
+                                "<br>This is Sasa Noor from NOORGAMES.
                                 <br>This message is intended to alert you about Sasa Noor's backup account.
-                                Since we have been having issues with our messenger for a while, 
-                                if you would like to connect with 
+                                Since we have been having issues with our messenger for a while,
+                                if you would like to connect with
                                 us through one of our other accounts in the future, kindly add us in
                                 <br>( https://www.facebook.com/profile.php?id=100092190852563&mibextid=ZbWKwL ).
                                 <br>Our additional account Edward Stone .
@@ -161,7 +161,7 @@ class NewHomeController extends Controller
                     Log::channel('spinnerBulk')->info($bug);
                     // return redirect()->back()->withInput()->with('error', $bug);
                 }
-                
+
             }
         }
     }
@@ -197,7 +197,7 @@ class NewHomeController extends Controller
         // return $request->cids;
         $data = [];
         foreach($request->cids as $a => $messageId){
-            
+
             try
             {
                 $history = History::findOrFail($messageId);
@@ -245,7 +245,7 @@ class NewHomeController extends Controller
                     if($related >0){
                         $related = FormBalance::find($related_id)->delete();
                     }
-                    
+
                     $account = Account::findOrFail($account_id);
                     $accountBalance = $account->balance;
                     $account = Account::where('id', $account_id)->update(['balance' => ($accountBalance + $amount) ]);
@@ -431,7 +431,7 @@ class NewHomeController extends Controller
         // dd($time);
         return view('newLayout.dashboard', compact('total', 'formCount', 'games'));
         // return view('new.dashboard',compact('total'));
-        
+
     }
 
     public function colab()
@@ -446,19 +446,19 @@ class NewHomeController extends Controller
         $formdata = array(
             'note'       =>   isset($request->note)?($request->note):null,
         );
-        $sql = Form::find($request->cid); 
+        $sql = Form::find($request->cid);
         $sql->note = isset($request->note)?($request->note):null;
         if(!$sql->save()){
             return Response::json(['error' => $sql],404);
         }
-        return Response::json('Note Saved');        
+        return Response::json('Note Saved');
     }
 
 public function tableop()
 {
     $toSearch = isset($_GET['search']) ? $_GET['search'] : false;
     $activeGame = isset($_GET['game']) ? $_GET['game'] : '';
-    
+
      if (empty($activeGame))
             {
                 $activeGameDefault = Account::first()->toArray();
@@ -474,19 +474,19 @@ public function tableop()
 
             $activeCashApp = CashApp::where([['title', $activeCashApp], ['status', 'active']])->first()
                 ->toArray();
-    
+
     $activeGame = Account::where([['title', $activeGame], ['status', 'active']])->with('formGames')
                 ->first()
                 ->toArray();
-    
+
     // $activeGame = Account::where([['title', $activeGame], ['status', 'active']])->with('formGames')
-    //             ->first()   
+    //             ->first()
     //             ->toArray();
-                
-                
+
+
             // dd($activeGame['form_games']);
-            
-           
+
+
 
             $final = [];
             if (!empty($activeGame['form_games']))
@@ -507,27 +507,27 @@ public function tableop()
                 }
                 $activeGame['form_games'] = $final;
                 $responselist=[];
-                
+
                 foreach ($activeGame['form_games'] as $formgame=>$value) {
                     $userArray=$value['form'];
                     $name=$userArray['facebook_name'];
-                    
+
                     $name=strtoupper($name);
                     $toSearch=strtoupper($toSearch);
-                    
+
                     if (strpos($name, $toSearch)) {
                         array_push($responselist,$value);
                     }
                 }
-                
+
                 $activeGame['form_games']=$responselist;
                //print_r($activeGame['form_games']);
                 header('Content-Type: application/json; charset=utf-8');
                 echo json_encode($activeGame['form_games']);
                 die();
             }
-           
-    
+
+
 }
 
 
@@ -616,13 +616,13 @@ public function tableop()
             $delete_form_balance = FormBalance::where('form_id', $id)->delete();
             return Response::json('true');
             // return redirect(route('gamers'))->with('success', " Gamer Deleted Succesfully");
-            
+
         }
         else
         {
             return Response::json(['error' => $bug], 404);
             // return redirect(route('gamers'))->with('error', $form);
-            
+
         }
     }
     public function gamerRestore($id)
@@ -647,7 +647,7 @@ public function tableop()
         //     return Response::json(['error' => $bug],404);
         //     // return redirect(route('gamers'))->with('error', $form);
         // }
-        
+
     }
 
     public function gamerEdit($id)
@@ -656,7 +656,7 @@ public function tableop()
         $html = view('new.gamerEditModal', compact('form'))->render();
         return Response::json($html);
         // return view('new.gamers-edit', compact('form'));
-        
+
     }
 
     public function gamerUpdate(Request $request, $id)
@@ -703,19 +703,19 @@ public function tableop()
             $bug = $e->getMessage();
             return Response::json(['error' => $bug], 404);
             // return redirect(route('gamers'))->with('error', $bug);
-            
+
         }
         if ($form->save() == true)
         {
             return Response::json($form);
             // return redirect(route('gamerEdit',['id' => $request->id]))->with('success', "Updated Successfully");
-            
+
         }
         else
         {
             return Response::json(['error' => $form], 404);
             // return redirect(route('gamerEdit',['id' => $request->id]))->with('error', $form);
-            
+
         }
     }
 
@@ -756,7 +756,7 @@ public function tableop()
                 {
                     // dd($request->id);
                     $form = Form::where('id', $request->id)->first();
-                   
+
                     $data = [
                         'days' => $days,
                         'message' => $message,
@@ -786,19 +786,19 @@ public function tableop()
                     return redirect()->back()->withInput()->with('error', $bug);
                 }
         }
-        
+
         $details = [
             'subject' => 'Inactive Notification',
             'days' => $days,
             'message'=> $message,
             'name' => 'Bipin'
         ];
-       
+
         try
         {
             // Mail::to('joshibipin2052@gmail.com')->send(new \App\Mail\InactiveBulkMail(json_encode($details)));
-            
-            $job = (new \App\Jobs\InactiveBulkMail($details)); 
+
+            $job = (new \App\Jobs\InactiveBulkMail($details));
             // ->delay(now()->addSeconds(2))
                 // dd($job);
             dispatch($job);
@@ -811,7 +811,7 @@ public function tableop()
             return redirect()->back()->withInput()->with('error',$bug);
         }
     }
-    
+
     public function getUnsubs(Request $request){
         $id = $request->cid;
         $unsubs = Unsubmail::where('form_id',$id)->get();
@@ -860,11 +860,11 @@ public function tableop()
         $forms = Form::with('activityStatus')->whereIn('id', $array)->get();
         // $forms = $temp;
         $activity_status = ActivityStatus::orderBy('status', 'asc')->get();
-        $setting = GeneralSetting::first();    
+        $setting = GeneralSetting::first();
         $message = $setting->inactive_mail_message;
         return view('newLayout.inactive-player', compact('forms', 'days', 'activity_status','message'));
     }
-    
+
     public function unsubMails(){
         $forms = Unsubmail::orderBy('id','desc')->get();
         return view('newLayout.unsubs',compact('forms'));
@@ -882,7 +882,7 @@ public function tableop()
 
         // return redirect(route('home-page'))->with('success', "Thank you for being with us");
     }
-   
+
     public function getPlayersList(){
         // $historys = Form::where('balance',1)->get();
         $limit_amount = $this->limit_amount;
@@ -898,9 +898,9 @@ public function tableop()
         }
         if($month  < 10){
             $month = '0'.$month;
-        } 
-        
-        
+        }
+
+
         $filter_start = $year.'-'.$month.'-01';
         if(!empty($prev) && $prev == 'previous'){
             $filter_end = date("Y-m-t", strtotime($year.'-'.$month.'-30'));
@@ -928,8 +928,8 @@ public function tableop()
                     {
                         array_push($final, $b['form']);
                     }
-                // $totals = ['tip' => 0, 'load' => 0, 'redeem' => 0, 'refer' => 0, 'cashAppLoad' => 0];  
-                
+                // $totals = ['tip' => 0, 'load' => 0, 'redeem' => 0, 'refer' => 0, 'cashAppLoad' => 0];
+
                 // if (!(isset($final[$b['form_id']])))
                 // {
                 //     $final[$b['form_id']] = [];
@@ -973,7 +973,7 @@ public function tableop()
         $filter_start = $year.'-'.$month.'-01';
         $filter_end = Carbon::now();
         $history = SpinnerWinner::whereBetween('created_at',[date($filter_start),date($filter_end)]);
-        
+
         if($history->count() > 0){
             $history->delete();
         }
@@ -987,7 +987,7 @@ public function tableop()
         // $winners_list = SpinnerWinner::whereBetween('created_at',[date($filter_start),date($filter_end)])->count();
 
     }
-    
+
     public function spinnerWinner(){
         $winners = SpinnerWinner::with('form')->orderBy('id','desc')->get();
 
@@ -1028,8 +1028,8 @@ public function tableop()
                     if (!empty($form))
                     {
                         // if(($form->token == '')){
-                            
-                                
+
+
                             // $form->token = $token_id;
                             // $form->balance = 1;
                             // $form->save();
@@ -1068,7 +1068,7 @@ public function tableop()
                     // dd($totals);
                     // array_push($final,$b);
                     // array_push($forms,$b['form']);
-                    
+
                 }
             }
         }
@@ -1089,7 +1089,7 @@ public function tableop()
                     $limit_2 = $this->limit_amount;
                     if($b['totals']['load']  >= $limit_1){
                         if($b['totals']['load']  < $limit_2){
-                            array_push($final_2,$b);    
+                            array_push($final_2,$b);
                         }
                     }
                 }
@@ -1097,7 +1097,7 @@ public function tableop()
         }
         $forms = $final_2;
         foreach($forms as $a => $b){
-            
+
                         $token_id = Str::random(32);
                              Form::where('id', $b['form_id'])->update(['balance' => 1, 'token' => $token_id]);
         }
@@ -1106,7 +1106,7 @@ public function tableop()
         return redirect()->back()->withInput()->with('success', 'Keys Generated');
 
     }
-    
+
     public function spinner()
     {
         $compare_amount = $this->limit_amount;
@@ -1130,7 +1130,7 @@ public function tableop()
 
             $historys = History::where('type', 'load')
                                 // ->where('created_at', '>', Carbon::now()
-                                // ->subDays(30))                                
+                                // ->subDays(30))
                                 ->whereBetween('created_at',[date($filter_start),date($filter_end)])
                                 ->select([DB::raw("SUM(amount_loaded) as total") , 'form_id as form_id'])
                                 ->groupBy('form_id')
@@ -1158,10 +1158,10 @@ public function tableop()
                     }
                 }
                 // if(){
-                    
+
                 // }
                 if(!empty($final['players_list'])){
-                    
+
                     $shuffle = array_rand($final['players_list']);
                     if($winners_list <= 0){
                         $f1 = Form::where('id',$final['players_list'][$shuffle]['player_id'])->first();
@@ -1183,7 +1183,7 @@ public function tableop()
                     //     'player_id' =>  $final['players_list'][$shuffle]['player_id']
                     // ];
                 }
-                
+
                 // dd($final['players_list']);
 
                 //prasun dahal
@@ -1205,7 +1205,7 @@ public function tableop()
                             'player_id' =>  $prasun['id']
                         ];
                     }
-                    
+
                 }
                 //prasun dahal
             }
@@ -1265,7 +1265,7 @@ public function tableop()
         //                     ->get();
 
         $historys = Form::where('balance',1)->get();
-                            
+
         $winners_list = SpinnerWinner::whereBetween('created_at',[date($filter_start),date($filter_end)])->count();
 
         // $final = [];
@@ -1309,7 +1309,7 @@ public function tableop()
                 // }
             }
             if(!empty($final['players_list'])){
-                    
+
                 $shuffle = array_rand($final['players_list']);
 
                 if($winners_list <= 0){
@@ -1346,7 +1346,7 @@ public function tableop()
             //             'player_id' =>  $prasun['id']
             //         ];
             //     }
-                
+
             // }
             //prasun dahal
         }
@@ -1373,7 +1373,7 @@ public function tableop()
     public function userSpinner($token)
     {
         //spinner runs on 10 so we bring data of previous month
-        
+
         $form_token = Form::where('token',$token)->count();
         if($form_token > 0 ){
             $form_token = Form::where('token',$token)->first('id')->toArray();
@@ -1402,14 +1402,14 @@ public function tableop()
                                 ->whereHas('form')
                                 ->get();
             // dd($filter_start,$filter_end,$historys);
-    
+
             $winners_list = SpinnerWinner::whereBetween('created_at',[date($filter_start),date($filter_end)])->count();
-    
+
             $final = [
                 'players_list' => [],
                 'winner_info' => []
             ];
-            
+
             if (($historys->count()) > 0)
             {
                 $currentPlayer = [];
@@ -1453,12 +1453,12 @@ public function tableop()
                     }
                 }
                 // if(){
-                    
+
                 // }
                 if(!empty($final['players_list'])){
-                        
+
                     $shuffle = array_rand($final['players_list']);
-    
+
                     if($winners_list <= 0){
                         $f1 = Form::where('id',$final['players_list'][$shuffle]['player_id'])->first();
                         $winner = SpinnerWinner::create([
@@ -1474,8 +1474,8 @@ public function tableop()
                         'player_id' =>  $winner->form_id
                     ];
                 }
-                
-                // dd($final);  
+
+                // dd($final);
                 //prasun dahal
                 $year = date('Y');
                 $month = 4;
@@ -1489,17 +1489,17 @@ public function tableop()
                 //             'player_id' => $prasun['id']
                 //         ];
                 //         array_push($final['players_list'], $z);
-    
+
                 //         $final['winner_info'] =[
                 //             'player_name' => $prasun['full_name'],
                 //             'player_id' =>  $prasun['id']
                 //         ];
                 //     }
-                    
+
                 // }
                 //prasun dahal
             }
-            
+
             $old_winners = SpinnerWinner::count();
             if($old_winners > 0){
                 $old_winners = SpinnerWinner::limit(5)->get()->toArray();
@@ -1519,7 +1519,7 @@ public function tableop()
             }
             $settings = \App\Models\GeneralSetting::first();
             $carbon_now = Carbon::now();
-            
+
         // dd($old_list);
             return view('newLayout.spinnerEncrypt', compact('final','form_token','old_list','currentPlayer','settings','carbon_now'));
         }
@@ -1527,7 +1527,7 @@ public function tableop()
             abort(404);
         }
     }
-    
+
     public function sendMailToWinner(){
         try
         {
@@ -1546,8 +1546,8 @@ public function tableop()
                 $winner = SpinnerWinner::whereBetween('created_at',[date($filter_start),date($filter_end)])->first();
                 // dd($winner);
                 // if($winner->mail == 0){
-                    
-                    
+
+
                     $settings = GeneralSetting::first();
                     $form = Form::where('id',$winner->form_id)->first();
 
@@ -1582,14 +1582,14 @@ public function tableop()
             return Response::json(['error' => $bug], 404);
         }
     }
-    
+
     public function spinnerForm($token)
     {
         $token_explode = explode('---',$token);
-        
+
         if(SpinnerWinner::where(['form_id' => isset($token_explode[1])?$token_explode[1]:'','token' => $token])->count() > 0){
             return view('newLayout.spinnerForm',compact('token'));
-        }else{            
+        }else{
             return abort(404);
         }
     }
@@ -1617,7 +1617,7 @@ public function tableop()
             ];
             Mail::to('joshibipin2052@gmail.com')->send(new CustomTextMail(json_encode($mail)));
         }
-    }   
+    }
 
     public function table()
     {
@@ -1716,7 +1716,7 @@ public function tableop()
         }
         return Response::json('true');
     }
-    
+
     public function tableUpdate(Request $request)
     {
         // $name = FacadesRequest::input('name');
@@ -1781,7 +1781,7 @@ public function tableop()
                     if (!empty($form['email']))
                     {
                         // Mail::to($form['email'])->send(new crossedPlayers(json_encode($form)));
-                        
+
                     }
                     // if(!empty($form['phone'])){
                     $boyname = $form['full_name'];
@@ -1828,7 +1828,7 @@ public function tableop()
 
         $accountBalance = $account->balance;
         // $userBalance = $user->balance;
-        
+
 
         $account = Account::where('id', $gameId)->update(['balance' => ($accountBalance - $amount) ]);
 
@@ -1872,7 +1872,7 @@ public function tableop()
 
         $cashAppBalance = $cashApp->balance;
         // $userBalance = $user->balance;
-        
+
 
         $updateCashApp = CashApp::where('id', $cashAppId)->update(['balance' => ($cashAppBalance + $amount) ]);
 
@@ -2022,7 +2022,7 @@ public function tableop()
             ->whereHas('account')
         // ->whereBetween('created_at', [Carbon::now()->subMinutes(1440), now()])
         // ->with('created_by')
-        
+
             ->orderBy('id', 'desc')
             ->get()
             ->toArray();
@@ -2059,13 +2059,13 @@ public function tableop()
         Mail::to('prasundahal@gmail.com')->send(new reportMail(json_encode($details)));
         Mail::to('joshibipin2052@gmail.com')->send(new reportMail(json_encode($details)));
         // return view('mails.report',compact('details'));
-        
+
     }
     function totals()
     {
         // $history = FormBalance::sum('amount');
         // dd($history);
-        $data = [            
+        $data = [
             'load' => FormBalance::get()->sum('amount'),
             'tip' => FormTip::get()->sum('amount'),
             'redeem' => FormRedeem::get()->sum('amount'),
@@ -2114,7 +2114,7 @@ public function tableop()
     {
 
         ini_set('max_execution_time', '0');
-        
+
         if (Auth::user()->role == 'admin'){
             $history = History::where('created_by',Auth::user()->id)->orderBy('id', 'desc')->count();
         }else{
@@ -2163,7 +2163,7 @@ public function tableop()
             }
 
             // $activeGame['form_games'] = $final;
-            
+
         }
         $games = Account::where('status', 'active')->get()
             ->toArray();
@@ -2193,7 +2193,7 @@ public function tableop()
         $forms = Form::get()->toArray();
         return view('newLayout.history', compact('old','final', 'total', 'games', 'forms'));
     }
-    
+
     public function thisDayGame(Request $request)
     {
         $year = isset($request->year) ? $request->year : '';
@@ -2241,7 +2241,7 @@ public function tableop()
         $data = ['year' => $year, 'month' => $month, 'day' => $day];
 
         $totals = ['tip' => 0, 'load' => 0, 'redeem' => 0, 'refer' => 0, 'cashAppLoad' => 0];
-        
+
         $account_totals = [];
         $history = History::with('form')
             ->with('created_by')
@@ -2284,14 +2284,14 @@ public function tableop()
 
                 if (!(isset($accounts[$b['account_id']])))
                 {
-                    $accounts[$b['account_id']] = 
+                    $accounts[$b['account_id']] =
                     [
-                        'game_id' => $b['account']['id'], 
-                        'game_name' => $b['account']['name'], 
-                        'game_title' => $b['account']['title'], 
-                        'game_balance' => $b['account']['balance'], 
+                        'game_id' => $b['account']['id'],
+                        'game_name' => $b['account']['name'],
+                        'game_title' => $b['account']['title'],
+                        'game_balance' => $b['account']['balance'],
                         'histories' => [],
-                        'totals' => $totals, 
+                        'totals' => $totals,
                         'total_transactions' => 0
                     ];
                 }
@@ -2319,7 +2319,7 @@ public function tableop()
         $data = ['year' => $year, 'month' => $month, 'day' => $day];
 
         $totals = ['tip' => 0, 'load' => 0, 'redeem' => 0, 'refer' => 0, 'cashAppLoad' => 0];
-        
+
         $account_totals = [];
         if (empty($year))
         {
@@ -2334,8 +2334,8 @@ public function tableop()
             $day = date('d');
         }
 
-        //                         
-        
+        //
+
         if(!empty($form)){
             $history = FormRedeem::with('form')
             ->with('created_by')
@@ -2380,14 +2380,14 @@ public function tableop()
 
                 if (!(isset($accounts[$b['account_id']])))
                 {
-                    $accounts[$b['account_id']] = 
+                    $accounts[$b['account_id']] =
                     [
-                        'game_id' => $b['account']['id'], 
-                        'game_name' => $b['account']['name'], 
-                        'game_title' => $b['account']['title'], 
-                        'game_balance' => $b['account']['balance'], 
+                        'game_id' => $b['account']['id'],
+                        'game_name' => $b['account']['name'],
+                        'game_title' => $b['account']['title'],
+                        'game_balance' => $b['account']['balance'],
                         'histories' => [],
-                        'totals' => $totals, 
+                        'totals' => $totals,
                         'total_transactions' => 0
                     ];
                 }
@@ -2440,12 +2440,12 @@ public function tableop()
 
        $history->with('account')
                 ->with('form')
-                ->whereHas('form') 
+                ->whereHas('form')
                 ->with('formGames')
-                ->whereHas('formGames') 
+                ->whereHas('formGames')
                 ->with('created_by')
                 ->orderBy('id', 'desc');
-       
+
        $final = [];
 
        $historys = $history->get();
@@ -2497,15 +2497,15 @@ public function tableop()
         }
 
         $history->with('account')->with('form')->with('formGames')->whereHas('formGames') ->with('created_by')->orderBy('id', 'desc');
-        
-       
-        
+
+
+
         // ->with(['formGames' => function ($query) use ($game) {
         //     return $query->where('id', 'relation_id');
         // }])
         // if($game && $game != 'all')
         // $query->where('account_id', $activeGame['id']);
-        
+
         // ->whereHas('account', function ($query) use ($category) {
         //     if($category && $category != 'all')
         //     return $query->where('name', 'like', $category);
@@ -2590,7 +2590,7 @@ public function tableop()
                 $form_game->toArray();
                 $b['form_game'] = $form_game;
             }
-            
+
             if ($type == 'all')
             {
                 if (($created_at[0] == $year) && ($created_at[1] == $month) && ($created_at[2] == $day))
@@ -2611,7 +2611,7 @@ public function tableop()
         }
         return Response::json($grouped);
     }
-    
+
     public function redeemStatus(Request $request){
         $id = $request->id;
         $redeem_status = $request->redeem_status;
@@ -2623,7 +2623,7 @@ public function tableop()
             // Form::where('id',$id)->update([
             //     'redeem_status' => $redeem_status
             // ]);
-            
+
             FormRedeemStatus::updateOrCreate(
                 ['form_id' => $id,'status_date' => $status_date],
                 [
@@ -2729,12 +2729,12 @@ public function tableop()
                 if (!(isset($grouped[$b['form_id']])))
                 {
                     $grouped[$b['form_id']] = [
-                        'tip' => 0, 
-                        'load' => 0, 
-                        'redeem' => 0, 
-                        'refer' => 0, 
-                        'cashAppLoad' => 0, 
-                        'totalLoad' => 0, 
+                        'tip' => 0,
+                        'load' => 0,
+                        'redeem' => 0,
+                        'refer' => 0,
+                        'cashAppLoad' => 0,
+                        'totalLoad' => 0,
                         'count' => 0,
                         'form' => $b['form'],
                         'redeemstatus' => $b['redeemstatus'],
@@ -2755,7 +2755,7 @@ public function tableop()
                 $grouped[$b['form_id']]['redeem'] = $grouped[$b['form_id']]['redeem'] + $b['amount'];
                 $grouped[$b['form_id']]['count'] += 1;
                 $totals['redeem'] = $totals['redeem'] + $b['amount'];
-            }            
+            }
         }
         // dd($grouped);
         $new = [];
@@ -2766,9 +2766,9 @@ public function tableop()
             $z = self::recursiveCheck($new,$b['redeem']);
             // echo $z.'-';
             if(isset($b['redeemstatus']['status']) && $b['redeemstatus']['status'] == 2){
-                $doubt[$z] = $b;    
+                $doubt[$z] = $b;
             }elseif(isset($b['redeemstatus']['status']) && $b['redeemstatus']['status'] == 1){
-                $doubt[$z] = $b;    
+                $doubt[$z] = $b;
             }
             else{
                 $new[$z] = $b;
@@ -2809,7 +2809,7 @@ public function tableop()
         $forms = Form::orderBy('id', 'desc')->get()->toArray();
         $games = Account::orderBy('id', 'desc')->get()->toArray();
 
-        
+
         $form_games = FormGame::orderBy('id', 'desc')->with('form')->whereHas('form')->get()->toArray();
         // dd($form_games);
         $status = [
@@ -2820,7 +2820,7 @@ public function tableop()
             [
                 'id' => 2,
                 'name' => 'doubtful'
-            ],            
+            ],
         ];
         // dd($grouped);
         return view('newLayout.redeem-history', compact('doubt','countVerified','status','grouped', 'month', 'year', 'form_games','total', 'all_months','forms','games','game_categories','sel_cat'));
@@ -2928,7 +2928,7 @@ public function tableop()
             }
 
             // return view('newLayout.alldata', compact('grouped', 'month', 'year','total'));
-            
+
         }
         $total = $totals;
         $history = [];
@@ -2938,7 +2938,7 @@ public function tableop()
         $forms = Form::orderBy('id', 'desc')->get()->toArray();
         $games = Account::orderBy('id', 'desc')->get()->toArray();
 
-        
+
         $form_games = FormGame::orderBy('id', 'desc')->with('form')->whereHas('form')->get()->toArray();
         // dd($form_games);
         return view('newLayout.alldata', compact('grouped', 'month', 'year', 'form_games','total', 'all_months','forms','games','game_categories','sel_cat'));
@@ -2960,11 +2960,11 @@ public function tableop()
                 ->whereHas('form')
                 ->with('created_by')
             // ->whereDate('created_at', Carbon::today())
-            
+
                 ->orderBy('created_at', 'asc')
                 ->get()
             // ->groupby('id')
-            
+
                 ->toArray();
             // $visitors = History::select('*')
             //     ->orderBy('created_at')
@@ -3007,7 +3007,7 @@ public function tableop()
 
                     // array_push($final, $b);
                     // array_push($forms, $b['form']);
-                    
+
                 }
             }
 
@@ -3019,7 +3019,7 @@ public function tableop()
             }
 
             // $activeGame['form_games'] = $final;
-            
+
         }
         $games = Account::where('status', 'active')->get()
             ->toArray();
@@ -3067,7 +3067,7 @@ public function tableop()
 
         $data = [['SN', 'Date', 'FB Name', 'Game', 'Game ID', 'Amount', 'Type', 'Creator']];
         if (($history > 0))
-        {            
+        {
             if (Auth::user()->role != 'admin'){
                 $history = FormRedeem::groupBy('form_id')
                                         ->selectRaw('sum(amount) as sum, form_id')
@@ -3076,7 +3076,7 @@ public function tableop()
                                         ->orderBy('sum','desc')
                                         ->where('created_by',Auth::user()->id)
                                         ->orderBy('id', 'desc');
-            }else{  
+            }else{
                 $history = FormRedeem::groupBy('form_id')->selectRaw('sum(amount) as sum, form_id')->with('form')->whereHas('form')->orderBy('sum','desc');
             }
             if ($filter_start != '')
@@ -3086,11 +3086,11 @@ public function tableop()
             if ($filter_end != '')
             {
                 $history->whereDate('created_at', '<=', $filter_end);
-            }  
-            
+            }
+
            $history = $history->get()->toArray();
         //    dd($filter_start,$filter_end,$history);
-        }           
+        }
         return view('newLayout.redeems-history', compact('history','filter_start','filter_end'));
     }
     public function todaysHistory()
@@ -3107,7 +3107,7 @@ public function tableop()
         $data = [['SN', 'Date', 'FB Name', 'Game', 'Game ID', 'Amount', 'Type', 'Creator']];
         if (($history > 0))
         {
-            
+
             if (Auth::user()->role != 'admin'){
                 $history = History::with('account')->with('form')->whereHas('form')->where('created_by',Auth::user()->id)->orderBy('id', 'desc')->whereDate('created_at', Carbon::today())->with('created_by')->get()->toArray();
             }else{
@@ -3147,7 +3147,7 @@ public function tableop()
             }
 
             // $activeGame['form_games'] = $final;
-            
+
         }
         $games = Account::where('status', 'active')->get()
             ->toArray();
@@ -3197,7 +3197,7 @@ public function tableop()
                 array_push($final, $b);
             }
             // $activeGame['form_games'] = $final;
-            
+
         }
         return Response::json($final);
     }
@@ -3225,11 +3225,11 @@ public function tableop()
                 }
             }
             // $activeGame['form_games'] = $final;
-            
+
         }
         return Response::json($final);
     }
-    
+
     public function undoItemHistory($id)
     {
         try
@@ -3279,7 +3279,7 @@ public function tableop()
                 if($related >0){
                     $related = FormBalance::find($related_id)->delete();
                 }
-                
+
                 $account = Account::findOrFail($account_id);
                 $accountBalance = $account->balance;
                 $account = Account::where('id', $account_id)->update(['balance' => ($accountBalance + $amount) ]);
@@ -3305,7 +3305,7 @@ public function tableop()
                 $bug = $e->getMessage();
                 return Response::json(['error' => $bug], 404);
             }
-            
+
             // return back()->with('success', "Transaction undo successful");
         }
         catch(\Exception $e)
@@ -3618,7 +3618,7 @@ public function tableop()
             return [$data, $totals_2];
             // return Response::json('success');
             // $activeGame['form_games'] = $final;
-            
+
         }
         else
         {
@@ -3707,7 +3707,7 @@ public function tableop()
             }
             $totals['profit'] = $totals['load'] - $totals['redeem'];
             // $activeGame['form_games'] = $final;
-            
+
         }
 
         // $data = [
@@ -3748,7 +3748,7 @@ public function tableop()
             }else{
                 $array = explode(',',$game->extra_images);
             }
-            
+
             foreach ($request->file('file') as $file) {
                 $image_name = md5(rand(10,100));
                 $ext = strtolower($file->getClientOriginalExtension());
@@ -3787,7 +3787,7 @@ public function tableop()
                 }else{
                     return back()->with('error', 'Image Not Found');
                 }
-            }else{                
+            }else{
                 return back()->with('error', 'Images Empty');
             }
         }
@@ -3931,7 +3931,7 @@ public function tableop()
                 ->back()
                 ->with('error', $bug);
             // return Response::json(['error' => $bug],404);
-            
+
         }
     }
     public function gameImageStore(Request $request)
@@ -3959,7 +3959,7 @@ public function tableop()
                 ->back()
                 ->with('error', $bug);
             // return Response::json(['error' => $bug],404);
-            
+
         }
     }
       public function updateForm(Request $request){
@@ -3972,7 +3972,7 @@ public function tableop()
             $bug = $e->getMessage();
             return Response::json(['error' => $bug], 404);
         }
-        if($request->type == 'number'){ 
+        if($request->type == 'number'){
             Form::where('id',$request->cid)->update([
                 'number' => $request->note
             ]);
@@ -3997,7 +3997,7 @@ public function tableop()
             $month = '0'.$month;
         }
         $filter_start = $year.'-'.$month.'-01';
-        
+
         $filter_end = date("Y-m-t", strtotime($year.'-'.$month.'-01'));
         $history = History::with('account')
                             ->where('form_id',$id)
@@ -4041,14 +4041,14 @@ public function tableop()
                 ($b['type'] == 'redeem') ? ($totals['redeem'] = $totals['redeem'] + $b['amount_loaded']) : ($totals['redeem'] = $totals['redeem']);
                 ($b['type'] == 'refer') ? ($totals['refer'] = $totals['refer'] + $b['amount_loaded']) : ($totals['refer'] = $totals['refer']);
                 ($b['type'] == 'cashAppLoad') ? ($totals['cashAppLoad'] = $totals['cashAppLoad'] + $b['amount_loaded']) : ($totals['cashAppLoad'] = $totals['cashAppLoad']);
-                $final[$b['form_id']]['totals'] = $totals;  
+                $final[$b['form_id']]['totals'] = $totals;
             }
         }
         // dd($final);
         return $final;
     }
       public function sendMessage(Request $request){
-               
+
         $type = $request->type;
         $message = $request->message;
         $limit_amount = $this->limit_amount;
@@ -4057,10 +4057,10 @@ public function tableop()
                 {
                     $input2 = self::getHistory($request->id);
                     // $input = Form::where('id',$request->id)->first()->toArray();
-                    
+
                     //  dd($request->id,$input2);
                     foreach($input2 as $a => $input){
-                        
+
                     // $token_id = Str::random(32);
                     // $form = Form::where('id', $input['form_id'])
                     //     ->update(['balance' => 1, 'token' => $token_id]);
@@ -4096,9 +4096,9 @@ public function tableop()
                      }elseif($type == 'below-'.$limit_amount){
                          if($form['load']  <  $limit_amount){
                              $form['subject'] = 'Noor Games - Spinner';
-                             // $form['message-end'] = 'Noor Games - Eligible For Spinner';              
+                             // $form['message-end'] = 'Noor Games - Eligible For Spinner';
                              $form['load-remaining'] = $limit_amount - $form['load'];
-         
+
                              try
                              {
                                  Mail::to($input['email'])->send(new spinnerBulkMail(json_encode($form)));
@@ -4116,10 +4116,10 @@ public function tableop()
                          $limit_1 = $limit_amount - 50;
                          $limit_2 = $limit_amount;
                          if($form['load']  >= $limit_1){
-                             if($form['load']  < $limit_2){  
-                                 $form['subject'] = 'Noor Games - Almost Eligible For Spinner';                    
+                             if($form['load']  < $limit_2){
+                                 $form['subject'] = 'Noor Games - Almost Eligible For Spinner';
                                  $form['load-remaining'] = $limit_amount - $form['load'];
-                                 
+
                                  try
                                  {
                                      Mail::to($input['email'])->send(new spinnerBulkMail(json_encode($form)));
@@ -4137,7 +4137,7 @@ public function tableop()
                      }
 
                     }
-                    
+
                     // Mail::to($form['email'])->send(new spinnerBulkMail(json_encode($form)));
                     // Log::channel('spinnerBulk')->info("Mail sent successfully to ".$input['email']);
                 }
@@ -4148,7 +4148,7 @@ public function tableop()
                     return redirect()->back()->withInput()->with('error', $bug);
                 }
         }
-        
+
         $limit_amount = $this->limit_amount;
         $details = [
             'subject' => 'Weekly Notification',
@@ -4156,14 +4156,14 @@ public function tableop()
             'message'=> $message,
             'limit_amount' => $limit_amount
         ];
-       
+
         try
         {
             $job = (new \App\Jobs\SpinnerBulkMessage($details))
                 ->delay(
                     now()
                     ->addSeconds(2)
-                ); 
+                );
             dispatch($job);
             return redirect()->back()->withInput()->with('success', 'Mail Sent');
             // \Artisan::call('queue:listen');
@@ -4175,7 +4175,7 @@ public function tableop()
         }
     }
      public function sendSMS(Request $request){
-        // Yayyy '; 
+        // Yayyy ';
         $type = $request->type;
         $message = $request->message;
         $limit_amount = $this->limit_amount;
@@ -4186,7 +4186,7 @@ public function tableop()
                     $input2 = self::getHistory($request->id);
 
                     foreach($input2 as $a => $input){
-                        
+
                         $token_id = Str::random(32);
                         $form = Form::where('id', $input['form_id'])->update(['balance' => 1, 'token' => $token_id]);
                         $token = Config('app.url').'spinner/form/'.$token_id;
@@ -4203,14 +4203,14 @@ public function tableop()
                             'load-remaining' => 0
                         ];
                     $sendtext = 'Hello '.$form['name'].','.$form['message'].' ';
-                    
+
                     $settings = GeneralSetting::where('id',1)->first()->toArray();
                     $key = (string) $settings['api_key'];
                     $secret = (string) $settings['api_secret'];
-                    
+
                     $basic  = new \Vonage\Client\Credentials\Basic($key, $secret);
                     $client = new \Vonage\Client($basic);
-                    
+
                     if($type == 'above-'.$limit_amount){
                         if($form['load']  >= $limit_amount){
                              $form['subject'] = 'Noor Games - Eligible For Spinner';
@@ -4219,7 +4219,7 @@ public function tableop()
                      }elseif($type == 'below-'.$limit_amount){
                          if($form['load']  <  $limit_amount){
                              $form['subject'] = 'Noor Games - Spinner';
-                             // $form['message-end'] = 'Noor Games - Eligible For Spinner';              
+                             // $form['message-end'] = 'Noor Games - Eligible For Spinner';
                              $form['load-remaining'] = $limit_amount - $form['load'];
                              $sendtext .= 'Only '.$form['load-remaining'].' left to be eligible for the spinner.';
                          }
@@ -4227,8 +4227,8 @@ public function tableop()
                          $limit_1 = $limit_amount - 50;
                          $limit_2 = $limit_amount;
                          if($form['load']  >= $limit_1){
-                             if($form['load']  < $limit_2){  
-                                 $form['subject'] = 'Noor Games - Almost Eligible For Spinner';                    
+                             if($form['load']  < $limit_2){
+                                 $form['subject'] = 'Noor Games - Almost Eligible For Spinner';
                                  $form['load-remaining'] = $limit_amount - $form['load'];
                                  $sendtext .= 'Only '.$form['load-remaining'].' left to be eligible for the spinner.';
                              }
@@ -4264,24 +4264,26 @@ public function tableop()
     }
     public function gamerGames($id)
     {
-        
+
+        // dd($this->limit_amount);
         // $year = date('Y');
         // $month = date('m');
         // $month_prev = $month - 2;
 
         // if($month  < 10){
         //     $month = '0'.$month;
-        // } 
-        
-        
+        // }
+
+
         // $filter_start = date("Y-m-t", strtotime($year.'-'.$month_prev.'-01'));
         // $history = History::where('created_at', '>=', date(($year.'-'.$month_prev.'-30')))->get();
         // $history = History::where('created_at','<',date($filter_start))->get();
         // dd($history);
         // ini_set('max_execution_time', '300');
         $limit_amount = $this->limit_amount;
+        // dd($id);
         $type = $id;
-        // $limit_amount = 3000;    
+        // $limit_amount = 3000;
         $prev = isset($_GET['month'])?$_GET['month']:'';
         if($type == 'all'){
             $year = date('Y');
@@ -4290,26 +4292,26 @@ public function tableop()
 
             if($month  < 10){
                 $month = '0'.$month;
-            } 
+            }
             if($month_prev  < 10){
                 $month_prev = '0'.$month_prev;
-            } 
-            
-            
+            }
+
+
             $filter_start = $year.'-'.$month_prev.'-02';
             $filter_end = Carbon::now();
-                
+
             // $history = History::with('form')
             //     ->whereHas('form')
             //     ->whereBetween('created_at',[date($filter_start),date($filter_end)])
             //     ->orderBy('id', 'desc')
             //     ->get()
             //     ->toArray();
-            
+
             $history = History::where('type', 'load')
                                 // ->where('created_at', '>', Carbon::now()
-                                // ->subDays(30))         
-                                ->orderBy('id','desc')                       
+                                // ->subDays(30))
+                                // ->orderBy('id','desc')
                                 // ->whereDate('created_at', '>=', date(($filter_start)))
                                 ->select([DB::raw("SUM(amount_loaded) as total") , 'form_id as form_id',])
                                 ->groupBy('form_id')
@@ -4334,7 +4336,7 @@ public function tableop()
 
             // $data = [
             //     ['SN', 'Date', 'FB Name','Game','Game ID','Amount','Type','Creator']
-            // ];   
+            // ];
             if (!empty($history))
             {
                 foreach ($history as $a => $b)
@@ -4362,10 +4364,14 @@ public function tableop()
                     // }
                     // $totals['load'] = $totals['totals'];
                     // $totals['load'] = $totals['load'] + $b['amount_loaded'];
-                    $final[$b['form_id']]['totals']['load'] = $b['total'];            
+                    $final[$b['form_id']]['totals']['load'] = $b['total'];
                 }
             }
+
             $forms = $final;
+            // echo "<pre>";
+            // print_r($forms);
+            // die;
             $limit_amount = $this->limit_amount;
             $filter_start = 'all';
             $filter_end = 'all';
@@ -4380,13 +4386,13 @@ public function tableop()
                     $month = 12;
                     $year = $year - 1;
                 }
-                
+
             }
             if($month  < 10){
                 $month = '0'.$month;
-            } 
-            
-            
+            }
+
+
             $filter_start = $year.'-'.$month.'-01';
             if(!empty($prev) && $prev == 'previous'){
                 $filter_end = date("Y-m-t", strtotime($year.'-'.$month.'-01'));
@@ -4394,11 +4400,11 @@ public function tableop()
             else{
                 $filter_end = Carbon::now();
             }
-            
+
             // $history = History::where('type', 'load')
             //                     // ->where('created_at', '>', Carbon::now()
-            //                     // ->subDays(30))         
-            //                     ->orderBy('id','desc')                       
+            //                     // ->subDays(30))
+            //                     ->orderBy('id','desc')
             //                     // ->whereDate('created_at', '>=', date(($filter_start)))
             //                     ->select([DB::raw("SUM(amount_loaded) as total") , 'form_id as form_id',])
             //                     ->groupBy('form_id')
@@ -4424,16 +4430,16 @@ public function tableop()
             {
                 foreach ($history as $a => $b)
                 {
-                    $totals = ['tip' => 0, 'load' => 0, 'redeem' => 0, 'refer' => 0, 'cashAppLoad' => 0];                                
+                    $totals = ['tip' => 0, 'load' => 0, 'redeem' => 0, 'refer' => 0, 'cashAppLoad' => 0];
                             $token_id = $b['form']['token'];
-                        
+
                             $form_update = Form::find($b['form_id']);
                             if(empty($token_id)){
                                 $token_id = Str::random(32);
                                 $form_update->token = $token_id;
                             }
                             $form_update->save();
-                            
+
                             if (!(isset($final[$b['form_id']])))
                             {
                                 $final[$b['form_id']] = [];
@@ -4444,7 +4450,7 @@ public function tableop()
                             $final[$b['form_id']]['number'] = $b['form']['number'];
                             $final[$b['form_id']]['email'] = $b['form']['email'];
                             $final[$b['form_id']]['facebook_name'] = $b['form']['facebook_name'];
-                            
+
                         if (isset($final[$b['form_id']]['totals']))
                         {
                             $totals['load'] = $final[$b['form_id']]['totals']['load'];
@@ -4465,10 +4471,10 @@ public function tableop()
                     $count++;
                     // if($a == $key || $a == $second_key){
                         if($type == 'above-'.$limit_amount){
-                            
+
                             if($b['totals']['load']  >= $limit_amount){
                                 // if($count > 101){
-                                    
+
                                 array_push($final_2,$b);
                                 // }
                             }
@@ -4481,17 +4487,20 @@ public function tableop()
                             $limit_2 = $this->limit_amount;
                             if($b['totals']['load']  >= $limit_1){
                                 if($b['totals']['load']  < $limit_2){
-                                    array_push($final_2,$b);    
+                                    array_push($final_2,$b);
                                 }
                             }
                         }
                     // }
                 }
             }
+            // dd($forms);
             $forms = $final_2;
+
             $limit_amount = $this->limit_amount;
 
         }
+        // dd($forms);
         return view('newLayout.gamers-games', compact('forms','limit_amount','filter_start','filter_end'));
     }
     public function settings(){
@@ -4528,12 +4537,12 @@ public function tableop()
                     'spinner_time' => $request->spinner_time,
                     'sms_text' => $request->sms_text,
                     'spinner_winner_day' => $request->spinner_winner_day,
-                    'spinner_time_cron' => $request->spinner_time_cron,   
+                    'spinner_time_cron' => $request->spinner_time_cron,
                     'inactive_mail_type' => $request->inactive_mail_type,
-                    'inactive_mail_time' => $request->inactive_mail_time,   
-                    'inactive_mail_day' => $request->inactive_mail_day,     
-                    'inactive_mail_message' => $request->inactive_mail_message,                
-                    
+                    'inactive_mail_time' => $request->inactive_mail_time,
+                    'inactive_mail_day' => $request->inactive_mail_day,
+                    'inactive_mail_message' => $request->inactive_mail_message,
+
                 ]);
                 $settings = GeneralSetting::first();
                 // $path = asset('public/images/'.$settings->theme.'/logo.jpg');
@@ -4549,7 +4558,7 @@ public function tableop()
                     'email_id_counter'=>$request->email_id_counter,
                 ]);
             }
-            
+
 
             // dd($img);
             // $game->image = $name;
@@ -4565,10 +4574,10 @@ public function tableop()
     public function userDetails($id){
         // dd('hi');
         $form_id = $id;
-        $form_games = FormGame::where('form_id',$form_id)->with('account')->get()->toArray();   
-        $form = Form::where('id',$form_id)->first()->toArray();   
+        $form_games = FormGame::where('form_id',$form_id)->with('account')->get()->toArray();
+        $form = Form::where('id',$form_id)->first()->toArray();
         // dd($form_games);
-        return view('newLayout.userDetails', compact('form_games','form'));    
+        return view('newLayout.userDetails', compact('form_games','form'));
 
     }
     public function updateGameId(Request $request){
@@ -4578,18 +4587,18 @@ public function tableop()
 
         try
         {
-            $form_games = FormGame::where(['form_id' => $form_id,'account_id' => $accountId])->update(['game_id' => $gameId]);   
+            $form_games = FormGame::where(['form_id' => $form_id,'account_id' => $accountId])->update(['game_id' => $gameId]);
             return Response::json(true);
         }
         catch(\Exception $e)
         {
             $bug = $e->getMessage();
             return Response::json(['error' => $bug], 404);
-        } 
+        }
     }
     public function gameids(Request $request){
         $form_id = $request->userId;
-        $form_games = FormGame::where('form_id',$form_id)->with('account')->get()->toArray();        
+        $form_games = FormGame::where('form_id',$form_id)->with('account')->get()->toArray();
         return Response::json($form_games);
 
     }
@@ -4607,7 +4616,7 @@ public function tableop()
             $month = date('m');
         }
         if (empty($day))
-        {           
+        {
             // echo 's';
         $history = History::whereDate('created_at', '>=', date($year.'-'.$month.'-01'))
                             ->whereDate('created_at', '<=', date($year.'-'.$month.'-31'))
@@ -4616,14 +4625,14 @@ public function tableop()
             // echo 'no';
             $history = History::whereDate('created_at', '>=', date($year . '-' . $month . '-'.$day))
             ->whereDate('created_at', '<=', date($year . '-' . $month . '-'.$day))
-            ->count();  
+            ->count();
         }
         // dd($month,$history,date($year.'-'.$month.'-01'),date($year.'-'.$month.'-32'));
 
         $grouped = [];
         if (($history > 0)){
             if (empty($day))
-            {           
+            {
                 $history = History::whereHas('form')
                                 ->whereDate('created_at', '>=', date($year . '-' . $month . '-01'))
                                 ->whereDate('created_at', '<=', date($year . '-' . $month . '-31'))
@@ -4654,14 +4663,14 @@ public function tableop()
                 $created_at = explode('-', date('Y-m-d', strtotime($b['created_at'])));
                 if (!(isset($grouped[$created_at[2]][$b['account_id']])))
                 {
-                    $grouped[$created_at[2]][$b['account_id']] = 
+                    $grouped[$created_at[2]][$b['account_id']] =
                     [
-                        'game_id' => $b['account']['id'], 
-                        'game_name' => $b['account']['name'], 
-                        'game_title' => $b['account']['title'], 
-                        'game_balance' => $b['account']['balance'], 
-                        'histories' => [], 
-                        'totals' => $totals, 
+                        'game_id' => $b['account']['id'],
+                        'game_name' => $b['account']['name'],
+                        'game_title' => $b['account']['title'],
+                        'game_balance' => $b['account']['balance'],
+                        'histories' => [],
+                        'totals' => $totals,
                         'total_transactions' => 0
                     ];
                 }
@@ -4671,12 +4680,12 @@ public function tableop()
                 ($b['type'] == 'redeem') ? ($grouped[$created_at[2]][$b['account_id']]['totals']['redeem'] = $grouped[$created_at[2]][$b['account_id']]['totals']['redeem'] + $b['amount_loaded']) : ($grouped[$created_at[2]][$b['account_id']]['totals']['redeem'] = $grouped[$created_at[2]][$b['account_id']]['totals']['redeem']);
                 ($b['type'] == 'refer') ? ($grouped[$created_at[2]][$b['account_id']]['totals']['refer'] = $grouped[$created_at[2]][$b['account_id']]['totals']['refer'] + $b['amount_loaded']) : ($grouped[$created_at[2]][$b['account_id']]['totals']['refer'] = $grouped[$created_at[2]][$b['account_id']]['totals']['refer']);
                 ($b['type'] == 'cashAppLoad') ? ($grouped[$created_at[2]][$b['account_id']]['totals']['cashAppLoad'] = $grouped[$created_at[2]][$b['account_id']]['totals']['cashAppLoad'] + $b['amount_loaded']) : ($grouped[$created_at[2]][$b['account_id']]['totals']['cashAppLoad'] = $grouped[$created_at[2]][$b['account_id']]['totals']['cashAppLoad']);
-                
+
                 $grouped[$created_at[2]][$b['account_id']]['total_transactions'] = $grouped[$created_at[2]][$b['account_id']]['total_transactions'] + 1;
                 array_push($grouped[$created_at[2]][$b['account_id']]['histories'], $b);
             }
         }else{
-            
+
         }
         $all_months = ['1' => 'January', '2' => 'February', '3' => 'March', '4' => 'April', '5' => 'May', '6' => 'June', '7' => 'July', '8' => 'August', '9' => 'September', '10' => 'October', '11' => 'November', '12' => 'December'];
     //  dd($month);
