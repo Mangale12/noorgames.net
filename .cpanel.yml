@@ -1,5 +1,5 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/caandvco/public_html/easter
+    - export DEPLOYPATH=/home/caandvco/noor.caandv.com/
     - /bin/cp -R * $DEPLOYPATH
