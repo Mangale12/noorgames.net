@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en" >
+   <head>
+      <meta charset="UTF-8">
+      <title>Card Validation template</title>
+      <link rel="stylesheet" href="./style.css">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
+      <style>
+         body{background: #f5f5f5}.rounded{border-radius: 1rem}.nav-pills .nav-link{color: #555}.nav-pills .nav-link.active{color: white}input[type="radio"]{margin-right: 5px}.bold{font-weight:bold}
+      </style>
+   </head>
+   <body>
+      <!-- partial:index.partial.html -->
+      <div class="container">
+      <div class="container py-5">
+      <!-- For demo purpose -->
+      <div class="row mb-4">
+         <div class="col-lg-8 mx-auto text-center">
+            <h1 class="display-6">Card Validation template</h1>
+         </div>
+      </div>
+      <!-- End -->
+      <div class="row">
+         <div class="col-lg-6 mx-auto">
+            <div class="card ">
+               <div class="card-header">
+                  <!-- <div class="bg-white shadow-sm pt-4 pl-2 pr-2 pb-2">
+                   -->
+                  <!-- Credit card form content -->
+                  <div class="tab-content">
+                     <!-- credit card info-->
+                     <div id="credit-card" class="tab-pane fade show active pt-3">
+                        <form role="form" onsubmit="event.preventDefault()">
+                           <div class="form-group">
+                              <label for="username">
+                                 <h6>Card Owner</h6>
+                              </label>
+                              <input type="text" name="username" placeholder="Card Owner Name" required class="form-control ">
+                           </div>
+                           <div class="form-group">
+                              <label for="cardNumber">
+                                 <h6>Card number</h6>
+                              </label>
+                              <div class="input-group">
+                                 <input type="text" name="cardNumber" placeholder="Valid card number" class="form-control " id="new-email" onkeyup="checkCard()">
+                                 <div class="input-group-append">
+                                    <span class="input-group-text text-muted">
+                                        <i class="fab fa-cc-visa mx-1 visa" id="visa"></i>
+                                        <i class="fab fa-cc-mastercard mx-1 " id="master"></i>
+                                        <i class="fab fa-cc-amex mx-1" id="business"></i>
+                                    </span>
+                                </div>
+                              </div>
+                              <div class="alert alert-warning" role="alert" id="invalidCard">
+
+                               </div>
+
+                           </div>
+                           <div class="row">
+                              <div class="col-sm-8">
+                                 <div class="form-group">
+                                    <label>
+                                       <span class="hidden-xs">
+                                          <h6>Expiration Date</h6>
+                                       </span>
+                                    </label>
+                                    <div class="input-group"> <input type="number" placeholder="MM" name="" class="form-control" required> <input type="number" placeholder="YY" name="" class="form-control" required> </div>
+                                 </div>
+                              </div>
+                              <div class="col-sm-4">
+                                 <div class="form-group mb-4">
+                                    <label data-toggle="tooltip" title="Three digit CV code on the back of your card">
+                                       <h6>CVV <i class="fa fa-question-circle d-inline"></i></h6>
+                                    </label>
+                                    <input type="text" required class="form-control">
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="card-footer"> <button type="button" class="subscribe btn btn-primary btn-block shadow-sm"> Confirm Payment </button>
+                        </form>
+                        </div>
+                     </div>
+                     <!-- End -->
+                     <!-- Paypal info -->
+                     <div id="paypal" class="tab-pane fade pt-3">
+                        <h6 class="pb-2">Select your paypal account type</h6>
+                        <div class="form-group "> <label class="radio-inline"> <input type="radio" name="optradio" checked> Domestic </label> <label class="radio-inline"> <input type="radio" name="optradio" class="ml-5">International </label></div>
+                        <p> <button type="button" class="btn btn-primary "><i class="fab fa-paypal mr-2"></i> Log into my Paypal</button> </p>
+                        <p class="text-muted"> Note: After clicking on the button, you will be directed to a secure gateway for payment. After completing the payment process, you will be redirected back to the website to view details of your order. </p>
+                     </div>
+                     <!-- End -->
+                     <!-- bank transfer info -->
+                     <div id="net-banking" class="tab-pane fade pt-3">
+                        <div class="form-group ">
+                           <label for="Select Your Bank">
+                              <h6>Select your Bank</h6>
+                           </label>
+                           <select class="form-control" id="ccmonth">
+                              <option value="" selected disabled>--Please select your Bank--</option>
+                              <option>Bank 1</option>
+                              <option>Bank 2</option>
+                              <option>Bank 3</option>
+                              <option>Bank 4</option>
+                              <option>Bank 5</option>
+                              <option>Bank 6</option>
+                              <option>Bank 7</option>
+                              <option>Bank 8</option>
+                              <option>Bank 9</option>
+                              <option>Bank 10</option>
+                           </select>
+                        </div>
+                        <div class="form-group">
+                           <p> <button type="button" class="btn btn-primary "><i class="fas fa-mobile-alt mr-2"></i> Proceed Payment</button> </p>
+                        </div>
+                        <p class="text-muted">Note: After clicking on the button, you will be directed to a secure gateway for payment. After completing the payment process, you will be redirected back to the website to view details of your order. </p>
+                     </div>
+                     <!-- End -->
+                     <!-- End -->
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- partial -->
+      <script  src="./script.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+      <script>
+
+
+         //my code
+         const ccErrors = [];
+         ccErrors [0] = "Unknown card type";
+         ccErrors [1] = "No card number provided";
+         ccErrors [2] = "Credit card number is in invalid format";
+         ccErrors [3] = "Credit card number is invalid";
+         ccErrors [4] = "Credit card number has an inappropriate number of digits";
+         ccErrors [5] = "Warning! This credit card number is associated with a scam attempt";
+
+
+         const cards = [];
+         cards [0] = {name: "Visa",
+                    length: "13,16",
+                    prefixes: "4",
+                    checkdigit: true};
+         cards [1] = {name: "MasterCard",
+                    length: "16",
+                    prefixes: "51,52,53,54,55",
+                    checkdigit: true};
+         cards [2] = {name: "DinersClub",
+                    length: "14,16",
+                    prefixes: "36,38,54,55",
+                    checkdigit: true};
+         cards [3] = {name: "CarteBlanche",
+                    length: "14",
+                    prefixes: "300,301,302,303,304,305",
+                    checkdigit: true};
+         cards [4] = {name: "AmEx",
+                    length: "15",
+                    prefixes: "34,37",
+                    checkdigit: true};
+         cards [5] = {name: "Discover",
+                    length: "16",
+                    prefixes: "6011,622,64,65",
+                    checkdigit: true};
+         cards [6] = {name: "JCB",
+                    length: "16",
+                    prefixes: "35",
+                    checkdigit: true};
+         cards [7] = {name: "enRoute",
+                    length: "15",
+                    prefixes: "2014,2149",
+                    checkdigit: true};
+         cards [8] = {name: "Solo",
+                    length: "16,18,19",
+                    prefixes: "6334,6767",
+                    checkdigit: true};
+         cards [9] = {name: "Switch",
+                    length: "16,18,19",
+                    prefixes: "4903,4905,4911,4936,564182,633110,6333,6759",
+                    checkdigit: true};
+         cards [10] = {name: "Maestro",
+                    length: "12,13,14,15,16,18,19",
+                    prefixes: "5018,5020,5038,6304,6759,6761,6762,6763",
+                    checkdigit: true};
+         cards [11] = {name: "VisaElectron",
+                    length: "16",
+                    prefixes: "4026,417500,4508,4844,4913,4917",
+                    checkdigit: true};
+         cards [12] = {name: "LaserCard",
+                    length: "16,17,18,19",
+                    prefixes: "6304,6706,6771,6709",
+                    checkdigit: true};
+
+                    $(document).ready(function(){
+                     var dnumber = $('#new-email').val()
+                     console.log(dnumber);
+                        $('#new-email').keyup(function(){
+                            var number = $(this).val();
+                           /*for(let i=0; i<=cards.length; i++){
+
+                           }*/
+
+                            if(number.charAt(0)==4){
+                                document.getElementById('master').style.display = 'none';
+                                document.getElementById('business').style.display = 'none';
+                                $('#invalidCard').css({"display":"none"});
+                                if(number.length > 16){
+                                    console.log(ccErrors [3]);
+                                }
+                            }else if(number.slice(0,2)==51 || number.slice(0,2)==52 || number.slice(0,2)==53 || number.slice(0,2)==54 || number.slice(0,2)==55){
+                                document.getElementById('visa').style.display = 'none';
+                                document.getElementById('business').style.display = 'none';
+                                document.getElementById('master').style.display = 'block';
+                                $('#invalidCard').css({"display":"none"});
+                            }else if(number.slice(0,2)==34 || number.slice(0,2)==37){
+                                document.getElementById('visa').style.display = 'none';
+                                document.getElementById('master').style.display = 'none';
+                                document.getElementById('business').style.display = 'block';
+                                $('#invalidCard').css({"display":"none"});
+
+                            }else if(number.length == 0){
+
+                                 document.getElementById('visa').style.display = 'block';
+                                document.getElementById('business').style.display = 'block';
+                                document.getElementById('master').style.display = 'block';
+                                $('#invalidCard').css({"display":"none"});
+                            }
+                            else{
+                                document.getElementById('visa').style.display = 'none';
+                                document.getElementById('business').style.display = 'none';
+                                document.getElementById('master').style.display = 'none';
+                                $('#invalidCard').html(ccErrors [0]);
+                                $('#invalidCard').css({"display":"block"});
+                            }
+                        });
+                    });
+
+
+
+         /*
+         Object {
+         message: null,
+         success: true,
+         type: "Visa"
+         }
+
+         Object {
+         message: null,
+         success: true,
+         type: "AmEx"
+         }
+         */
+      </script>
+   </body>
+</html>
