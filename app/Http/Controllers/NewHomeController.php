@@ -40,6 +40,10 @@ use Exception;
 use Illuminate\Support\Facades\Request as FacadesRequest;
 use App\Mail\InactiveBulkMail as MailInactiveBulkMail;
 use PhpParser\Node\Expr;
+use App\Mail\RefferNotice;
+use App\Models\ReferDetails;
+use App\Mail\ReferNoticeAdmin;
+use App\Jobs\ReferDetailsJob;
 
 class NewHomeController extends Controller
 {
@@ -405,31 +409,7 @@ class NewHomeController extends Controller
 
         return Response::json($logs);
     }
-    public function dashboard()
-    {
-        $time_start = microtime(true);
-        // $form = Form::where('id',5)->update(['balance' => 1,'token' => $token_id]);
-        // Mail::to('joshibipin2052@gmail.com')->send(new crossedPlayers(json_encode($form)));
-        // $form = Form::where('id',343)->first()->toArray();
-        // dd(Mail::to('joshibipin2052@gmail.com')->send(new crossedPlayers(json_encode($form))));
-        $total = self::totals();
-        // $total = [
-        //     'load' => 'Loading...',
-        //     'tip' => 'Loading...',
-        //     'redeem' => 'Loading...',
-        //     'refer' => 'Loading...',
-        // ];
-        $formCount = Form::count();
-        $games = Account::where('status', 'active')->get()
-            ->toArray();
-        // dd($total);
-        $time_end = microtime(true);
-        $time = $time_end - $time_start;
-        // dd($time);
-        return view('newLayout.dashboard', compact('total', 'formCount', 'games'));
-        // return view('new.dashboard',compact('total'));
 
-    }
 
     public function colab()
     {
@@ -1607,21 +1587,18 @@ public function tableop()
         }
     }
     public function spinnerFormSave(Request $request){
-        //captcha check
         session_start();
         $entered_captcha=strtoupper($request->captcha_token);
         $generated_captcha=strtoupper($_SESSION['captcha_token']);
         if($entered_captcha!=$generated_captcha) {
             return redirect()->back()->withInput()->with('error','Entered Captcha is wrong.');
         }else{
-            // abort(500, 'Something went wrongasf');
             $details = [
                 'Full Name' => $request->full_name,
                 'Phone' => $request->number,
                 'Email' => $request->email,
             ];
             $settings = GeneralSetting::first();
-            //send mail
             $mail = [
                 'subject' => 'Spinner Winner has filled up Form.',
                 'message' => 'This months spinner winner has filled up his/her form.',
@@ -1634,9 +1611,9 @@ public function tableop()
 
     public function table()
     {
+        return Response::json(['error' => $bug], 404);
         try {
             $forms = Form::orderBy('full_name', 'asc')->get()->toArray();
-            //  dd($forms);
             $games = Account::where('status', 'active')->get()->toArray();
 
             $activeGame = isset($_GET['game']) ? $_GET['game'] : '';
@@ -1657,7 +1634,6 @@ public function tableop()
                 ->with('formGames')
                 ->first()
                 ->toArray();
-            // dd($activeGame);
             $cashApp = CashApp::where([['status', 'active']])
                 ->get()
                 ->toArray();
@@ -1694,7 +1670,6 @@ public function tableop()
                 ->orderBy('id', 'desc')
                 ->get()
                 ->toArray();
-            // dd($activeCashApp);
 
             return view('newLayout.table', compact(
                 'forms',
@@ -1733,12 +1708,11 @@ public function tableop()
     public function tableUpdate(Request $request)
     {
 
-        // $name = FacadesRequest::input('name');
+        $compare_amount = $this->limit_amount;
+
         $created_at = isset($_GET['date'])?$_GET['date']:Carbon::now();
         $url = $request->fullUrl();
         // return [$url,$created_at];
-        try
-        {
             $gameId = $request->gameId;
             $userId = $request->userId;
             $amount = $request->amount;
@@ -1747,23 +1721,12 @@ public function tableop()
             $account = Account::findOrFail($gameId);
             $user = Form::findOrFail($userId);
             $cashApp = CashApp::findOrFail($cashAppId);
-        }
-        catch(\Exception $e)
-        {
-            $bug = $e->getMessage();
-            return Response::json(['error' => $bug], 404);
-        }
-
         $accountBalance = $account->balance;
         $userBalance = $user->balance;
-        // return $amount;
+
         $cashAppBalance = $cashApp->balance;
         $updateCashApp = CashApp::where('id', $cashAppId)->update(['balance' => ($cashAppBalance + $amount) ]);
-        // if(session()->has('tableDate')){
-        //     $created_at = session()->get('tableDate');
-        // }else{
-        //     $created_at = Carbon::now();
-        // }
+
         $cash_app_form = CashAppForm::create(['created_at' => $created_at,'form_id' => $userId, 'cash_app_id' => $cashAppId, 'account_id' => $gameId, 'amount' => $amount, 'created_by' => Auth::user()->id]);
 
         $account = Account::where('id', $gameId)->update(['balance' => ($accountBalance - $amount) ]);
@@ -1772,15 +1735,210 @@ public function tableop()
 
         //update History
         $history = History::create(['created_at' => $created_at,'form_id' => $userId, 'account_id' => $gameId, 'amount_loaded' => $amount, 'relation_id' => $user_balance->id, 'previous_balance' => $userBalance, 'final_balance' => $userBalance + $amount, 'type' => 'load', 'created_by' => Auth::user()->id]);
-        // Log::channel('cronLog')->info('This is testing for sharewarenepal.com!'
-        // $accountBalance = $account->balance;
-        // $userBalance = $user->balance;
+        try{
+            if($user->r_id != null){
+                $referal = Form::where('game_id',$user->r_id)->first();
+                $currentMonth = date('m');
+                $data = DB::table("histories")->where('form_id', $user->id)
+                        ->whereRaw('MONTH(created_at) = ?', [$currentMonth])->sum('amount_loaded');
+                if($data >= 500){
+                    if($user->is_verified == 0 || $user->is_verified == 1){
+
+                        $user->is_verified = 1;
+                        $user->save();
+
+
+                        // ReferDetails::create([
+                        //     'form_id'=>$referal->id,
+                        //     'referer_id' => $user->id,
+                        //     'total_refer'=>increment(),
+                        // ]);
+                        $form_count = Form::where('r_id', $user->r_id)->where('is_verified',1)->get();
+                        if($form_count->count() == 1){
+                            $mailData = [
+                                'user'=>$user,
+                                'referal'=>$referal,
+                                'total_amount'=>$data,
+                                'message'=>"Congratulations !! your first referal ".$user['full_name']. " made it two more to go for more bonus",
+                            ];
+
+                            $mailDataAdmin = [
+                                'user'=>$user,
+                                'referal'=>$referal,
+                                'total_amount'=>$data,
+                                'count'=>1,
+                            ];
+
+
+                            Mail::to("mangaletamang65@gmail.com")->send(new ReferNoticeAdmin(json_encode($mailDataAdmin)));
+                            Log::channel('spinnerBulk')->info("refferer = ".$referal['full_name']. "  first refer complete mail send to admin succefully");
+                            $referDetails = new ReferDetails();
+                            $referDetails->form_id = $referal->id;
+                            $referDetails->referer_id = $user->id;
+                            $referDetails->total_refer = $referDetails->increment('total_refer');
+                            $referDetails->save();
+                            // Mail::to("mangaletamang65@gmail.com")->send(new RefferNotice(json_encode($mailData)));
+                            $job = ReferDetailsJob::dispatch($mailData)->delay(now()->addMinutes(2));
+                            Log::channel('spinnerBulk')->info("refferer = ".$referal['full_name']. "  first refer complete");
+                        }
+
+                        elseif($form_count->count() == 2){
+                            $mailData = [
+                                'user'=>$user,
+                                'referal'=>$referal,
+                                'total_amount'=>$data,
+                                'message'=>"Congratulations !! your second referal " .$user['full_name']. " made it 1 more to go for more bonus",
+                            ];
+
+                            $mailDataAdmin = [
+                                'user'=>$user,
+                                'referal'=>$referal,
+                                'total_amount'=>$data,
+                                'count'=>2,
+                            ];
+
+
+                            Mail::to("mangaletamang65@gmail.com")->send(new ReferNoticeAdmin(json_encode($mailDataAdmin)));
+                            Log::channel('spinnerBulk')->info("refferer = ".$referal['full_name']. "  first refer complete mail send to admin succefully");
+                            $referDetails = new ReferDetails();
+                            $referDetails->form_id = $referal->id;
+                            $referDetails->referer_id = $user->id;
+                            $referDetails->total_refer = $referDetails->increment('total_refer');
+                            $referDetails->save();
+                            $job = ReferDetailsJob::dispatch($mailData)->delay(now()->addMinutes(2));
+                            Log::channel('spinnerBulk')->info("refferer = ".$referal['full_name']. "  first refer complete mail send to admin succefully");
+
+                        }
+                        elseif($form_count->count() == 3){
+                            $mailData = [
+                                'user'=>$user,
+                                'referal'=>$referal,
+                                'total_amount'=>$data,
+                                'message'=>"Yay, Your all three referal were great !! <br> Thanks for connecting us the right people. Have a happy holiday !!",
+                            ];
+                            $mailDataAdmin = [
+                                'user'=>$user,
+                                'referal'=>$referal,
+                                'total_amount'=>$data,
+                                'count'=>3,
+                            ];
+
+
+                            Mail::to("mangaletamang65@gmail.com")->send(new ReferNoticeAdmin(json_encode($mailDataAdmin)));
+                            Log::channel('spinnerBulk')->info("refferer = ".$referal['full_name']. "  first refer complete mail send to admin succefully");
+                            $referDetails = new ReferDetails();
+                            $referDetails->form_id = $referal->id;
+                            $referDetails->referer_id = $user->id;
+                            $referDetails->total_refer = $referDetails->increment('total_refer');
+                            $referDetails->save();
+                            $job = ReferDetailsJob::dispatch($mailData)->delay(now()->addMinutes(2));
+
+                            // Mail::to("mangaletamang65@gmail.com")->send(new RefferNotice(json_encode($mailData)));
+                            Log::channel('spinnerBulk')->info("mangal refferer = ".$referal['full_name']. " is eligible ");
+
+                        }
+                    }
+                }
+
+            }
+        }catch(\Exception $e)
+        {
+            $bug = $e->getMessage();
+            Log::channel('spinnerBulk')->info($bug);
+            return Response::json(['error' => $bug], 404);
+        }
+
+
+        // if($data >= 100 && $data <= 199 && $form->refer_amount_counter == 0){
+        //     $form->refer_amount_counter = 1;
+        //     $form->save();
+        // }elseif($data >=200 && $data <= 299 && $form->refer_amount_counter == 1){
+        //     $form->refer_amount_counter = 2;
+        //     $form->save();
+        // }elseif($data >=300 && $form->refer_amount_counter == 2){
+        //     $form->refer_amount_counter = 3;
+        //     $form->save();
+        // }
+        // if ($data >= 100 && $data <= 199 && $form->refer_amount_counter==1)
+        // {
+        //     $form->refer_amount_counter = 2;
+        //     $form->save();
+        //     $form = $form->toArray();
+        //     $referer = Form::where('game_id',$form['r_id'])->first();
+        //     if($form['r_id'] != null){
+
+        //         $mailDAta = [
+        //             'form'=>$form,
+        //             'amount'=>100,
+        //         ];
+        //     $data = [
+        //         'name'=>'mangal',
+        //     ];
+        //     // Mail::send('mails.reffernotice', $data, function($message) {
+        //     //     $message->to('mangaletamang65@gmail.com', 'Tutorials Point')->subject
+        //     //        ('Laravel Basic Testing Mail');
+
+        //     //  });
+        //         // Mail::to("mangalewiba12@gmail.com")->send(new RefferNotice());
+        //         Log::channel('spinnerBulk')->info("mangal refferer = ".$referer['full_name']. "  reffer=".$form['full_name']. "  amount loaded more thhan 100 in this month ");
+        //     }
+
+        // }
+        // elseif ($data >= 200 && $data <= 299 && $form->refer_amount_counter==2)
+        // {
+        //     $form->refer_amount_counter = 3;
+        //     $form->save();
+        //     $form = $form->toArray();
+        //     $referer = Form::where('game_id',$form['r_id'])->first();
+        //     if($form['r_id'] != null){
+
+        //         $mailDAta = [
+        //             'form'=>$form,
+        //             'amount'=>100,
+        //         ];
+        //     $data = [
+        //         'name'=>'mangal',
+        //     ];
+        //     // Mail::send('mails.reffernotice', $data, function($message) {
+        //     //     $message->to('mangaletamang65@gmail.com', 'Tutorials Point')->subject
+        //     //        ('Laravel Basic Testing Mail');
+
+        //     //  });
+        //         // Mail::to("mangalewiba12@gmail.com")->send(new RefferNotice());
+        //         Log::channel('spinnerBulk')->info("mangal refferer = ".$referer['full_name']. "reffer=".$form['full_name']. "amount loaded more thhan 200 in this month ");
+        //     }
+
+        // }elseif($data >= 300 && $form->refer_amount_counter==3)
+        // {
+        //     $form->refer_amount_counter = 0;
+        //     $form->save();
+        //     $form = $form->toArray();
+        //     $referer = Form::where('game_id',$form['r_id'])->first();
+        //     if($form['r_id'] != null){
+
+        //         $mailDAta = [
+        //             'form'=>$form,
+        //             'amount'=>100,
+        //         ];
+        //     $data = [
+        //         'name'=>'mangal',
+        //     ];
+        //     // Mail::send('mails.reffernotice', $data, function($message) {
+        //     //     $message->to('mangaletamang65@gmail.com', 'Tutorials Point')->subject
+        //     //        ('Laravel Basic Testing Mail');
+
+        //     //  });
+        //         // Mail::to("mangalewiba12@gmail.com")->send(new RefferNotice());
+        //         Log::channel('spinnerBulk')->info("mangal refferer = ".$referer['full_name']. "reffer=".$form['full_name']. "amount loaded more thhan 300 in this month ");
+        //     }
+
+        // }
         if ($user->balance != 1)
         {
             $currentMonth = date('m');
             $data = DB::table("histories")->where('form_id', $user->id)
                 ->whereRaw('MONTH(created_at) = ?', [$currentMonth])->sum('amount_loaded');
-            if ($data >= $this->limit_amount)
+            if ($data >= 100)
             {
                 // dd($data >= 600);
                 $token_id = Str::random(32);
@@ -1821,61 +1979,109 @@ public function tableop()
             }
         }
         //reffer code geretaed if load balance in a month is greater than reffer limit amount
-        $compare_amount = $this->limit_amount;
-        try
-        {
-            $year = date('Y');
-            //  $month = date('m');
-            $month = date('m');
-                // if($month != 1){
-                //     $month = $month - 1;
-                // }else{
-                //     $month = 12;
-                //     $year = $year - 1;
-                // }
-            // if($month < 10){
-            //     $month = '0'.$month;
-            // }
-            $filter_start = $year.'-'.$month.'-01';
 
-            $filter_end = date("Y-m-t", strtotime($year.'-'.$month.'-30'));
-
-            $rhistorys = History::where('type', 'load')
-                                ->where('form_id',$request->userId)
-                                ->whereBetween('created_at',[date($filter_start),date($filter_end)])
-                                ->select([DB::raw("SUM(amount_loaded) as total") , 'form_id as form_id'])
-                                ->groupBy('form_id')
-                                ->with('form')
-                                ->whereHas('form')
-                                ->get();
-            if (($rhistorys->count()) > 0)
-            {
-                $rhistorys = $rhistorys->toArray();
-                foreach ($rhistorys as $a => $b)
-                {
-                    if ($b['total'] >= $compare_amount)
-                    {
-                        if($user->reffer_id != null){
-                            $prefix = substr($user->full_name,0,2);
-                            $uniqueId = uniqid($prefix, true);
-                            $uniqueId = substr($uniqueId, 0, 6);
-                            $user->reffer_id = $uniqueId;
-                            $user->save();
-                        }
-
-                    }
-                }
-            }
-        }
-        catch(\Exception $e)
-        {
-            $bug = $e->getMessage();
-            return Response::json(['error' => $bug], 404);
-        }
         // return Response::json(['error' => $filter_start],404);
 
         return Response::json(Account::get()
             ->toArray());
+    }
+
+    public function referCron(){
+        try{
+            $users = Form::where('r_id', '!=', null)->where('is_verified',0)->get();
+            foreach($users as $user){
+                $referal = Form::where('game_id',$user->r_id)->first();
+                if($referal != null){
+                    $currentMonth = date('m');
+                    $data = DB::table("histories")->where('form_id', $user->id)
+                            ->whereRaw('MONTH(created_at) = ?', [$currentMonth])->sum('amount_loaded');
+                    if($data >= 300 && $data<=500){
+                        $remaining = 500 - $data;
+
+                        // if($user->is_verified == 0 && $user->is_verified != 1){
+                            $form_count = Form::where('r_id', $user->r_id)->where('is_verified',1)->get();
+                            if($form_count->count() == null || $form_count->count()==0){
+                                $mailData = [
+                                    'user'=>$user,
+                                    'referal'=>$referal,
+                                    'total_amount'=>$data,
+                                    'message'=>"You are almost close to get your bonus $50 after your referal " .$user->full_name." will load additonal of ".$remaining. " Thak you !!",
+                                ];
+                                Mail::to("mangaletamang65@gmail.com")->send(new RefferNotice(json_encode($mailData)));
+                                // $job = ReferDetailsJob::dispatch($mailData)->delay(now()->addMinutes(2));
+                                Log::channel('spinnerBulk')->info("refferer = ".$referal['full_name']. "  first refer complete");
+                            }elseif($form_count->count() == 1){
+                                $mailData = [
+                                    'user'=>$user,
+                                    'referal'=>$referal,
+                                    'total_amount'=>$data,
+                                    'message'=>"You are almost close to get your bonus $50 after your referal " .$user->full_name." will load additonal of ".$remaining. " Thak you !!",
+                                ];
+                                Mail::to("mangaletamang65@gmail.com")->send(new RefferNotice(json_encode($mailData)));
+                                // $job = ReferDetailsJob::dispatch($mailData)->delay(now()->addMinutes(2));
+                                Log::channel('spinnerBulk')->info("refferer = ".$referal['full_name']. "  first refer complete");
+                            }
+
+                            elseif($form_count->count() == 2){
+                                $mailData = [
+                                    'user'=>$user,
+                                    'referal'=>$referal,
+                                    'total_amount'=>$data,
+                                    'message'=>"You are almost close to get your bonus $50 after your referal " .$user->full_name." will load additonal of ".$remaining. " Thak you !!",
+                                ];
+
+                                Log::channel('spinnerBulk')->info("refferer = ".$referal['full_name']. "  first refer complete mail send to admin succefully");
+
+                            }
+                            elseif($form_count->count() == 3){
+                                $mailData = [
+                                    'user'=>$user,
+                                    'referal'=>$referal,
+                                    'total_amount'=>$data,
+                                    'message'=>"just friendly reminder that you are just ".$remaining." away to get your third strike bonus which is $150 after your referal person ".$user->name." amount mentioned earlier i.e 500 Thak you !!",
+                                ];
+                                Mail::to("mangaletamang65@gmail.com")->send(new RefferNotice(json_encode($mailData)));
+                                Log::channel('spinnerBulk')->info("mangal refferer = ".$referal['full_name']. " is eligible ");
+
+                            }
+                        // }
+                    }
+                }
+            }
+        }catch(\Exception $e)
+        {
+            $bug = $e->getMessage();
+            dd($bug);
+            Log::channel('spinnerBulk')->info($bug);
+            return Response::json(['error' => $bug], 404);
+        }
+    }
+    public function reffermail(){
+        $currentMonth = date('m');
+        $data = DB::table("histories")->where('form_id', 1)
+                ->whereRaw('MONTH(created_at) = ?', [$currentMonth])->sum('amount_loaded');
+        if ($data >= 100)
+        {
+            $form = Form::where('id', $user->id)->first()->toArray();
+            $referer = Form::where('game_id',$form['r_id'])->first();
+            if($form['r_id'] != null){
+
+                $mailDAta = [
+                    'form'=>$form,
+                    'amount'=>100,
+                ];
+
+            // Mail::send('mails.reffernotice', $data, function($message) {
+            //     $message->to('mangaletamang65@gmail.com', 'Tutorials Point')->subject
+            //        ('Laravel Basic Testing Mail');
+
+            //  });
+                // Mail::to("mangalewiba12@gmail.com")->send(new RefferNotice());
+                Log::channel('spinnerBulk')->info("Mail send successfully to use ");
+            }
+
+        }
+
     }
     public function referBalance(Request $request)
     {
@@ -1966,6 +2172,7 @@ public function tableop()
     }
     public function loadCashBalance(Request $request)
     {
+        return Response::json(['error' => $bug], 404);
         try
         {
             $cashAppId = $request->cashAppId;
@@ -1999,6 +2206,37 @@ public function tableop()
         // Log::channel('cronLog')->info('This is testing for ItSolutionStuff.com!'
         // $accountBalance = $account->balance;
         // $userBalance = $user->balance;
+        $month = date('m');
+        $filter_start = $year.'-'.$month.'-01';
+
+        $filter_end = date("Y-m-t", strtotime($year.'-'.$month.'-30'));
+
+        $rhistorys = History::where('type', 'load')
+                            ->where('form_id',$request->userId)
+                            ->whereBetween('created_at',[date($filter_start),date($filter_end)])
+                            ->select([DB::raw("SUM(amount_loaded) as total") , 'form_id as form_id'])
+                            ->groupBy('form_id')
+                            ->with('form')
+                            ->whereHas('form')
+                            ->get();
+        if (($rhistorys->count()) > 0)
+        {
+            $rhistorys = $rhistorys->toArray();
+            foreach ($rhistorys as $a => $b)
+            {
+                if ($b['total'] >= $compare_amount)
+                {
+                    if($user->reffer_id != null){
+                        $prefix = substr($user->full_name,0,2);
+                        $uniqueId = uniqid($prefix, true);
+                        $uniqueId = substr($uniqueId, 0, 6);
+                        $user->reffer_id = $uniqueId;
+                        $user->save();
+                    }
+
+                }
+            }
+        }
 
         return Response::json(Account::get()
             ->toArray());
@@ -2238,7 +2476,7 @@ public function tableop()
         $final = [];
         $totals = ['tip' => 0, 'load' => 0, 'redeem' => 0, 'refer' => 0, 'cashAppLoad' => 0];
         $forms = [];
-
+        $old=[];
         $data = [['SN', 'Date', 'FB Name', 'Game', 'Game ID', 'Amount', 'Type', 'Creator']];
         if (($history > 0))
         {
@@ -2940,6 +3178,170 @@ public function tableop()
         // dd($grouped);
         return view('newLayout.redeem-history', compact('doubt','countVerified','status','grouped', 'month', 'year', 'form_games','total', 'all_months','forms','games','game_categories','sel_cat'));
     }
+
+    public function refferDetails(Request $request){
+        $year = isset($_GET['year']) ? $_GET['year'] : '';
+        $month = isset($_GET['month']) ? $_GET['month'] : '';
+        $sel_cat = isset($_GET['category']) && $_GET['category'] ? $_GET['category'] : '';
+        $game_categories = Account::select('name')->distinct()->get();
+        $emptyMonth = 0;
+        if (empty($year))
+        {
+            $year = date('Y');
+        }
+        if (empty($month))
+        {
+            $emptyMonth = 1;
+            $month = date('m');
+        }
+        if($emptyMonth == 0){
+                if ($month < 10)
+                {
+                    $month = '0'.$month;
+                }
+        }
+        $filter_start = $year.'-'.$month.'-01';
+        // $filter_end = Carbon::now();
+        $filter_end = date("Y-m-t", strtotime($year.'-'.$month.'-30'));
+        $historys = History::where('type', 'load')
+                            ->whereBetween('created_at',[date($filter_start),date($filter_end)])
+                            ->select([DB::raw("SUM(amount_loaded) as total") , 'form_id as form_id'])
+                            ->groupBy('form_id')
+                            ->with('form')
+                            ->whereHas('form')
+                            ->get();
+        $usersDetails = [];
+        $memberTotal = [];
+        $historys =  $historys->toArray();
+        // dd($historys);
+        foreach($historys as $key => $item){
+            $totalRefferLoad = 0;
+                // if($item['total'] >= 500){
+                    $forms = Form::where('id',$item['form_id'])->first()->toArray();
+                    $value = $forms['game_id'];
+                    if($forms['game_id']!=null){
+                        // DB::table($this->table)->where($this->column, $value)
+                        //                 ->orWhere(function ($query) use ($value) {
+                        //                     $query->where(DB::raw("SUBSTRING($this->column, 3)"), '=', $value);
+                        //                 })
+                        $refferMonth = Form::where('r_id',$value)
+                                            ->orWhere(function ($query) use ($value) {
+                                            $query->where(DB::raw("SUBSTRING('r_id', 3)"), '=', $value);
+                                        })
+                                        ->whereBetween('created_at',[date($filter_start),date($filter_end)])->get();
+                        $totalReffer = Form::where('r_id',$value)
+                                            ->orWhere(function ($query) use ($value) {
+                                            $query->where(DB::raw("SUBSTRING('r_id', 3)"), '=', $value);
+                                        })
+                                            ->get();
+                        // $countVerified = Form::where('r_id',$value)
+                        //                 ->orWhere(function ($query) use ($value) {
+                        //                 $query->where(DB::raw("SUBSTRING('r_id', 3)"), '=', $value);
+                        //             })->where('is_verified',1)->get();
+                        $countVerified = Form::where('r_id',$value)
+                                        ->where('is_verified',1)->get();
+
+                        $refferMonthCount = $refferMonth->count();
+                        $totalRefferCount = $totalReffer->count();
+                        $refferMonth = $refferMonth->toArray();
+                        $totalReffer = $totalReffer->toArray();
+                        foreach($historys as $members){
+                            foreach($totalReffer as $reffer){
+                                if($members['form_id']== $reffer['id']){
+                                    $memberTotal[] = $members;
+                                    $totalRefferLoad += $members['total'];
+                                }
+                            }
+
+                        }
+                        $usersDetails[]=[
+                            'countVerified'=>$countVerified->count(),
+                            'users'=>$forms,
+                            'total'=>$item['total'],
+                            'refferMonth'=>$refferMonth,
+                            'totalReffer'=>$totalReffer,
+                            'refferMonthCount'=>$refferMonthCount,
+                            'totalRefferCount'=>$totalRefferCount,
+                            'totalRefferLoad'=>$totalRefferLoad,
+                        ];
+
+                // }
+            }
+        }
+        $usersDetails = $usersDetails;
+        // dd($usersDetails);
+        // dd($memberTotal);
+        $all_months = ['1' => 'January', '2' => 'February', '3' => 'March', '4' => 'April', '5' => 'May', '6' => 'June', '7' => 'July', '8' => 'August', '9' => 'September', '10' => 'October', '11' => 'November', '12' => 'December'];
+        $forms = Form::orderBy('id', 'desc')->get()->toArray();
+        $games = Account::orderBy('id', 'desc')->get()->toArray();
+        return view('newLayout.reffer_details', compact('usersDetails','memberTotal', 'month', 'year', 'all_months','sel_cat','game_categories'));
+    }
+
+    public function refferDetailsMember(Request $request){
+        ini_set('max_execution_time', '300');
+        $year = isset($request->year) ? $request->year : '';
+        $month = isset($request->month) ? $request->month : '';
+        $sel_cat = isset($request->category) ? $request->category : '';
+        $game_categories = Account::select('name')->distinct()->get();
+        $emptyMonth = 0;
+        if (empty($year))
+        {
+            $year = date('Y');
+        }
+        if (empty($month))
+        {
+            $emptyMonth = 1;
+            $month = date('m');
+        }
+        if($emptyMonth == 0){
+                if ($month < 10)
+                {
+                    $month = $month;
+                }
+        }
+        $filter_start = $year.'-'.$month.'-01';
+        // $filter_end = Carbon::now();
+        $filter_end = date("Y-m-t", strtotime($year.'-'.$month.'-30'));
+        $historys = History::where('type', 'load')
+                            ->whereBetween('created_at',[date($filter_start),date($filter_end)])
+                            ->with('form')
+                            ->whereHas('form')
+                            ->get();
+        $usersDetails = [];
+        $historys =  $historys->toArray();
+        $forms = Form::where('id',$request->form)->first()->toArray();
+        $value = $forms['game_id'];
+        $totalReffer = Form::where('r_id',$value)
+                            ->orWhere(function ($query) use ($value) {
+                                            $query->where(DB::raw("SUBSTRING('r_id', 3)"), '=', $value);
+                                        })
+                        ->get()->toArray();
+        foreach($totalReffer as $member){
+            foreach($historys as $key => $item){
+                if($item['form_id']==$member['id']){
+                    $formGame = FormGame::where('form_id',$member['id'])->first();
+
+                    $usersDetails[]=[
+                        "user" => $item,
+                        "game"=>$formGame->account->name,
+                    ];
+                }
+
+            }
+        }
+
+        $usersDetails = $usersDetails;
+        // dd($usersDetails);
+        return response()->json(['usersDetails'=>$usersDetails,'history'=> $historys,'year'=>$year,'month'=>$month]);
+    }
+
+    public function removeRefferMember(Request $request){
+        $form = Form::where('id',$request->id)->first();
+        $form->is_verified = $request->value;
+        $form->save();
+        return response()->json($request->value);
+    }
+
     public function recursiveCheck($new,$redeem){
         $newRedeem = 0;
         // dd('asd');
@@ -3208,6 +3610,8 @@ public function tableop()
         }
         return view('newLayout.redeems-history', compact('history','filter_start','filter_end'));
     }
+
+
     public function todaysHistory()
     {
         if (Auth::user()->role != 'admin'){

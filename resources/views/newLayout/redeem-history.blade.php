@@ -294,7 +294,7 @@
                                     $current_month = $i;
                                 @endphp
                             @endif
-                            <a href="{{ '/redeem-history?year=' . $year . '&month=' . $m . ($sel_cat ? '&category=' . $sel_cat : '') }}"
+                            <a href="{{ URL::to('/redeem-history?year=' . $year . '&month=' . $m . ($sel_cat ? '&category=' . $sel_cat : '')) }}"
                                 class="btn btn-success w-100 mb-1 {{ $z == $m ? 'active-game-btn' : '' }}">
                                 {{ $i }}
                             </a>
@@ -308,13 +308,13 @@
    <div class="col-md-12 card upCard">
       <div class="card-body">
          <div class="row">
-            <div class="col-2 game-head-btn-div">  
+            <div class="col-2 game-head-btn-div">
                <a href="{{ route('monthlyHistory').'?year='.$year.'&month='.$z}}" class="btn btn-success w-100 mb-1 {{($sel_cat == '')?'active-game-btn':''}}" class="btn btn-success w-100 mb-1">
                   All
                </a>
             </div>
-            @foreach ($game_categories as $gc => $c) 
-            <div class="col-2 game-head-btn-div">  
+            @foreach ($game_categories as $gc => $c)
+            <div class="col-2 game-head-btn-div">
                <a href="{{ route('monthlyHistory').'?year='.$year.'&month='.$z.'&category='.$c->name}}" class="btn btn-success w-100 mb-1 {{($c->name == $sel_cat)?'active-game-btn':''}}" class="btn btn-success w-100 mb-1">
                   {{$c->name}}
                </a>
@@ -477,10 +477,10 @@
                                                                     </div>
                                                                     <div class="card-body px-0 pt-0 pb-2">
                                                                         {{-- <div class="row display-inline-flex"> --}}
-                                                                        {{-- <div class="col-4">   
+                                                                        {{-- <div class="col-4">
                                                       <input type="date" name="start" class="filter-start">
                                                    </div>
-                                                   <div class="col-4">   
+                                                   <div class="col-4">
                                                       <input type="date" name="end" class="filter-end">
                                                    </div> --}}
                                                                         {{-- <div class="col-4">    --}}
@@ -697,10 +697,10 @@
                                                                     </div>
                                                                     <div class="card-body px-0 pt-0 pb-2">
                                                                         {{-- <div class="row display-inline-flex"> --}}
-                                                                        {{-- <div class="col-4">   
+                                                                        {{-- <div class="col-4">
                                                       <input type="date" name="start" class="filter-start">
                                                    </div>
-                                                   <div class="col-4">   
+                                                   <div class="col-4">
                                                       <input type="date" name="end" class="filter-end">
                                                    </div> --}}
                                                                         {{-- <div class="col-4">    --}}

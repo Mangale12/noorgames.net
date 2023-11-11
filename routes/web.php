@@ -55,6 +55,13 @@ Route::get('/', function () {
     }
     // return view('welcome');
 })->name('homePage');
+Route::get('handy', function(){
+    // dd("test");
+    return view('handyemail');
+});
+Route::get('welcome',function(){
+    return view('admin.welcome.index');
+});
 Route::get('/game/{x}', [FormNumberConroller::class, 'go'])->name('fire.go');
 //formtest route
 Route::get('/ohana',function()
@@ -112,7 +119,7 @@ Route::resource('forms', FormController::class);
 Route::get('forms/edit/{id}', [FormController::class, 'edit'])->name('forms.edit');
 Route::post('saveNoteForm', [FormController::class, 'saveNote'])->name('forms.saveNoteForm');
 Route::get('forms/destroy/{id}', [FormController::class, 'destroy'])->name('forms.destroy');
-
+Route::post('/reffer-details-edit',[App\Http\Controllers\NewHomeController::class, 'refferDetailsEdit'])->name('refferDetailsEdit');
 Route::get('unsubscribed', [FormController::class, 'unsubSuccess'])->name('unsubSuccess');
 Route::get('unsubscribe', [FormController::class, 'unsubscribe'])->name('forms.unsubscribe');
 Route::post('unsubStore', [FormController::class, 'unsubStore'])->name('forms.unsubStore');
@@ -135,10 +142,9 @@ Route::post('colab/update/', [FormNumberConroller::class, 'update'])->name('cola
 Route::get('/deleted-players',[App\Http\Controllers\HomeController::class, 'deletedPlayers'])->name('deleted.players');
 Route::get('players/restore/{id}', [FormController::class, 'restorePlayers'])->name('forms.restore');
 Route::get('players/fdestroy/{id}', [FormController::class, 'forceDeletePlayers'])->name('forms.fdestroy');
-Route::middleware('auth:api')->group(function () {
-    Route::get('/dashboard', [App\Http\Controllers\NewHomeController::class, 'dashboard'])->name('dashboard');
-
-});
+Route::get('/dashboard', function(){
+    return view('settings');
+})->name('dashboard');
 Route::post('/change-color', [App\Http\Controllers\NewHomeController::class, 'changeColor'])->name('change-color');
 Route::get('/gamers', [App\Http\Controllers\NewHomeController::class, 'gamers'])->name('gamers');
 Route::get('/gamers/edit/{id}', [App\Http\Controllers\NewHomeController::class, 'gamerEdit'])->name('gamerEdit');
@@ -177,7 +183,7 @@ Route::get('/table', [SearchTableController::class, 'table'])->name('table')->mi
 Route::post('/table', [SearchTableController::class, 'table'])->name('table.search')->middleware('auth');
 Route::post('/table-search', [SearchTableController::class, 'tableSearch'])->name('tableSearch')->middleware('auth');
 
-Route::get('super-admi/settings',function(){
+Route::get('super-admin/settings',function(){
     return view('settings');
 })->middleware('auth');
 
@@ -186,6 +192,9 @@ Route::get('/redeem-history', [NewHomeController::class, 'redeemHistory'])->name
 Route::get('/redeems', [NewHomeController::class, 'redeems'])->name('redeems')->middleware('auth');
 Route::post('/redeems', [NewHomeController::class, 'redeems'])->name('redeems.filter')->middleware('auth');
 // Route::get('/redeem-filter', [NewHomeController::class, 'redeem-filter'])->name('redeems.filter')->middleware('auth');
+Route::get('reffer-details',[App\Http\Controllers\NewHomeController::class, 'refferDetails']);
+Route::post('/reffer-details',[App\Http\Controllers\NewHomeController::class, 'refferDetailsMember'])->name('reffer_member');
+Route::post('/remove-reffer-member',[App\Http\Controllers\NewHomeController::class, 'removeRefferMember'])->name('remove_reffer_member');
 
 Route::post('/table-loadBalance', [App\Http\Controllers\NewHomeController::class, 'tableUpdate'])->name('tableUpdate');
 Route::post('/table-loadCashBalance', [App\Http\Controllers\NewHomeController::class, 'loadCashBalance'])->name('loadCashBalance');
@@ -300,7 +309,7 @@ Route::get('admin/image',[FrontendSettingController::class,'image'])->name('imag
 Route::resource('/imageupload',ImageController::class);
 Route::post('/changestatus',[ImageController::class,'updateStatus'])->name('image.update_status')->middleware('admin');
 Route::get('logs', [\Rap2hpoutre\LaravelLogViewer\LogViewerController::class, 'index'])->name('logs')->middleware('admin');
-
+Route::get('reffermail',[App\Http\Controllers\NewHomeController::class,'reffermail']);
 Route::get('/admin/colab', [App\Http\Controllers\HomeController::class, 'colab'])->name('colab')->middleware('admin');
 Route::get('colab/edit/{id}', [FormNumberConroller::class, 'edit'])->name('colab.edit')->middleware('admin');
 Route::get('colab/destroy/{id}', [FormNumberConroller::class, 'destroy'])->name('colab.destroy')->middleware('admin');

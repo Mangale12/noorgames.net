@@ -3,13 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="csrf-token" content="{{ csrf_token() }}" />
-  <title>CodePen - How To Use Switchery</title>
+  <title>Super admin</title>
   <link rel='stylesheet' href='https://abpetkov.github.io/switchery/dist/switchery.min.css'>
 <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.min.css'>
 <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css'>
 
 </head>
 <body>
+    @php
+        $appFeatures = \App\Models\SuperAdmin::first();
+
+    @endphp
 <!-- partial:index.partial.html -->
 <div class="container">
 <h2>Checkbox Style, Inits, Changes, Sets</h2>

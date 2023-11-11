@@ -34,17 +34,17 @@ class NewRegistrationAlert implements ShouldQueue
      * @return void
      */
     public function handle()
-    {        
-        $settings = GeneralSetting::first();
-        $details = [
-            'text' => $this->details,
-            'theme' => ($settings->theme)
-        ];
-        if(!empty($settings->new_register_mail)){
-            $emails = explode(',',$settings['new_register_mail']);
-            foreach($emails as $a){
-                Mail::to($a)->send(new UserNoticMail(($details)));
-            }
-        }
+    {
+    //     $settings = GeneralSetting::first();
+    //     $details = [
+    //         'text' => $this->details,
+    //         'theme' => ($settings->theme)
+    //     ];
+    //     if(!empty($settings->new_register_mail)){
+    //         $emails = explode(',',$settings['new_register_mail']);
+    //         foreach($emails as $a){
+    //             Mail::to($a)->send(new UserNoticMail(($details)));
+    //         }
+    //     }
     }
 }

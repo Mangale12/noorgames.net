@@ -40,67 +40,67 @@ class InactiveBulkMail implements ShouldQueue
      */
     public function handle()
     {
-        $days = $this->details['days'];
-        $message = $this->details['message'];
-        $subject = $this->details['subject'];
-        
-        $users = FormGame::select('form_id')->distinct()->get()->toArray();
+        // $days = $this->details['days'];
+        // $message = $this->details['message'];
+        // $subject = $this->details['subject'];
 
-        $balance = FormBalance::select('form_id')->where('created_at', '>', Carbon::now()->subDays($days))->distinct()->get()->toArray();
+        // $users = FormGame::select('form_id')->distinct()->get()->toArray();
 
-        $differenceArray = self::multi_array_diff($users, $balance);
-        $array = array_column($differenceArray, 'form_id');
-        // Log::channel('cronLog')->info($differenceArray);
-        $forms = Form::whereIn('id', $array)->get();
-        
+        // $balance = FormBalance::select('form_id')->where('created_at', '>', Carbon::now()->subDays($days))->distinct()->get()->toArray();
 
-        if($forms->isEmpty()){
-            Log::channel('cronLog')->info('List Empty');
-        }else{
-            foreach($forms as $a => $form){
-                try
-                    {
-                        $data = [
-                            'days' => $days,
-                            'message' => $message,
-                            'subject' => $subject,
-                            'name' => $form->full_name,
-                            'form_id' => $form->id,
-                            'form_email' => $form->email,
-                        ];
-                        // $data['name'] = $form->full_name;
-                        // $data['form_id'] = ($form->id);
-                        Mail::to($form->email)->send(new MailInactiveBulkMail(json_encode($data)));
+        // $differenceArray = self::multi_array_diff($users, $balance);
+        // $array = array_column($differenceArray, 'form_id');
+        // // Log::channel('cronLog')->info($differenceArray);
+        // $forms = Form::whereIn('id', $array)->get();
 
-                        //save log
-                        Unsubmail::create([
-                            'form_id' => $form->id,
-                            'full_name' => $form->full_name,
-                            'email' => $form->email,
-                            'days' => $days
-                        ]);
-                        Log::channel('cronLog')->info("Mail sent successfully to ".$form->email);
-                }
-                catch(\Exception $e)
-                {
-                    $bug = $e->getMessage();
-                    Log::channel('cronLog')->info($bug);
-                }
 
-            }
-        }
+        // if($forms->isEmpty()){
+        //     Log::channel('cronLog')->info('List Empty');
+        // }else{
+        //     foreach($forms as $a => $form){
+        //         try
+        //             {
+        //                 $data = [
+        //                     'days' => $days,
+        //                     'message' => $message,
+        //                     'subject' => $subject,
+        //                     'name' => $form->full_name,
+        //                     'form_id' => $form->id,
+        //                     'form_email' => $form->email,
+        //                 ];
+        //                 // $data['name'] = $form->full_name;
+        //                 // $data['form_id'] = ($form->id);
+        //                 Mail::to($form->email)->send(new MailInactiveBulkMail(json_encode($data)));
+
+        //                 //save log
+        //                 Unsubmail::create([
+        //                     'form_id' => $form->id,
+        //                     'full_name' => $form->full_name,
+        //                     'email' => $form->email,
+        //                     'days' => $days
+        //                 ]);
+        //                 Log::channel('cronLog')->info("Mail sent successfully to ".$form->email);
+        //         }
+        //         catch(\Exception $e)
+        //         {
+        //             $bug = $e->getMessage();
+        //             Log::channel('cronLog')->info($bug);
+        //         }
+
+        //     }
+        // }
 
     }
-    
-    function multi_array_diff($arraya, $arrayb)
-    {
-        foreach ($arraya as $keya => $valuea)
-        {
-            if (in_array($valuea, $arrayb))
-            {
-                unset($arraya[$keya]);
-            }
-        }
-        return $arraya;
-    }
+
+    // function multi_array_diff($arraya, $arrayb)
+    // {
+    //     foreach ($arraya as $keya => $valuea)
+    //     {
+    //         if (in_array($valuea, $arrayb))
+    //         {
+    //             unset($arraya[$keya]);
+    //         }
+    //     }
+    //     return $arraya;
+    // }
 }

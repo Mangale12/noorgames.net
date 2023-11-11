@@ -26,9 +26,9 @@
                 <div class="">
 
                     <h6>Just Search The Player Name </h6>
-                    
-                    <button  class="btn  btn-primary mb-0 datepickeTrigger" style="background-color:#00ff00;"> 
-                        <span>[ Selected Date : {{((isset($_GET['date']) && !empty($_GET['date']))?session()->get('tableDate'):'')}} ]</span> 
+
+                    <button  class="btn  btn-primary mb-0 datepickeTrigger" style="background-color:#00ff00;">
+                        <span>[ Selected Date : {{((isset($_GET['date']) && !empty($_GET['date']))?session()->get('tableDate'):'')}} ]</span>
                         <input name="tableDate" id="tableDate" style="position: absolute;clip: rect(0,0,0,0);">
                     </button>
                 </div>
@@ -65,7 +65,7 @@
                                                 <label for="filter-game12">Game:</label>
                                                 <select id="filter-game12" name="game" id="filter-game12" class="filter-game12">
                                                     <option value="all">All</option>                         --}}
-                                                      @foreach (\App\Models\Account::get()->toArray() as $key => $item)    
+                                                      @foreach (\App\Models\Account::get()->toArray() as $key => $item)
                                                       <option value="{{$item['id']}}">{{$item['name']}}</option>
                                                       @endforeach
                                                    </select>
@@ -75,7 +75,7 @@
                                                 <select id="filter-user12" name="user" id="filter-user12" class="filter-user12">
                                                     <option value="all">All</option>
                                                     {{-- @if (isset($forms) && !empty($forms))                              --}}
-                                                    @foreach (\App\Models\Form::get()->toArray() as $key => $item)      
+                                                    @foreach (\App\Models\Form::get()->toArray() as $key => $item)
                                                     <option value="{{$item['id']}}">{{(empty($item['facebook_name']))?'Empty':$item['facebook_name']}}</option>
                                                     @endforeach
                                                     {{-- @endif --}}
@@ -86,7 +86,7 @@
 
                                                 <label for="filter-end12">End Date:</label>
                                                 <input id="filter-end12" type="date" name="end" class="filter-end12">
-                                                
+
                                                 <button class="btn btn-primary filter-undo">Filter</button>
                                         </div>
                                         <div class="col-12">
@@ -98,7 +98,7 @@
                                                         <table class="table table-responsive align-items-center mb-0">
                                                             <thead class="sticky" >
                                                                 <tr>
-                                                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">                
+                                                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                                                         <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="far fa-square"></i>
                                                                         </button>
                                                                     </th>
@@ -171,11 +171,11 @@
                dropdownParent: $('#popup33')
            });
     });
-    
+
     function add_class(class_name){
         $("#popup33").addClass(class_name);
         $("#popup33 .my_select2").select2();
-       
+
     }
     // End Muniraj
 $('#tableDate').datepicker({
@@ -204,3 +204,8 @@ $('.datepickeTrigger').click(function() {
     });
 </script>
 @endsection
+
+
+
+
+

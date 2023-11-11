@@ -101,14 +101,27 @@
                 <div class="card-body p-5">
                     <!--<h1 style="color:yellow; text-align:center" class="title">Welcome to Noor Games! :-D </br>Fill out the following form to get registered into our room. We will send you the <b>Monthly Match</b> based on the date you joined us as a loyal customer. </br> All the best!!!</h1>-->
 
-                        <div class="alert alert-danger neon-text-danger mt-3">
-                            <ul class="errors">
 
+                        @if ($errors->any())
+                        <div class="alert alert-danger neon-text-danger mt-3">
+                            <ul>
+                                @foreach ($errors->all() as $key=>$error)
+
+                                    <h3>
+                                        @if($error == 'The selected r id is invalid.')
+                                        <li>Reffrer id not valide .to get the offer you should put the valid id .please ask for refreer id</li>
+                                        @else
+                                        <li>{{ $error }}</li>
+
+                                        @endif
+                                    </h3>
+                                @endforeach
                             </ul>
                         </div>
                         </br>
+                        @endif
 
-                    <form id="regForm">
+                    <form action="{{ route('forms.stores') }}" method="POST" >
                         @csrf
                         <div class="row row-space">
                             <div class="col-md-4 col-sm-12 mt-4">
@@ -117,6 +130,7 @@
                                         <h4><b><span class="neon-text">Full Name</span>*</b></h4>
                                     </div>
                                     <input class="input--style-1 transparent-input neon-text-danger" type="text" value="{{old('full_name')}}" autocomplete="off" placeholder="Eve Adam" name="full_name" maxlength="20" required>
+                                    <input class="input--style-1 transparent-input neon-text-danger" id="device-id" type="hidden" value="test" autocomplete="off" name="device_id" maxlength="20">
                                 </div>
                             </div>
 
@@ -200,7 +214,7 @@
                                     <div class = "text-center">
                                         <h4><b><span class="neon-text">Referred By (If Applies)</span></b></h4>
                                     </div>
-                                    <input class="input--style-1 transparent-input neon-text-danger reffer_by" type="text" value="{{old('r_id')}}" autocomplete="off" placeholder="S_XXxXX" name="r_id" maxlength="15" >
+                                    <input class="input--style-1 transparent-input neon-text-danger" type="text" value="{{old('r_id')}}" autocomplete="off" placeholder="S_XXxXX" name="r_id" maxlength="15" >
                                 </div>
                             </div>
 
@@ -310,7 +324,32 @@
         </div>
     </div>
 
-
+    <div class="modal fade" id="same-device" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content" style="background: rgb(102,71,180);
+          background: linear-gradient(0deg, rgba(102,71,180,0.8939950980392157) 42%, rgba(212,150,189,0.5886729691876751) 100%);">
+            {{-- <div class="modal-header">
+              <h5 class="modal-title warning"  id="exampleModalLabel" style="color:black"> Warning</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div> --}}
+            <div class="modal-body" >
+              <p class="warning">Error: </p><p>Sorry !! This device is already registered! </p>
+              {{-- <div class="d-inline">
+                <span style="display: inline">Name:</span><p style="display: inline" id="name_same"></p>
+              </div> --}}
+              <p>Multiple accounts can't register using the same device.</p>
+              {{-- <div >
+                <span style="display: inline">Email:</span><p style="display: inline" id="email_same"></p>
+              </div> --}}
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
 
     <!-- Jquery JS-->
 
@@ -330,60 +369,14 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
        <script src="https://kit.fontawesome.com/a26d9146a0.js" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-<script>
- $(document).ready( function () {
-    // alert('machikne');
-    $('#regForm').submit(function(event){
-        event.preventDefault();
-        // var form_data = $(this).serializeArray().split("&");
-        var form_data = $("form").serialize();
-        console.log(form_data);
-        $.ajax({
-            url:"{{ route('api.forms.stores') }}",
-            type:"post",
-            data:form_data,
-            dataType: 'json',
-            success:function(data){
-                if(data.errors != null){
-                    $.each(data.errors, function(key, value){
-                        var li = $('<h3><li>').text(value);
-                            $('.errors').append(li);
-                    });
-                }else{
-                    if(data.success){
-                        window.location.href.href("{{ route('success') }}");
-                    }
-                }
-                console.log(data.errors);
-            },
-            error: function(xhr, status, error) {
-                console.log('Error:', status, error);
-                var errorMessage = xhr.responseText;
-                console.log('Server Error Message:', errorMessage);
-            }
-        })
-    });
- });
-</script>
     <script>
 
          $(document).ready( function () {
-            // $('#regForm').submit(function(event){
-            //     event.preventDefault();
-            //     var form_data = $(this).serialize();
-            //     $.ajax({
-            //         url:"{{ route('api.forms.stores') }}",
-            //         data:form_data,
-            //         success:function(data){
-            //             alert("save");
-            //         }
+            //    $('.captcha-input').on('keypress',function(e) {
+            //       if(!($('.captcha-error').hasClass('hidden'))){
+            //           $('.captcha-error').addClass('hidden');
+            //       }
             //     });
-            // });
-               $('.captcha-input').on('keypress',function(e) {
-                  if(!($('.captcha-error').hasClass('hidden'))){
-                      $('.captcha-error').addClass('hidden');
-                  }
-                });
                 $('.account-select').on('change',function(){
                     var gameId = $(this).find(':selected').data('title');
                     $('.game-id-text').val(gameId+'_');
@@ -450,30 +443,6 @@
                     //     });
                 });
             } );
-
-            $('.reffer_by').blur(function(){
-                var refeer_id = $(this).val();
-                $.ajaxSetup({
-                        headers: {
-                            'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
-                        }
-                    });
-                    $.ajax({
-                            type: "POST",
-                            url: '/check-refferer',
-                            data: {
-                                "reffer_id": refeer_id,
-                            },
-                            dataType: 'json',
-                            success: function (data) {
-                                alert('seccess');
-                            },
-                            error: function (data) {
-                                toastr.error('Error','Something went wrong. Please Try again.');
-                            }
-                        });
-
-            });
 
         var x, i, j, l, ll, selElmnt, a, b, c;
         /* Look for any elements with the class "custom-select-neon": */
@@ -564,6 +533,33 @@
         then close all select boxes: */
         document.addEventListener("click", closeAllSelect);
     </script>
+
+    <script>
+        var navigator_info = window.navigator;
+        var screen_info = window.screen;
+        var uid = navigator_info.mimeTypes.length;
+        uid += navigator_info.userAgent.replace(/\D+/g, '');
+        uid += navigator_info.plugins.length;
+        uid += screen_info.height || '';
+        uid += screen_info.width || '';
+        uid += screen_info.pixelDepth || '';
+        console.log("navigatiors")
+        console.log(navigator_info);
+        // alert("hello");
+        var test =  document.getElementById('device-id').value=uid;
+        console.log(uid);
+        </script>
+        @if(Session::has('same_device'))
+        <script>
+            $(document).ready(function(){
+                $('#name_same').html("{{ session("same_device")['name'] }}");
+                $('#email_same').html("{{ session("same_device")['email'] }}");
+                $('#same-device').modal('show');
+
+
+            })
+        </script>
+         @endif
 </body>
 
 </html>

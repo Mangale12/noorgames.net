@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\FormTip;
+use App\Models\Account;
 
 class Form extends Model
 {
@@ -25,5 +26,8 @@ class Form extends Model
     }
     public function unsubmail(){
         return $this->hasMany(Unsubmail::class, 'form_id','id')->orderBy('id','desc');
+    }
+    public function account(){
+        return $this->hasOne(Account::class,'id','account_id');
     }
 }

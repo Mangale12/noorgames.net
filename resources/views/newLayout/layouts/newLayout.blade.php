@@ -12,6 +12,8 @@
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no'
         name='viewport' />
         <meta name="csrf-token" content="{{ csrf_token() }}">
+        <meta name="csrf-token" content="{{ csrf_token() }}" />
+
     <!--     Fonts and icons     -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
     <!-- Nucleo Icons -->
@@ -238,6 +240,8 @@ body {
             }
         }
         $categories = appFeatures()['categories'];
+        $subCategories = appFeatures()['subcategories'];
+
 
     @endphp
     <div class="min-height-300  position-absolute w-100 back-image-game"></div>
@@ -296,22 +300,68 @@ body {
 
                         <ul id="menu-content" class="menu-content collapse out">
                             @foreach ($categories as $category)
-                            @if(Auth::user()->role == $category['role'] || Auth::user()->role=='admin')
-                            <li class="nav-item">
-                                <a class="nav-link {{ $category['link'] == URL::current() ? 'active' : '' }}" href="{{ $category['link'] }}">
-                                    <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                                        @if($category['icon'] != null)
-                                        {!! $category['icon'] !!}
-                                        @else
-                                        <i class="ni ni-tv-2 text-primary text-sm opacity-10"></i>
-                                        @endif
+                                @php
+                                    $role = explode(',',$category['role']);
+                                @endphp
+                                @if($category['is_parent']==0)
+                                @if($category['sub_category'] == null)
+                                    @if(in_array(Auth::user()->role, $role) || Auth::user()->role=='admin')
+                                    <li class="nav-item">
+                                        <a class="nav-link {{ $category['link'] == URL::current() ? 'active' : '' }}" href="{{ URL::to($category['link']) }}">
+                                            <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                                                @if($category['icon'] != null)
+                                                {!! $category['icon'] !!}
+                                                @else
+                                                <i class="ni ni-tv-2 text-primary text-sm opacity-10"></i>
+                                                @endif
 
+                                            </div>
+                                            <span class="nav-link-text ms-1">{{ $category['name']}} </span>
+                                        </a>
+                                    </li>
+                                    @endif
+                                    @endif
+                                @else
+                                <li  data-toggle="collapse" data-target="#products" class="collapsed  nav-item">
+                                    <a class="nav-link {{Route::is('todays-history','monthlyHistory','all-history','redeemHistory') ? 'active' : ' '}}" >
+                                    <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                                        <i class="fa fa-history text-warning text-sm opacity-10"></i>
                                     </div>
-                                    <span class="nav-link-text ms-1">{{ $category['name']}} </span>
-                                </a>
-                            </li>
+                                    <span class="nav-link-text ms-1">{{ $category['name'] }}</span> <span class="arrow"></span></a>
+                                </li>
+                                @php
+                                $subCategories = [];
+                                    foreach($categories as $subCategory){
+                                        if($subCategory['sub_category']==$category['id']){
+                                            $subCategories[] = $subCategory;
+                                        }
+                                    }
+                                    $subCategories = $subCategories;
+                                    // dd($subCategories);
+                                @endphp
+                                <ul class="sub-menu collapse" id="products">
+                                    @foreach ($subCategories as $subCategory)
+                                    @if(in_array(Auth::user()->role, $role) || Auth::user()->role=='admin')
+                                    <li class="nav-item">
+                                        <a class="nav-link {{ request()->segment(1) == 'todays-history' ? 'active' : '' }}"
+                                            href="{{ route('todays-history') }}">
+                                            <div
+                                                class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                                                <i class="fa fa-history text-warning text-sm opacity-10"></i>
+                                            </div>
+                                            <span class="nav-link-text ms-1">{{ $subCategory['name'] }}</span>
+                                        </a>
+                                    </li>
+                                    @endif
+                                    @endforeach
+
+                                </ul>
+
                             @endif
                             @endforeach
+
+
+
                             {{-- <li class="nav-item">
                                 <a class="nav-link {{ request()->segment(1) == 'dashboard' && request()->segment(2) != 'colab' ? 'active' : '' }}"
                                     href="{{ route('dashboard') }}">

@@ -23,8 +23,7 @@ use App\Models\History;
 use App\Models\Unsubmail;
 use Exception;
 use Illuminate\Support\Facades\Log;
-use App\Models\FormRefer;
-use Illuminate\Support\Facades\Validator;
+use App\Rules\Reffer;
 
 
 class FormController extends Controller
@@ -252,128 +251,177 @@ class FormController extends Controller
         }
         return Response::json('true');
      }
-    public function store(Request $request)
+    public function store(Request $request, Form $form)
     {
 
         $settings = GeneralSetting::first();
-        $data = $request->all();
-        $validator = Validator::make($request->all(), [
+
+        $request->validate([
             'full_name' => 'required|min:3|max:20',
-            'facebook_name' => 'required|min:7|unique:forms,facebook_name',
-            'game_id' => 'required|min:7|unique:forms,game_id',
-            'number' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:10|unique:forms,number',
+            'facebook_name' => 'required|min:7|unique:forms,facebook_name'.$form->id,
+            'game_id' => 'required|min:7|unique:forms,game_id'.$form->id,
+            'number' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:10|unique:forms,number'.$form->id,
             'mail' => 'required',
-            'email' => 'required|regex:/(.+)@(.+)\.(.+)/i|min:6|unique:forms,email',
+            'r_id'=>['nullable', new Reffer('forms', 'game_id')],
+            'email' => 'required|regex:/(.+)@(.+)\.(.+)/i|min:6|unique:forms,email'.$form->id,
             'account' => 'required',
-            'r_id'=>'nullable|exists:App\Models\Form,reffer_id',
+
         ]);
-        if($validator->fails()){
-            return response()->json([ 'errors'=>$validator->errors(),'form_data'=>$request->all()]);
-        }else{
-            $interval = Carbon::today();
-            $daysToAdd = 30;
-            $interval = $interval->addDays($daysToAdd);
-            $final = date($interval);
-            $count = 0;
+
+        // try{
+        //     $ip = $request->ip();
+        //     $device_id = $request->device_id;
+        //     $forms = Form::where("ip",$ip)->where("device_id",$device_id)->first();
+        //     if($forms!=null){
+        //         if($forms->count() > 0){
+        //             $data = [
+        //                 'name'=>$forms->full_name,
+        //                 'email'=>$forms->email,
+        //             ];
+        //             return back()->with('same_device',$data);
+        //             // $subject = "Multi User Detected";
+        //             // $details = [
+        //             //     "name"=>$form->full_name,
+        //             //     "email"=>$forms->email,
+        //             //     "request_email"=>$request->email,
+        //             //     'subject'=>$subject,
+        //             //     'ip'=>$ip,
+        //             // ];
+        //             // $settings = GeneralSetting::first()->toArray();
+        //             // if(!empty($settings['emails'])){
+        //             //     //
+        //             //     $emails = explode(',',$settings['emails']);
+
+        //             //     //Mail::to($emails)->send(new customMail(json_encode($data)));
+        //             //     foreach($emails as $a){
+        //             //         //Mail::to($a)->send(new MultipleAccountsRegistrationAlert($details));
+        //             //         Mail::to("mangaletamang65@gmail.com")->send(new MultipleAccountsRegistrationAlert($details));
+        //             //         Log::channel("bulkMail")->info("Mult user Mail send succes fully");
+
+        //             //     }
+        //             // }
+        //             return back()->withErrors("These device already registerd! Please try to register with other device ");
+        //         }
+        //     }
+
+        // }catch(\Exception $e){
+        //     dd($e);
+        //     Log::channel("laravel")->info($e);
+        // }
 
 
+        $interval = Carbon::today();
+        $daysToAdd = 30;
+        $interval = $interval->addDays($daysToAdd);
+        $final = date($interval);
+        $count = 0;
+
+        $value = $request->r_id;
+
+        $r_id = DB::table('forms')->where('game_id', $value)
+                                        ->orWhere(function ($query) use ($value) {
+                                            $query->where(DB::raw("SUBSTRING('r_id', 3)"), '=', $value);
+                                        })->first();
+        // dd($r_id);
+        $formdata = array(
+            'full_name'=>$request->full_name,
+            'number'=>   $request->number,
+            'email' =>   $request->email,
+            'mail' =>   $request->mail,
+            'r_id'  =>   $r_id->game_id,
+            'game_id' => $request->game_id,
+            'facebook_name'=>$request->facebook_name,
+            'intervals'=>$final,
+            'count'=> $count,
+        );
+        $form =  Form::create($formdata);
+        FormGame::create([
+            'form_id' => $form->id,
+            'account_id' => $request->account,
+            'game_id' => $request->game_id,
+
+        ]);
 
 
-            $formdata = array(
-                'full_name'=>$request->full_name,
-                'number'=>   $request->number,
-                'email' =>   $request->email,
-                'mail' =>   $request->mail,
-                'r_id'  =>   $request->r_id,
-                'game_id' => $request->game_id,
-                'facebook_name'=>$request->facebook_name,
-                'intervals'=>$final,
-                'count'=> $count
-            );
-            // $form =  Form::create($formdata);
-            // FormGame::create([
-            //     'form_id' => $form->id,
-            //     'account_id' => $request->account,
-            //     'game_id' => $request->game_id,
+        $boyname  = $request->full_name;
 
-            // ]);
+        $mail_text = $settings->mail_text;
+        $sms_text = $settings->sms_text;
+        $game_name = strtoupper(($settings->theme == 'default')?'noor':$settings->theme);
+        $sendtext = 'Hello Admin, '.$boyname . ' ' .$mail_text.' ';
+        $sendtextuser = 'Congratulations, '.$boyname . '!!! ' . 'Welcome to '.$game_name.' Games Club. '.$sms_text;
 
+        $details = $sendtext;
+        $details1 = [
+           'text' => $details,
+           'theme' => ($settings->theme)
+       ];
 
-            $boyname  = $request->full_name;
+        // if($settings->registration_email == 1){
+        //     Mail::to($request->email)->send(new NoticeUserMail(($sendtextuser)));
+        // }
+        if($settings->registration_sms == 1){
+            $key = (string) $settings['api_key'];
+            $secret = (string) $settings['api_secret'];
+            $basic  = new \Vonage\Client\Credentials\Basic($key, $secret);
+            $client = new \Vonage\Client($basic);
 
-            $mail_text = $settings->mail_text;
-            $sms_text = $settings->sms_text;
-            $game_name = strtoupper(($settings->theme == 'default')?'noor':$settings->theme);
-            $sendtext = 'Hello Admin, '.$boyname . ' ' .$mail_text.' ';
-            $sendtextuser = 'Congratulations, '.$boyname . '!!! ' . 'Welcome to '.$game_name.' Games Club. '.$sms_text;
+            $message = $client->message()->send([
+                // $request->number
+                'to' => $request->number,
+                'from' => '18337222376',
+                'text' => $sendtextuser
+            ]);
+        }
+        try
+        {
+            if(!empty($settings['new_register_mail'])){
+                $emails = explode(',',$settings['new_register_mail']);
+                // Mail::to('joshibipin2052@gmail.com')->send(new customMail(json_encode($data)));
 
-            $details = $sendtext;
-            $details1 = [
-               'text' => $details,
-               'theme' => ($settings->theme)
-           ];
-
-            // if($settings->registration_email == 1){
-            //     Mail::to($request->email)->send(new NoticeUserMail(($sendtextuser)));
-            // }
-            // if($settings->registration_sms == 1){
-            //     $key = (string) $settings['api_key'];
-            //     $secret = (string) $settings['api_secret'];
-            //     $basic  = new \Vonage\Client\Credentials\Basic($key, $secret);
-            //     $client = new \Vonage\Client($basic);
-
-            //     $message = $client->message()->send([
-            //         // $request->number
-            //         'to' => $request->number,
-            //         'from' => '18337222376',
-            //         'text' => $sendtextuser
-            //     ]);
-            // }
-            try
-            {
-                // if(!empty($settings['new_register_mail'])){
-                //     $emails = explode(',',$settings['new_register_mail']);
-                //     // Mail::to('joshibipin2052@gmail.com')->send(new customMail(json_encode($data)));
-
-                //     foreach($emails as $a){
-                //         Mail::to($a)->send(new UserNoticMail(json_encode($details1)));
-                //         Log::channel('cronLog')->info("Colab Report Mail sent successfully to ".$a);
-                //     }
+                // foreach($emails as $a){
+                //     Mail::to($a)->send(new UserNoticMail(json_encode($details1)));
+                //     Log::channel('cronLog')->info("Colab Report Mail sent successfully to ".$a);
                 // }
-                // Mail::to('riteshnoor69@gmail.com')->send(new UserNoticMail(($details1)));
-                // $job = (new \App\Jobs\NewRegistrationAlert($details))
-                //     ->delay(now()->addSeconds(2));
-                // dispatch($job);
-
-                if($request->r_id != null){
-                    $year = date('Y');
-                    $month = date('m');
-                    $filter_start = $year.'-'.$month.'-01';
-                    $filter_end = date("Y-m-t", strtotime($year.'-'.$month.'-30'));
-                    $refferCount = Form::where('r_id', $request->r_id)
-                    ->whereBetween('created_at', [date($filter_start),date($filter_end)])->get();
-                        // dd($refferCount->count());
-                    if($refferCount->count() >= 2){
-
-                        $refer = FormRefer::create(['form_id' => $refferCount[0]->id, 'account_id' => $request->account, 'amount' => 450, 'created_by']);
-                        //History::create(['form_id' => $refferCount[0]->id, 'account_id' => $request->account, 'amount_loaded' => 450, 'relation_id' => $refer->id, 'cash_apps_id' => $cashAppId, 'previous_balance' => 0, 'final_balance' => 0, 'type' => 'cashAppLoad', 'created_by' => Auth::user()->id]);
-                        $history = History::create(['form_id' => $refferCount[0]->id, 'account_id' => $request->account, 'relation_id' => $refer->id, 'amount_loaded' => 450, 'previous_balance' => 0, 'final_balance' => 0, 'type' => 'refer']);
-                    }
-                }
             }
-            catch(\Exception $e)
-            {
-                $bug = $e->getMessage();
-                Log::channel('cronLog')->info($e);
-                dd($bug);
-                Log::channel('cronLog')->info('Error sending new registration mail to admin '.$bug);
-            }
-            return response()->json(['success'=>'Success']);
+            // Mail::to('riteshnoor69@gmail.com')->send(new UserNoticMail(($details1)));
+            // $job = (new \App\Jobs\NewRegistrationAlert($details))
+            //     ->delay(now()->addSeconds(2));
+            // dispatch($job);
+        }
+        catch(\Exception $e)
+        {
+            $bug = $e->getMessage();
+            Log::channel('cronLog')->info($e);
+            Log::channel('cronLog')->info('Error sending new registration mail to admin '.$bug);
         }
 
-
         // Mail::to('prasundahal@gmail.com')->send(new UserNoticMail(json_encode($details)));
+            // try
+            // {
+            //     if($request->r_id != null){
+            //         $year = date('Y');
+            //         $month = date('m');
+            //         $filter_start = $year.'-'.$month.'-01';
+            //         $filter_end = date("Y-m-t", strtotime($year.'-'.$month.'-30'));
+            //         $refferCount = Form::where('r_id', $request->r_id)
+            //         ->whereBetween('created_at', [date($filter_start),date($filter_end)])->get();
+            //             // dd($refferCount->count());
+            //         if($refferCount->count() >= 3){
 
+            //             $refer = FormRefer::create(['form_id' => $refferCount[0]->id, 'account_id' => $request->account, 'amount' => 450]);
+            //             //History::create(['form_id' => $refferCount[0]->id, 'account_id' => $request->account, 'amount_loaded' => 450, 'relation_id' => $refer->id, 'cash_apps_id' => $cashAppId, 'previous_balance' => 0, 'final_balance' => 0, 'type' => 'cashAppLoad', 'created_by' => Auth::user()->id]);
+            //             $history = History::create(['form_id' => $refferCount[0]->id, 'account_id' => $request->account, 'relation_id' => $refer->id, 'amount_loaded' => 450, 'previous_balance' => 0, 'final_balance' => 0, 'type' => 'refer']);
+            //         }
+            //     }
+            // }
+            // catch(\Exception $e)
+            // {
+            //     $bug = $e->getMessage();
+            //     Log::channel('cronLog')->info($e);
+            //     //dd($bug);
+            //     Log::channel('cronLog')->info('Error sending new registration mail to admin '.$bug);
+            // }
         return redirect(route('success'));
         // switch($settings->theme) {
         //     case('anna'):
@@ -505,9 +553,6 @@ class FormController extends Controller
             $form->forceDelete();
         }
           return redirect(route('home'))->with('message', " Player deleted Successfully");
-    }
-    public function checkReffer(Request $request){
-        $reffer = Form::where('reffer_id',$request->reffer_id)->first();
     }
 
 }

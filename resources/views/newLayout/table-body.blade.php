@@ -53,35 +53,35 @@
                                  </div>
                               </div>
                            </div>
-                           <div class="col-12 game-head-btn-div">  
+                           <div class="col-12 game-head-btn-div">
                               @if (isset($games) && !empty($games))
-                                 @foreach($games as $game)    
+                                 @foreach($games as $game)
                                     @php
                                     $query = $_GET;
                                     $query['game'] = $game['title'];
                                     $query_result = http_build_query($query);
-                                    @endphp    
-                                    <a class="btn btn-success mb-1 game-btn {{(str_replace(' ','-',$game['title']))}}-{{($game['id'])}} {{(isset($activeGame) && $activeGame['id'] == $game['id'])?'active-game-btn':''}}" 
+                                    @endphp
+                                    <a class="btn btn-success mb-1 game-btn {{(str_replace(' ','-',$game['title']))}}-{{($game['id'])}} {{(isset($activeGame) && $activeGame['id'] == $game['id'])?'active-game-btn':''}}"
                                        href="{{url('/table?').$query_result}}"
-                                       data-title="{{($game['title'])}}" 
+                                       data-title="{{($game['title'])}}"
                                        data-balance="{{($game['balance'])}}"
                                        >
                                     {{$game['title']}} : {{($game['balance'])}}
                                     </a>
-                                 @endforeach                                
+                                 @endforeach
                               @else
                                  No games available
-                              @endif 
+                              @endif
                            </div>
                            <div class="col-12 game-head-search-div" style="display: flex;">
                               <div class="col-sm-12 col-md-12 col-lg-6 hidden">
                                  <div class="dropdown">
-                                    <button class="btn btn-secondary dropdown-toggle cash-app-btn" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"                                
-                                       data-id="{{($activeCashApp['id'])}}" 
-                                       data-title="{{($activeCashApp['title'])}}" 
+                                    <button class="btn btn-secondary dropdown-toggle cash-app-btn" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                       data-id="{{($activeCashApp['id'])}}"
+                                       data-title="{{($activeCashApp['title'])}}"
                                        data-balance="{{($activeCashApp['balance'])}}"
                                        >
-                                    Cash App Account : {{(isset($activeCashApp) && !empty($activeCashApp))?$activeCashApp['title']:''}} : <span class="cash-app-blnc">{{(isset($activeCashApp) && !empty($activeCashApp))?('$ '.$activeCashApp['balance']):''}}</span> 
+                                    Cash App Account : {{(isset($activeCashApp) && !empty($activeCashApp))?$activeCashApp['title']:''}} : <span class="cash-app-blnc">{{(isset($activeCashApp) && !empty($activeCashApp))?('$ '.$activeCashApp['balance']):''}}</span>
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                        @if (isset($cashApp) && !empty($cashApp))
@@ -91,17 +91,17 @@
                                        $query['cash_app'] = $item['title'];
                                        $query_result = http_build_query($query);
                                        @endphp
-                                       <a class="dropdown-item" href="{{url('/table?').$query_result}}">{{$item['title']}} : $ {{$item['balance']}}</a>                                          
-                                       @endforeach                                    
+                                       <a class="dropdown-item" href="{{url('/table?').$query_result}}">{{$item['title']}} : $ {{$item['balance']}}</a>
+                                       @endforeach
                                        @endif
                                     </div>
                                  </div>
                               </div>
                               <div class="col-sm-12 col-md-12 col-lg-6">
                                  <p class="date-countdown" style="background: white;"></p>
-                              </div> 
+                              </div>
                               <div class="col-sm-12 col-md-12 col-lg-6">
-                                 <button class="btn btn-primary add-user" data-toggle="modal" data-target="#exampleModalCenter2">Add User</button> 
+                                 <button class="btn btn-primary add-user" data-toggle="modal" data-target="#exampleModalCenter2">Add User</button>
                               </div>
                            </div>
                         </div>
@@ -164,9 +164,9 @@
                                        {{-- Amount --}}
                                        <td class="text-center hidden">
                                           <button class="btn btn-primary amountBtn user-cashapp-{{($num['game_id'])}} resetThis" type="button" data-toggle="collapse" data-target="#collapseExampleCashApp-{{$a+1}}" aria-expanded="false" aria-controls="collapseExampleCashApp-{{$a+1}}"
-                                             data-id="{{($num['form']['id'])}}" 
-                                             data-parent="{{'#form-games-div-'.($a+1)}}" 
-                                             data-user="{{($num['game_id'])}}" 
+                                             data-id="{{($num['form']['id'])}}"
+                                             data-parent="{{'#form-games-div-'.($a+1)}}"
+                                             data-user="{{($num['game_id'])}}"
                                              data-balance="{{(isset($num['cash_app']) && !empty($num['cash_app']))?$num['cash_app']:'0'}}">
                                           $ {{(isset($num['cash_app']) && !empty($num['cash_app']))?$num['cash_app']:'0'}}
                                           </button>
@@ -175,12 +175,12 @@
                                                 <input required type="hidden" class="form-control cashApp-from" name="cashApp-from"
                                                    value="{{$activeGame['id']}}" data-title="{{str_replace(' ','-',$activeGame['title'])}}">
                                                 <input required type="text" class="form-control amount" name="amount"
-                                                   data-user="{{$num['game_id']}}"  
+                                                   data-user="{{$num['game_id']}}"
                                                    data-cashApp="{{$activeCashApp['id']}}"
                                                    data-userId="{{$num['form']['id']}}"
                                                    value="" placeholder="Amount">
-                                                <button type="button" class="btn btn-success text-center cashApp-btn" 
-                                                   data-user="{{$num['game_id']}}"  
+                                                <button type="button" class="btn btn-success text-center cashApp-btn"
+                                                   data-user="{{$num['game_id']}}"
                                                    data-cashApp="{{$activeCashApp['id']}}"
                                                    data-userId="{{$num['form']['id']}}">
                                                 Load
@@ -191,9 +191,9 @@
                                        {{-- Balance --}}
                                        <td class="text-center">
                                           <button class="btn btn-primary user-{{($num['game_id'])}} resetThis" type="button" data-toggle="collapse" data-target="#collapseExample-{{$a+1}}" aria-expanded="false" aria-controls="collapseExample-{{$a+1}}"
-                                             data-id="{{($num['form']['id'])}}" 
-                                             data-parent="{{'#form-games-div-'.($a+1)}}" 
-                                             data-user="{{$num['game_id']}}" 
+                                             data-id="{{($num['form']['id'])}}"
+                                             data-parent="{{'#form-games-div-'.($a+1)}}"
+                                             data-user="{{$num['game_id']}}"
                                              data-userId="{{$num['form']['id']}}"
                                              data-gameId="{{$activeGame['id']}}"
                                              data-balance="{{($num['balance'])}}"
@@ -205,57 +205,57 @@
                                                 <input required type="hidden" class="form-control load-from loadFrom{{$num['form']['id']}}" name="load-from"
                                                    value="{{$activeGame['id']}}" data-title="{{str_replace(' ','-',$activeGame['title'])}}">
                                                 <input required type="text" class="form-control loadInput loadInput{{$num['form']['id']}}" name="amount"
-                                                   data-user="{{$num['game_id']}}" 
+                                                   data-user="{{$num['game_id']}}"
                                                    data-userId="{{$num['form']['id']}}"
                                                    value="" placeholder="Amount">
-                                                <button type="button" class="btn btn-success text-center hidden load-btn" 
-                                                   data-user="{{$num['game_id']}}" 
+                                                <button type="button" class="btn btn-success text-center hidden load-btn"
+                                                   data-user="{{$num['game_id']}}"
                                                    data-userId="{{$num['form']['id']}}">Load</button>
                                              </div>
                                           </div>
                                        </td>
                                        {{-- Refer --}}
                                        <td class="text-center">
-                                          {{-- @php                                              
+                                          {{-- @php
                                           $total = 0;
                                           @endphp
                                           @if (!empty($num['form']['tips']))
                                           @foreach ($num['form']['tips'] as $item)
                                           @php
-                                          $total = $total + $item['amount'];                                                    
+                                          $total = $total + $item['amount'];
                                           @endphp
-                                          @endforeach                                             
+                                          @endforeach
                                           @endif --}}
                                           <button class="btn btn-primary user-refer-{{($num['game_id'])}} resetThis" type="button" data-toggle="collapse" data-target="#collapseExampleRefer-{{$a+1}}" aria-expanded="false" aria-controls="collapseExampleRefer-{{$a+1}}"
-                                             data-id="{{($num['form']['id'])}}" 
-                                             data-parent="{{'#form-games-div-'.($a+1)}}" 
-                                             data-user="{{($num['game_id'])}}" 
+                                             data-id="{{($num['form']['id'])}}"
+                                             data-parent="{{'#form-games-div-'.($a+1)}}"
+                                             data-user="{{($num['game_id'])}}"
                                              data-userId="{{$num['form']['id']}}"
                                              data-gameId="{{$activeGame['id']}}"
                                              data-balance="{{($num['refer'])}}"
                                              data-type="refer">
-                                          $ {{$num['refer']}}   
+                                          $ {{$num['refer']}}
                                           </button>
                                           <div class="collapse-{{$a+1}} collapse" id="collapseExampleRefer-{{$a+1}}">
                                              <div class="card card-body">
                                                 <input required type="hidden" class="form-control refer-from" name="refer-from"
                                                    value="{{$activeGame['id']}}" data-title="{{str_replace(' ','-',$activeGame['title'])}}">
                                                 <input required type="text" class="form-control referInput referInput{{$num['form']['id']}}" name="amount"
-                                                   data-user="{{$num['game_id']}}" 
+                                                   data-user="{{$num['game_id']}}"
                                                    data-userId="{{$num['form']['id']}}"
                                                    value="" placeholder="Amount">
-                                                <button type="button" class="btn btn-success text-center refer-btn hidden" 
-                                                   data-user="{{$num['game_id']}}" 
+                                                <button type="button" class="btn btn-success text-center refer-btn hidden"
+                                                   data-user="{{$num['game_id']}}"
                                                    data-userId="{{$num['form']['id']}}">Load</button>
                                              </div>
                                           </div>
                                        </td>
-                                       {{-- Redeem --}}                                         
+                                       {{-- Redeem --}}
                                        <td class="text-center">
                                           <button class="btn btn-primary user-redeem-{{($num['game_id'])}} resetThis" type="button" data-toggle="collapse" data-target="#collapseExampleRedeem-{{$a+1}}" aria-expanded="false" aria-controls="collapseExampleRedeem-{{$a+1}}"
-                                             data-id="{{($num['form']['id'])}}" 
-                                             data-parent="{{'#form-games-div-'.($a+1)}}" 
-                                             data-user="{{$num['game_id']}}" 
+                                             data-id="{{($num['form']['id'])}}"
+                                             data-parent="{{'#form-games-div-'.($a+1)}}"
+                                             data-user="{{$num['game_id']}}"
                                              data-userId="{{$num['form']['id']}}"
                                              data-gameId="{{$activeGame['id']}}"
                                              data-balance="{{($num['redeem'])}}"
@@ -267,21 +267,21 @@
                                                 <input required type="hidden" class="form-control redeem-from redeemFrom{{$num['form']['id']}}" name="redeem-from"
                                                    value="{{$activeGame['id']}}" data-title="{{str_replace(' ','-',$activeGame['title'])}}">
                                                 <input required type="text" class="form-control redeemInput redeemInput{{$num['form']['id']}}" name="amount"
-                                                   data-user="{{$num['game_id']}}" 
+                                                   data-user="{{$num['game_id']}}"
                                                    data-userId="{{$num['form']['id']}}"
                                                    value="" placeholder="Amount">
-                                                <button type="button" class="btn btn-success text-center redeem-btn hidden" 
-                                                   data-user="{{$num['game_id']}}" 
+                                                <button type="button" class="btn btn-success text-center redeem-btn hidden"
+                                                   data-user="{{$num['game_id']}}"
                                                    data-userId="{{$num['form']['id']}}">Redeem</button>
                                              </div>
                                           </div>
                                        </td>
-                                       {{-- Tips --}} 
+                                       {{-- Tips --}}
                                        <td class="text-center">
                                           <button class="btn btn-primary user-tip-{{($num['game_id'])}} resetThis" type="button" data-toggle="collapse" data-target="#collapseExampleTip-{{$a+1}}" aria-expanded="false" aria-controls="collapseExampleTip-{{$a+1}}"
-                                             data-id="{{($num['form']['id'])}}" 
-                                             data-parent="{{'#form-games-div-'.($a+1)}}" 
-                                             data-user="{{$num['game_id']}}" 
+                                             data-id="{{($num['form']['id'])}}"
+                                             data-parent="{{'#form-games-div-'.($a+1)}}"
+                                             data-user="{{$num['game_id']}}"
                                              data-userId="{{$num['form']['id']}}"
                                              data-gameId="{{$activeGame['id']}}"
                                              data-balance="{{($num['tip'])}}"
@@ -293,23 +293,23 @@
                                                 <input required type="hidden" class="form-control tip-from" name="tip-from"
                                                    value="{{$activeGame['id']}}" data-title="{{str_replace(' ','-',$activeGame['title'])}}">
                                                 <input required type="text" class="form-control tipInput tipInput{{$num['form']['id']}}" name="amount"
-                                                   data-user="{{$num['game_id']}}" 
+                                                   data-user="{{$num['game_id']}}"
                                                    data-userId="{{$num['form']['id']}}"
                                                    value="" placeholder="Amount">
-                                                <button type="button" class="btn btn-success text-center tip-btn hidden" 
-                                                   data-user="{{$num['game_id']}}" 
+                                                <button type="button" class="btn btn-success text-center tip-btn hidden"
+                                                   data-user="{{$num['game_id']}}"
                                                    data-userId="{{$num['form']['id']}}">Tip</button>
                                              </div>
                                           </div>
                                        </td>
                                        <td class="text-center">
-                                       
-                                          <button type="button" class="btn btn-success text-center thisBtn load-btn-{{$num['form']['id']}}" 
-                                                   data-user="{{$num['game_id']}}" 
+
+                                          <button type="button" class="btn btn-success text-center thisBtn load-btn-{{$num['form']['id']}}"
+                                                   data-user="{{$num['game_id']}}"
                                                    data-userId="{{$num['form']['id']}}"
                                                    data-cashApp="{{$activeCashApp['id']}}">Load</button>
                                        </td>
-                                       {{-- History --}}                                          
+                                       {{-- History --}}
                                        <td class="text-center">
                                           <div class="dropdown">
                                              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -387,7 +387,7 @@
                </table>
             </div>
          </div>
-         {{-- 
+         {{--
          <div class="modal-footer">
             <button type="button" class="btn btn-success text-center load-btn" data-user="" data-userId="">Load</button>
          </div>
@@ -437,7 +437,7 @@
                </table>
             </div>
          </div>
-         {{-- 
+         {{--
          <div class="modal-footer">
             <button type="button" class="btn btn-success text-center load-btn" data-user="" data-userId="">Load</button>
          </div>
@@ -504,7 +504,7 @@
 <div class="modal fade" id="exampleModalCenter5" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
    <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
-         {{-- 
+         {{--
          <form action="{{route('addUser')}}" method="post">
          --}}
          <div class="modal-header">
@@ -525,13 +525,13 @@
                      {{-- <option value="cashAppLoad">Cash App</option> --}}
                   </select>
                </div>
-               <div class="form-control">   
+               <div class="form-control">
                   <input type="date" name="start" class="filter-start">
                </div>
-               <div class="form-control">   
+               <div class="form-control">
                   <input type="date" name="end" class="filter-end">
                </div>
-               <div class="form-control">   
+               <div class="form-control">
                   <button class="filter-history" data-userId="" data-game="">Go</button>
                </div>
             </div>
@@ -543,7 +543,7 @@
                         <th class="text-center form-history-related hidden">Game</th>
                         <th class="text-center">Amount</th>
                         <th class="text-center">Type</th>
-                        {{-- 
+                        {{--
                         <th class="text-center">Prev</th>
                         <th class="text-center">Amount</th>
                         --}}
@@ -555,7 +555,7 @@
                </table>
             </div>
          </div>
-         {{-- 
+         {{--
          <div class="modal-footer">
             <button type="submit" class="btn btn-primary">Add</button>
          </div>
@@ -567,7 +567,7 @@
 <div class="modal fade" id="exampleModalCenter3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
    <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
-         {{-- 
+         {{--
          <form action="{{route('addUser')}}" method="post">
          --}}
          <div class="modal-header">
@@ -582,7 +582,7 @@
                   <tr>
                      <th class="text-center">Date</th>
                      <th class="text-center">Amount</th>
-                     {{-- 
+                     {{--
                      <th class="text-center">Prev</th>
                      <th class="text-center">Amount</th>
                      --}}
@@ -593,7 +593,7 @@
                </tbody>
             </table>
          </div>
-         {{-- 
+         {{--
          <div class="modal-footer">
             <button type="submit" class="btn btn-primary">Add</button>
          </div>
@@ -643,7 +643,7 @@
                </table>
             </div>
          </div>
-         {{-- 
+         {{--
          <div class="modal-footer">
             <button type="button" class="btn btn-success text-center load-btn" data-user="" data-userId="">Load</button>
          </div>
@@ -655,7 +655,7 @@
 <div class="modal fade" id="exampleModalCenter6" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
    <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
-         {{-- 
+         {{--
          <form action="{{route('addUser')}}" method="post">
          --}}
          <div class="modal-header">
@@ -668,25 +668,25 @@
             <div class="col-12 display-inline-flex">
                <div class="card col-sm-12 col-md-12 col-lg-2">
                   <div class="card-body">
-                  Total Tip : <span class="total-tip">0</span> 
-                  </div>     
+                  Total Tip : <span class="total-tip">0</span>
+                  </div>
                   </div>
                   <div class="card col-sm-12 col-md-12 col-lg-2">
                   <div class="card-body">
-                  Balance In: <span class="total-balance">0</span> 
-                  </div>     
+                  Balance In: <span class="total-balance">0</span>
+                  </div>
                   </div>
                   <div class="card col-sm-12 col-md-12 col-lg-2">
                   <div class="card-body">
-                  Total Redeem : <span class="total-redeem">0</span> 
-                  </div>     
+                  Total Redeem : <span class="total-redeem">0</span>
+                  </div>
                   </div>
                   <div class="card col-sm-12 col-md-12 col-lg-2">
                   <div class="card-body">
-                  Total Bonus : <span class="total-refer">0</span> 
-                  </div>     
+                  Total Bonus : <span class="total-refer">0</span>
                   </div>
-            
+                  </div>
+
                   <div class="card col-sm-12 col-md-12 col-lg-2">
                   <!--<div class="card-body">-->
                   <!--Total Amount : <span class="total-amount">0</span> -->
@@ -694,8 +694,8 @@
                   </div>
                   <div class="card col-sm-12 col-md-12 col-lg-2">
                   <div class="card-body">
-                  Total Profit : <span class="total-profit">0</span> 
-                  </div>     
+                  Total Profit : <span class="total-profit">0</span>
+                  </div>
                </div>
            </div>
             <div class="col-12 display-inline-flex">
@@ -709,13 +709,13 @@
                      {{-- <option value="cashAppLoad">Cash App</option> --}}
                   </select>
                </div>
-               <div class="form-control">   
+               <div class="form-control">
                   <input type="date" name="start" class="filter-start1">
                </div>
-               <div class="form-control">   
+               <div class="form-control">
                   <input type="date" name="end" class="filter-end1">
                </div>
-               <div class="form-control">   
+               <div class="form-control">
                   <button class="filter-history form-all" data-userId="" data-game="">Go</button>
                </div>
             </div>
@@ -727,7 +727,7 @@
                         <th class="text-center">Game</th>
                         <th class="text-center">Amount</th>
                         <th class="text-center">Type</th>
-                        {{-- 
+                        {{--
                         <th class="text-center">Prev</th>
                         <th class="text-center">Amount</th>
                         --}}
@@ -739,7 +739,7 @@
                </table>
             </div>
          </div>
-         {{-- 
+         {{--
          <div class="modal-footer">
             <button type="submit" class="btn btn-primary">Add</button>
          </div>
@@ -751,7 +751,7 @@
 <div class="modal fade" id="exampleModalCenter7" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
    <div class="modal-dialog modal-lg" role="document" style="max-width: 95%;">
       <div class="modal-content">
-         {{-- 
+         {{--
          <form action="{{route('addUser')}}" method="post">
          --}}
          <div class="modal-header">
@@ -772,13 +772,13 @@
                      {{-- <option value="cashAppLoad">Cash App</option> --}}
                   </select>
                </div>
-               <div class="form-control">   
+               <div class="form-control">
                   <input type="date" name="start" class="filter-start12">
                </div>
-               <div class="form-control">   
+               <div class="form-control">
                   <input type="date" name="end" class="filter-end12">
                </div>
-               <div class="form-control">   
+               <div class="form-control">
                   <button class="filter-all-history user-all" data-userId="" data-game="">Go</button>
                </div>
             </div>
@@ -792,7 +792,7 @@
                         <th class="text-center">Game Id</th>
                         <th class="text-center">Amount</th>
                         <th class="text-center">Type</th>
-                        {{-- 
+                        {{--
                         <th class="text-center">Prev</th>
                         <th class="text-center">Amount</th>
                         --}}
@@ -804,7 +804,7 @@
                </table>
             </div>
          </div>
-         {{-- 
+         {{--
          <div class="modal-footer">
             <button type="submit" class="btn btn-primary">Add</button>
          </div>
@@ -840,7 +840,7 @@
                  </tbody>
               </table>
            </div>
-        </div>        
+        </div>
      </div>
   </div>
 </div>

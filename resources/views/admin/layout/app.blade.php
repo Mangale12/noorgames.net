@@ -32,7 +32,7 @@
     <link rel="stylesheet" href="https://k1ngzed.com/dist/EasyZoom/easyzoom.css" />
     <link rel="stylesheet" href="{{ asset('public/admin/assets/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('public/admin/assets/css/responsive.css') }}">
-    
+
     <!-- CSS -->
 
 
@@ -226,3 +226,6 @@
 <body>
 </body>
 </html>
+
+
+
